@@ -1,0 +1,51 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+  <style>
+    /* Estilos adicionales */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      max-width: 400px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <form action="#" method="POST" class="box" >
+    <h2 class="title is-4 has-text-centered">Iniciar Sesión</h2>
+    <div class="field">
+      <label class="label">Correo Electrónico</label>
+      <div class="control">
+        <input class="input" type="email" placeholder="Correo Electrónico" required>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">Contraseña</label>
+      <div class="control">
+        <input class="input" type="password" placeholder="Contraseña" required>
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <button class="button is-primary is-fullwidth">Iniciar Sesión</button>
+      </div>
+    </div>
+  </form>
+
+  
+  
+</body>
+</html>
