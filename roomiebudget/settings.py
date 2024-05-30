@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'income',          # Añadir esta línea
     'shared_boards',   # Añadir esta línea
     'shopping',        # Añadir esta línea
+    'common',
 ]
 
 MIDDLEWARE = [
