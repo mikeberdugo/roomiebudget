@@ -1,0 +1,16 @@
+
+
+
+
+
+
+
+
+
+
+
+(name='Comida', description='Categoría para gastos relacionados con alimentos', user=user)
+(name='Transporte', description='Categoría para gastos relacionados con transporte', user=user)
+(name='Entretenimiento', description='Categoría para gastos relacionados con entretenimiento', user=user)
+(name='Facturas', description='Categoría para gastos relacionados con facturas', user=user)
+(name='Otros', description='Categoría para otros gastos', user=user)
