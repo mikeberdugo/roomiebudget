@@ -1,74 +1,106 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RoomieBudget</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
 
-  <style>
-    .sidebar {
-      background-color: #f5f5f5;
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      padding-top: 3rem; /* Altura de la barra superior */
-      width: 250px;
-    }
-
-    .sidebar-menu-item {
-      padding: 1rem;
-    }
-
-    .content {
-      margin-left: 250px; /* Ancho del menú lateral */
-      padding: 2rem;
-    }
-  </style>
-
-
+  <link rel="stylesheet" href="{% static 'css/libs.css' %}">
 
 </head>
 <body>
-  <aside class="sidebar">
-    <p class="menu-label">Menú</p>
-    <ul class="menu-list">
-      <li><a href="#" class="sidebar-menu-item">Dashboard</a></li>
-      <li><a href="#" class="sidebar-menu-item">Usuarios</a></li>
-      <li><a href="#" class="sidebar-menu-item">Productos</a></li>
-      <li><a href="#" class="sidebar-menu-item">Configuración</a></li>
-    </ul>
-  </aside>
+ 
+  		
+  <div class="wrapper d-flex align-items-stretch">
+    <nav id="sidebar">
+      <div class="custom-menu">
+        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+          <i class="fa fa-bars"></i>
+          <span class="sr-only">Toggle Menu</span>
+        </button>
+      </div>
+      <div class="p-4 pt-5">
+        <h1><a href="index.html" class="logo">Roomie Budget</a></h1>
+        <ul class="list-unstyled components mb-5">
+          <li class="active">
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+              <li>
+                  <a href="#">Home 1</a>
+              </li>
+              <li>
+                  <a href="#">Home 2</a>
+              </li>
+              <li>
+                  <a href="#">Home 3</a>
+              </li>
+            </ul>
+          </li>
+
+          <li>
+              <a href="#">Perfil</a>
+          </li>
+          <li>
+              <a href="#">Tableros</a>
+          </li>
+
+          <li>
+              <a href="#">Perfil</a>
+          </li>
+
+
+          <li>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+              <li>
+                  <a href="#">Page 1</a>
+              </li>
+              <li>
+                  <a href="#">Page 2</a>
+              </li>
+              <li>
+                  <a href="#">Page 3</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Ayuda/Soporte</a>
+          </li>
+          <li>
+            <a href="#">Contact</a>
+          </li>
+        </ul>
 
 
 
+        <div class="footer">
+          <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+        </div>
 
-    
-    
-    
-      <script>
-        document.addEventListener('DOMContentLoaded', () => {
+      </div>
+    </nav>
 
-            // Get all "navbar-burger" elements
-            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-          
-            // Add a click event on each of them
-            $navbarBurgers.forEach( el => {
-              el.addEventListener('click', () => {
-          
-                // Get the target from the "data-target" attribute
-                const target = el.dataset.target;
-                const $target = document.getElementById(target);
-          
-                // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-                el.classList.toggle('is-active');
-                $target.classList.toggle('is-active');
-          
-              });
-            });
-          
-          });
-    </script>
+      <!-- Page Content  -->
+    <div id="content" class="p-4 p-md-5 pt-5">
+      <h2 class="mb-4">Sidebar #02</h2>
+
+  </div>
+
+     
+
+
+    </div>
+  </div>
+
+  
+  <script src="{% static 'js/bootstrap/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap/main.js' %}"></script>
+  
 </body>
 </html>

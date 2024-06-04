@@ -1,0 +1,23 @@
+{% extends 'base/base_boards.html' %}
+{% load crispy_forms_tags %}
+
+
+
+{% block title %}
+    Create Board 
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+        <div class="col">
+            {% crispy form %}
+        </div>
+        <div class="col">
+            Column
+        </div>
+        </div>
+    </div>
+{% endblock %}
+
+

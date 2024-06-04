@@ -1,37 +1,68 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_migrate
 from django.dispatch import receiver
+from django.utils import timezone
 
-
-    
 
 # Modelo para Categoría
 class Category(models.Model):
     name = models.CharField(max_length=100)  # Nombre de la categoría
     description = models.TextField(blank=True)  # Descripción de la categoría (opcional)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_category_user')  # Usuario que creó la categoría
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_category_user',blank=True ,null=True)  # Usuario que creó la categoría
+
+    
+    def __str__(self):
+        return f"{self.name}"
+    
+    
+    @classmethod
+    def initial_data(cls):
+        initial_data = [
+            {'name': 'Comida', 'description': 'Categoría para gastos relacionados con alimentos'},
+            {'name': 'Transporte', 'description': 'Categoría para gastos relacionados con transporte'},
+            {'name': 'Entretenimiento', 'description': 'Categoría para gastos relacionados con entretenimiento'},
+            {'name': 'Facturas', 'description': 'Categoría para gastos relacionados con facturas'},
+            {'name': 'Otros', 'description': 'Categoría para otros gastos'},
+        ]
+        
+        for data in initial_data:
+            # Verificar si la categoría ya existe
+            category, created = cls.objects.get_or_create(name=data['name'], defaults={'description': data['description']})
+            # Si es creada, asignarla al usuario "None" para que sea visible para todos los usuarios
+            if created:
+                category.user = None
+                category.save()
+                
+
+@receiver(post_migrate)
+def load_initial_data(sender, **kwargs):
+    if sender.name == 'common':
+        Category.initial_data()
+
+
+
 
 # Modelo para Tablero
 class Board(models.Model):
     name = models.CharField(max_length=100)  # Nombre del tablero
-    creator_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_boards')  # Usuario creador del tablero
+    creator_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_boards')  # Usuario creador del tablero AUTOMATICO
     linked_users = models.ManyToManyField(User, related_name='linked_boards' , blank=True)  # Usuarios enlazados al tablero
     description = models.TextField(blank=True)  # Descripción del tablero (opcional)
-    created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación del tablero
-    last_updated = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del tablero
-    is_active = models.BooleanField(default=True)  # Indica si el tablero está activo
+    created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación del tablero AUTOMATICO 
+    last_updated = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del tablero AUTOMATICO
+    is_active = models.BooleanField(default=True)  # Indica si el tablero está activo AUTOMATICO AL INICIAR - CAMBIO POR USUARIO 
     categories = models.ForeignKey(Category, related_name='boards', on_delete=models.CASCADE)   # Categorías asociadas al tablero
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True) ## AUTOMATICO 
 
-@receiver(pre_save, sender=Board)
-def crear_slug(sender, instance, **kwargs):
-    if not instance.slug:
-        # Concatenar el nombre del usuario y el título de la issue
-        slug_text = f"{instance.usuario.nombre}-{instance.titulo}"
-        # Slugificar el texto combinado
-        instance.slug = slugify(slug_text)
+    def save(self, *args, **kwargs):
+        if not self.id:  # Si es un nuevo objeto
+            self.created_at = timezone.now()  # Asignamos la fecha y hora actual
+            self.slug = slugify(self.name)  # Generamos un slug basado en el nombre del tablero
+        super().save(*args, **kwargs)  # Guardamos el objeto en la base de datos
+
+
 
 # Modelo para Cuenta
 class Account(models.Model):
@@ -111,3 +142,13 @@ class ListItem(models.Model):
     # precio del items 
     price =models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     
+
+
+class UserNotification(models.Model):
+    message = models.TextField()
+    date = models.DateTimeField()
+    read = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.TextField(default=0) # 0-NoClasificado, 1-PagoPrestamo
+    class Meta:
+        ordering = ['-date']
