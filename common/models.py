@@ -53,7 +53,6 @@ class Board(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación del tablero AUTOMATICO 
     last_updated = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del tablero AUTOMATICO
     is_active = models.BooleanField(default=True)  # Indica si el tablero está activo AUTOMATICO AL INICIAR - CAMBIO POR USUARIO 
-    categories = models.ForeignKey(Category, related_name='boards', on_delete=models.CASCADE)   # Categorías asociadas al tablero
     slug = models.SlugField(unique=True, blank=True) ## AUTOMATICO 
 
     def save(self, *args, **kwargs):
@@ -91,6 +90,14 @@ class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación del pago
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del pago
     
+
+class Spent(models.Model):
+    name = models.TextField(null=False, blank=False)
+    expensedate = models.DateField(auto_now=True , auto_now_add = True)
+    category = models.ForeignKey(Category, related_name='boards', on_delete=models.CASCADE)   # Categorías asociadas al pago 
+    taxes = models.CharField(max_length=100)
+    paid = models.BooleanField(default=False) 
+    paymenttype = models.CharField(max_length=100)
 
 class RecurringPayment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
