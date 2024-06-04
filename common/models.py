@@ -91,6 +91,13 @@ class Payment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del pago
     
 
+
+"""  
+modelo de pagos basico para generar los pagos que se dieron en el mes y generar un resumen 
+
+
+"""
+
 class Spent(models.Model):
     name = models.TextField(null=False, blank=False)
     expensedate = models.DateField(auto_now=True , auto_now_add = True)
