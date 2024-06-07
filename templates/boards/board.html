@@ -1,1 +1,71 @@
-{% extends 'base/base_boards.html' %}
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+
+
+{% block title %} 
+    Boards  
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+        Create board
+    </button>
+{% endblock %} 
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {% for board in boards %}
+                    <div class="card text-center mb-3" style="min-width: 18rem;" >
+                        <div class="card-body">
+                            <h5 class="card-title">{{ board.name }}</h5>
+                            <p class="card-text">{{ board.description }}</p>
+                            <a href="{% url 'boards:viewboard' slug=board.slug %}" class="btn btn-primary">Get Into</a>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+            </div>
+            <div class="col">
+                <h2>Tableros Financieros: Organiza y Comparte tus Gastos de Forma Eficiente</h2>
+
+                <p> Los tableros financieros ofrecen una plataforma versátil y eficaz para organizar y compartir información financiera de forma ágil y sencilla. 
+                    Su propósito fundamental es agilizar la visualización, actualización y verificación de cuentas, 
+                    tanto para el ámbito personal como para el trabajo en equipo. Al crear tableros financieros, 
+                    se pretende establecer un espacio donde puedas estructurar tus finanzas de manera transparente y fácilmente accesible, 
+                    lo que facilita su compartición con otros colaboradores para una gestión colaborativa de ingresos y gastos.</p>
+
+                <p>La subdivisión de gastos en diferentes tableros resulta altamente funcional, ya que te permite organizar tus gastos de manera más detallada y específica. 
+                    Puedes asignar tableros para tus gastos personales, los de tu empresa o proyecto, los relacionados con tu hogar, 
+                    así como aquellos destinados a actividades recreativas o compartidos con tu pareja. Esta segmentación te ofrece una visión más clara y detallada de tus flujos financieros, 
+                    lo que facilita la toma de decisiones y la gestión efectiva de tus recursos económicos. 
+                    Además, al separar los gastos de esta manera, puedes centrarte de manera más precisa en cada área y realizar un seguimiento más efectivo de tus ingresos y egresos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle"> Create board </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                {% crispy form %}
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -4,13 +4,73 @@ from django.utils.text import slugify
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
 from django.utils import timezone
+import random
+import string
+
+from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import AbstractUser #, Group , Permission
+from django.db import models
+
+class AstradUser(AbstractUser):
+    
+    ROLES_CHOICES = [
+        ('Usuario Estándar', 'Usuario Estándar'),
+        ('Usuario Premium', 'Usuario Premium'),
+    ]
+
+    GENDER_CHOICES = [
+        ('Masculino', 'Masculino'),
+        ('Femenino', 'Femenino'),
+        ('Otro', 'Otro'),
+    ]
+
+    MARITAL_STATUS_CHOICES = [
+        ('Soltero/a', 'Soltero/a'),
+        ('Casado/a', 'Casado/a'),
+        ('Divorciado/a', 'Divorciado/a'),
+        ('Viudo/a', 'Viudo/a'),
+    ]
+    
+    OCCUPATION_CHOICES = [
+        ('Estudiante', 'Estudiante'),
+        ('Profesional', 'Profesional'),
+        ('Empleado', 'Empleado'),
+        ('Empresario', 'Empresario'),
+        ('Desempleado', 'Desempleado'),
+        ('Otro', 'Otro'),
+    ]
+    
+    
+    # menbresia 
+    
+    membership_paid = models.BooleanField(default=False)
+    membership_expiry_date = models.DateField(null=True, blank=True)
+    
+    ## general 
+    role = models.CharField(max_length=50, choices=ROLES_CHOICES, default='Usuario Estándar')
+    birth_date = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
+    marital_status = models.CharField(max_length=20, choices=MARITAL_STATUS_CHOICES, null=True, blank=True)
+    occupation = models.CharField(max_length=100, choices=OCCUPATION_CHOICES, null=True, blank=True)
+    nationality = models.CharField(max_length=100, null=True, blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
+    financial_goals = models.TextField(null=True, blank=True)
+    
+    # Añade related_name a las relaciones groups y user_permissions
+    # groups = models.ManyToManyField(Group, verbose_name=_('groups'), blank=True, related_name='astraduser_set', related_query_name='user')
+    # user_permissions = models.ManyToManyField(Permission, verbose_name=_('user permissions'), blank=True, related_name='astraduser_set', related_query_name='user')
+    
+
+    def number_of_boards(self):
+        return self.board_set.count()
+
 
 
 # Modelo para Categoría
 class Category(models.Model):
     name = models.CharField(max_length=100)  # Nombre de la categoría
     description = models.TextField(blank=True)  # Descripción de la categoría (opcional)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_category_user',blank=True ,null=True)  # Usuario que creó la categoría
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE, related_name='created_category_user',blank=True ,null=True)  # Usuario que creó la categoría
 
     
     def __str__(self):
@@ -47,8 +107,8 @@ def load_initial_data(sender, **kwargs):
 # Modelo para Tablero
 class Board(models.Model):
     name = models.CharField(max_length=100)  # Nombre del tablero
-    creator_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_boards')  # Usuario creador del tablero AUTOMATICO
-    linked_users = models.ManyToManyField(User, related_name='linked_boards' , blank=True)  # Usuarios enlazados al tablero
+    creator_user = models.ForeignKey(AstradUser, on_delete=models.CASCADE, related_name='created_boards')  # Usuario creador del tablero AUTOMATICO
+    linked_users = models.ManyToManyField(AstradUser, related_name='linked_boards' , blank=True)  # Usuarios enlazados al tablero
     description = models.TextField(blank=True)  # Descripción del tablero (opcional)
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación del tablero AUTOMATICO 
     last_updated = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del tablero AUTOMATICO
@@ -58,17 +118,26 @@ class Board(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:  # Si es un nuevo objeto
             self.created_at = timezone.now()  # Asignamos la fecha y hora actual
-            self.slug = slugify(self.name)  # Generamos un slug basado en el nombre del tablero
+            # Generamos un valor aleatorio basado en el usuario y la hora
+            random_value = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+            # Combinamos el nombre del tablero, el valor aleatorio y el ID del usuario
+            combined_string = f"{self.name}-{random_value}-{self.creator_user.id}"
+            # Calculamos el slug a partir de la cadena combinada
+            self.slug = slugify(combined_string)
         super().save(*args, **kwargs)  # Guardamos el objeto en la base de datos
 
 
 
 # Modelo para Cuenta
 class Account(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Usuario dueño de la cuenta
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)  # Usuario dueño de la cuenta
+    name = models.CharField(max_length=100)  # Nombre de la cuenta
     balance = models.DecimalField(max_digits=10, decimal_places=2)  # Saldo de la cuenta
+    currency = models.CharField(max_length=3)  # Moneda de la cuenta (ejemplo: USD, EUR, MXN, etc.)
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación de la cuenta
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización de la cuenta
+    account_type = models.CharField(max_length=50)  # Tipo de cuenta (ejemplo: Cuenta Corriente, Cuenta de Ahorros, Tarjeta de Crédito, etc.)
+    status = models.CharField(max_length=20)  # Estado de la cuenta (ejemplo: Activa, Inactiva, Cerrada, etc.)
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='invoices', default=1)  # Tablero asociado a la cuenta
 
 # Modelo para Factura
@@ -100,14 +169,16 @@ modelo de pagos basico para generar los pagos que se dieron en el mes y generar 
 
 class Spent(models.Model):
     name = models.TextField(null=False, blank=False)
-    expensedate = models.DateField(auto_now=True , auto_now_add = True)
+    expensedate = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, related_name='boards', on_delete=models.CASCADE)   # Categorías asociadas al pago 
     taxes = models.CharField(max_length=100)
     paid = models.BooleanField(default=False) 
     paymenttype = models.CharField(max_length=100)
 
+
+# pago recurrentes , progamados mes a mes o en un tiempo determinado 
 class RecurringPayment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
     # Usuario que crea el pago recurrente
     description  = models.CharField(max_length=255)
     # Descripción breve del pago recurrente
@@ -129,10 +200,9 @@ class RecurringPayment(models.Model):
     
     
 ### modelos de lista de compras 
-
 class ShoppingList(models.Model):
     # Usuario que crea la lista de compras
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
     # Nombre de la lista de compras
     name = models.CharField(max_length=255)
     # Descripción opcional de la lista de compras
@@ -142,6 +212,7 @@ class ShoppingList(models.Model):
     # Fecha y hora de la última actualización de la lista de compras
     updated_at  = models.DateTimeField(auto_now=True)
 
+# items de esa compra 
 class ListItem(models.Model):
     # Lista de compras a la que pertenece el elemento
     shopping_list = models.ForeignKey(ShoppingList, on_delete=models.CASCADE)
@@ -157,12 +228,12 @@ class ListItem(models.Model):
     price =models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     
 
-
+## notificacion del usuario 
 class UserNotification(models.Model):
     message = models.TextField()
     date = models.DateTimeField()
     read = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
     type = models.TextField(default=0) # 0-NoClasificado, 1-PagoPrestamo
     class Meta:
         ordering = ['-date']

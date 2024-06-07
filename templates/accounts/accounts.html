@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+
+
+{% block nav %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+{% block title %} 
+    Boards   
+{% endblock %} 
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <h2> Cuentas asociadas </h2>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    add account
+                </button>
+            </div>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            
+            {% if accounts %}
+            
+
+            <ul>
+                {% for cuenta in accounts %}
+                    <li> asfa </li>
+                {% endfor %}
+            </ul>
+
+            {% else %}
+            <!-- Si no hay cuentas asociadas al tablero -->
+            <p>No hay cuentas asociadas a este tablero.</p>
+            {% endif %}
+
+        </div>
+        <div class="col">
+            
+            
+            <h1>Gestión de Cuentas y Recomendaciones Financieras</h1>
+            <p> Las cuentas aquí creadas son visibles únicamente para el usuario que las ha generado; 
+                otros usuarios no pueden acceder a ellas. Mantener estas cuentas actualizadas es crucial para gestionar correctamente tus ingresos y egresos.
+                Aunque puedes crear tantas cuentas como necesites, es importante recordar que tener demasiadas puede complicar la gestión de tus finanzas. 
+                Para un manejo financiero más eficiente, se recomienda mantener un número manejable de cuentas.</p>
+        
+            <h2>Recomendaciones Financieras</h2>
+            <ul>
+                <li><strong>Mantén un Número Manejable de Cuentas:</strong> Agrupa tus ingresos y gastos en categorías amplias.</li>
+                <li><strong>Actualiza Regularmente:</strong> Registra cada transacción a medida que ocurre.</li>
+                <li><strong>Utiliza Etiquetas y Notas:</strong> Añade etiquetas y notas a tus transacciones para recordar detalles importantes.</li>
+                <li><strong>Revisa y Analiza Periódicamente:</strong> Evalúa tu progreso financiero y ajusta tu presupuesto.</li>
+                <li><strong>Prioriza la Seguridad:</strong> Protege tus cuentas con contraseñas seguras y usa autenticación de dos factores.</li>
+                <li><strong>Planifica para el Futuro:</strong> Establece metas financieras y crea cuentas dedicadas para ahorrar.</li>
+                <li><strong>Simplifica Cuando Sea Posible:</strong> Cierra o consolida cuentas innecesarias.</li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+    
+        
+{% endblock %}

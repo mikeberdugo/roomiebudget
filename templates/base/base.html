@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoomieBudget</title>
+  <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/libs.css' %}">
+
+  {% block cssarch %}
+  {% endblock %}
+
+</head>
+<body>
+    <div class="wrapper d-flex align-items-stretch">
+        {% block nav %}
+            {% include './nav_main.html' %}
+        {% endblock %}
+        <!-- Page Content  -->
+        <div id="content" class="p-4 p-md-5 pt-5">
+            <h2 class="mb-4">
+                {% block title %}
+                {% endblock %}
+            </h2>
+            {% block content %}
+                <p>este es un texto de prueba </p>
+            {% endblock %}
+        </div>
+
+    </div>
+
+  {% block js %}
+  {% endblock %}
+  
+  <script src="{% static 'js/bootstrap/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap/main.js' %}"></script>
+  
+</body>
+</html>

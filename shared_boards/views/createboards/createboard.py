@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 
 ## modelo : 
-from common.models import Board
+from common.models import Board , AstradUser 
 
 
 
@@ -18,18 +18,17 @@ def createboard(request):
         if form.is_valid():
             
             data = form.cleaned_data
-            
+            user = AstradUser.objects.get(id=1)
             new_board = Board(
                 name=data['name'],
-                creator_user= None,
+                creator_user= user,
                 description=data['description'],
-                categories= data['categories'] ,
             )
             
             new_board.save()
             
             messages.success(request, 'El tablero ha sido Creado Correctamente ')
-            return redirect('admin:companies')
+            
         else :
             messages.success(request, 'Ha ocurrido un error inesperado')
             

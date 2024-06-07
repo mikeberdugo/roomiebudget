@@ -10,5 +10,6 @@ admin.site.register(RecurringPayment)
 admin.site.register(ShoppingList)
 admin.site.register(ListItem)
 admin.site.register(UserNotification)
+admin.site.register(AstradUser)
 
 
