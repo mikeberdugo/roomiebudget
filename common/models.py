@@ -140,6 +140,49 @@ class Account(models.Model):
     status = models.CharField(max_length=20)  # Estado de la cuenta (ejemplo: Activa, Inactiva, Cerrada, etc.)
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='invoices', default=1)  # Tablero asociado a la cuenta
 
+
+class Labels(models.Model):
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
+
+
+# modelo de items tablero 
+class Transaction(models.Model):
+    TIPO_CHOICES = [('ingreso', 'Ingreso'),
+                    ('egreso', 'Egreso')]
+    
+    METODO_PAGO_CHOICES = [
+        ('Efectivo', 'Efectivo'),
+        ('Tarjeta de Crédito', 'Tarjeta de Crédito'),
+        ('Transferencia Bancaria', 'Transferencia Bancaria'),
+        ('PayPal', 'PayPal'),
+        ('Criptomoneda', 'Criptomoneda'),
+        ('Cheque', 'Cheque'),
+        ('Otro', 'Otro')
+    ]
+    
+    typet = models.CharField('Tipo de transaccion', max_length=30, choices=TIPO_CHOICES)  # tipo de transaccion
+    Account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='invoices', default=1) # tablero donde se genero
+    user = models.TextField(blank=True, null=True)
+    status = models.IntegerField('Estado', default=1) # estatus 0 programada, 1 realizada, 2 realizada agrupada, 3
+    date = models.DateField() # fecha de creacion 
+    amount = models.DecimalField(max_digits=10, decimal_places=2) # monto de la transaccion 
+    description = models.TextField(blank=True, null=True) ## descriocion del movimiento 
+    payment_method = models.CharField(max_length=50, choices=METODO_PAGO_CHOICES) # metodo de pago 
+    addressee_sender = models.CharField(max_length=100) # enviado a nombre de la persona , 
+    labels = models.ManyToManyField(Labels, blank=True) ## falta modelo basado en creacion 
+    reference = models.CharField(max_length=7, unique=True, editable=False)
+    
+    def save(self, *args, **kwargs):
+        # Generar referencia única y aleatoria
+        self.reference = ''.join(random.choices(string.digits + string.ascii_letters, k=5))  # Cinco letras aleatorias
+        self.reference += ''.join(random.choices(string.digits, k=2))  # Dos números aleatorios
+        super().save(*args, **kwargs)
+
+
+
 # Modelo para Factura
 class Bill(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)  # Cuenta asociada a la factura
