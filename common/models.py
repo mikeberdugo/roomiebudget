@@ -171,9 +171,9 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2) # monto de la transaccion 
     description = models.TextField(blank=True, null=True) ## descriocion del movimiento 
     payment_method = models.CharField(max_length=50, choices=METODO_PAGO_CHOICES) # metodo de pago 
-    addressee_sender = models.CharField(max_length=100) # enviado a nombre de la persona , 
+    addressee_sender = models.CharField(max_length=100) # enviado a nombre de la persona , generar modelo basado para crear enlace  
     labels = models.ManyToManyField(Labels, blank=True) ## falta modelo basado en creacion 
-    reference = models.CharField(max_length=7, unique=True, editable=False)
+    reference = models.CharField(max_length=7, unique=True, editable=False) # numero de identificacion para generar facturas de movimiento 
     
     def save(self, *args, **kwargs):
         # Generar referencia única y aleatoria
