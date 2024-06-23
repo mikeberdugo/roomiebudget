@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+    Nomiweb.co - Portal Empresas - Lista Activos
+{% endblock %}
+
+
+{% block navbar %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+{% block css %}
+    
+{% endblock %}
+
+
+
+
+{% block sub_titulo1 %} 
+    empleados
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+Lista Activos
+{% endblock %}
+
+
+{% block titulo2 %} 
+Listado de Contratos Activos
+{% endblock %}
+
+{% block actions %}
+<!-- Button trigger modal -->
+    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+        New list
+    </button>  
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        {% for list in lists %}
+            <div class="card text-center mb-3" style="min-width: 18rem;" >
+                <div class="card-body">
+                    <h5 class="card-title">{{ list.name }}</h5>
+                    <p class="card-text">{{ list.description }}</p>
+                    <a href="{% url 'shopping:shoppinglistsviews' list.id %}" class="btn btn-primary">Get Into</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" id="kt_modal_lista">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Create List</h3>
+    
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+    
+                <div class="modal-body">
+                    <form id="shoppinglists" method="post" >
+                        {% crispy form %}
+                    </form>
+                    
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="shoppinglists"  class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

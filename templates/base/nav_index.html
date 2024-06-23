@@ -1,69 +1,182 @@
-<nav id="sidebar">
-  <div class="custom-menu">
-    <button type="button" id="sidebarCollapse" class="btn btn-primary">
-      <i class="fa fa-bars"></i>
-      <span class="sr-only">Toggle Menu</span>
-    </button>
+<div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+  <!--begin::Main-->
+  <div class="d-flex flex-column justify-content-between h-100 hover-scroll-overlay-y my-2 mx-5 d-flex flex-column" id="kt_app_sidebar_main" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_header" data-kt-scroll-wrappers="#kt_app_main" data-kt-scroll-offset="5px">
+      <!--begin::Sidebar menu-->
+      <div id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false" class="flex-column-fluid menu menu-sub-indention menu-column menu-rounded menu-active-bg mb-7">
+          <!--begin:Menu item-->
+          <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
+              <!--begin:Menu link-->
+              <span class="menu-link">
+                  <span class="menu-icon">
+                      <i class="ki-duotone ki-abstract-26">
+                          <span class="path1"></span>
+                          <span class="path2"></span>
+                      </i>
+                  </span>
+                  <span class="menu-title">Certificaciones</span>
+                  <span class="menu-arrow"></span>
+              </span>
+              <!--end:Menu link-->
+              <!--begin:Menu sub-->
+              <div class="menu-sub menu-sub-accordion">
+                  <!--begin:Menu item-->
+                  <div class="menu-item">
+                      <!--begin:Menu link-->
+                      <a class="menu-link" href="#">
+                          <span class="menu-bullet">
+                              <span class="bullet bullet-dot"></span>
+                          </span>
+                          <span class="menu-title">Certificado Laboral </span>
+                      </a>
+                      <!--end:Menu link-->
+                  </div>
+                  <!--end:Menu item-->
+              </div>
+              <!--end:Menu sub-->
+          </div>
+          <!--end:Menu item-->
+          <!--begin:Menu item-->
+          <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
+              <!--begin:Menu link-->
+              <span class="menu-link">
+                  <span class="menu-icon">
+                      <i class="ki-duotone ki-bill">
+                      <span class="path1"></span>
+                      <span class="path2"></span>
+                      <span class="path3"></span>
+                      <span class="path4"></span>
+                      <span class="path5"></span>
+                      <span class="path6"></span>
+                      </i>
+                  </span>
+                  <span class="menu-title">Nómina</span>
+                  <span class="menu-arrow"></span>
+              </span>
+              <!--end:Menu link-->
+              <!--begin:Menu sub-->
+              <div class="menu-sub menu-sub-accordion">
+                  <!--begin:Menu item-->
+                  <div class="menu-item">
+                      <!--begin:Menu link-->
+                      <a class="menu-link" href="#">
+                          <span class="menu-bullet">
+                              <span class="bullet bullet-dot"></span>
+                          </span>
+                          <span class="menu-title">Desprendibles de Nómina</span>
+                      </a>
+                      <!--end:Menu link-->
+                  </div>
+                  <!--end:Menu item-->
+                  
+              </div>
+              <!--end:Menu sub-->
+          </div>
+          <!--end:Menu item-->
+          
+          <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
+              <!--begin:Menu link-->
+              <span class="menu-link">
+                  <span class="menu-icon">
+                      <i class="ki-duotone ki-people fs-1">
+                          <span class="path1"></span>
+                          <span class="path2"></span>
+                          <span class="path3"></span>
+                          <span class="path4"></span>
+                          <span class="path5"></span>
+                      </i>
+                  </span>
+                  <span class="menu-title">Vacaciones y Licencias</span>
+                  <span class="menu-arrow"></span>
+              </span>
+              <!--end:Menu link-->
+              <!--begin:Menu sub-->
+              <div class="menu-sub menu-sub-accordion">
+                  <!--begin:Menu item-->
+                  <div class="menu-item">
+                      <!--begin:Menu link-->
+                      <a class="menu-link" href="#">
+                          <span class="menu-bullet">
+                              <span class="bullet bullet-dot"></span>
+                          </span>
+                          <span class="menu-title">Historial de Vacaciones</span>
+                      </a>
+                      <!--end:Menu link-->
+                  </div>
+                  <!--end:Menu item-->
+                  <!--begin:Menu item-->
+                  <div class="menu-item">
+                      <!--begin:Menu link-->
+                      <a class="menu-link" href="#">
+                          <span class="menu-bullet">
+                              <span class="bullet bullet-dot"></span>
+                          </span>
+                          <span class="menu-title">Solicitud de Vacaciones / Licencias</span>
+                      </a>
+                      <!--end:Menu link-->
+                  </div>
+                  <!--end:Menu item-->
+                  
+              </div>
+              <!--end:Menu sub-->
+          </div>
+          <!--end:Menu item-->
+          <!--begin:Menu item-->
+          <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
+              <!--begin:Menu link-->
+              <span class="menu-link">
+                  <span class="menu-icon">
+                      <i class="ki-duotone ki-barcode fs-1">
+                          <span class="path1"></span>
+                          <span class="path2"></span>
+                          <span class="path3"></span>
+                          <span class="path4"></span>
+                          <span class="path5"></span>
+                          <span class="path6"></span>
+                          <span class="path7"></span>
+                          <span class="path8"></span>
+                      </i>
+                  </span>
+                  <span class="menu-title">Certificado Ingresos y Retenciones</span>
+                  <span class="menu-arrow"></span>
+              </span>
+              <!--end:Menu link-->
+              <!--begin:Menu sub-->
+              <div class="menu-sub menu-sub-accordion">
+                  <!--begin:Menu item-->
+                  <div class="menu-item">
+                      <!--begin:Menu link-->
+                      <a class="menu-link" href="#">
+                          <span class="menu-bullet">
+                              <span class="bullet bullet-dot"></span>
+                          </span>
+                          <span class="menu-title">Generar Certificado</span>
+                      </a>
+                      <!--end:Menu link-->
+                  </div>
+                  <!--end:Menu item-->
+                  
+              </div>
+              <!--end:Menu sub-->
+          </div>
+          <!--end:Menu item-->
+          
+          <!--begin:Menu item-->
+          <div class="menu-item">
+            <!--begin:Menu link-->
+            <a class="menu-link" href="#">
+                <span class="menu-bullet">
+                    <span class="bullet bullet-dot"></span>
+                </span>
+                <span class="menu-title">Generar Certificado</span>
+            </a>
+            <!--end:Menu link-->
+          </div>
+          <!--end:Menu item-->
+          
+          
+      </div>
+      <!--end::Sidebar menu-->
+      
   </div>
-  <div class="p-4 pt-5">
-    <h1><a href="index.html" class="logo">Roomie Budget</a></h1>
-    <ul class="list-unstyled components mb-5">
-      <li class="active">
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-        <ul class="collapse list-unstyled" id="homeSubmenu">
-          <li>
-              <a href="#">Home 1</a>
-          </li>
-          <li>
-              <a href="#">Home 2</a>
-          </li>
-          <li>
-              <a href="#">Home 3</a>
-          </li>
-        </ul>
-      </li>
-
-      <li>
-          <a href="#">Perfil</a>
-      </li>
-      <li>
-          <a href="#">Tableros</a>
-      </li>
-
-      <li>
-          <a href="#">Perfil</a>
-      </li>
-
-
-      <li>
-        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-        <ul class="collapse list-unstyled" id="pageSubmenu">
-          <li>
-              <a href="#">Page 1</a>
-          </li>
-          <li>
-              <a href="#">Page 2</a>
-          </li>
-          <li>
-              <a href="#">Page 3</a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">Ayuda/Soporte</a>
-      </li>
-      <li>
-        <a href="#">Contact</a>
-      </li>
-    </ul>
-
-
-
-    <div class="footer">
-      <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
-        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-    </div>
-
-  </div>
-</nav>
+  <!--end::Main-->
+</div>

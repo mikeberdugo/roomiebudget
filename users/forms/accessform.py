@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
                 Column('password', css_class='form-group mb-0'),
                 css_class='row'
             ),
-            Submit('submit', 'Iniciar Sesión', css_class='btn btn-primary')
+            Submit('submit', 'Ingresar', css_class='btn btn-light-success w-100')
         )
 
 class SignupForm(forms.Form):

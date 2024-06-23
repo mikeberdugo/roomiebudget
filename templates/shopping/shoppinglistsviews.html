@@ -1,0 +1,119 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+    Nomiweb.co - Portal Empresas - Lista Activos
+{% endblock %}
+
+
+{% block navbar %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+{% block css %}
+    
+{% endblock %}
+
+
+
+
+{% block sub_titulo1 %} 
+    empleados
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+Lista Activos
+{% endblock %}
+
+
+{% block titulo2 %} 
+    Listado de Productos
+{% endblock %}
+
+{% block actions %}
+<!-- Button trigger modal -->
+    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+        New Items
+    </button>  
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        {% if listitems %}
+            <form id="listitems" method="post" >
+                {% csrf_token %}
+                <button type="submit" form="listitems"  class="btn btn-light-primary">Actualizar</button>
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-certi-nomi'>
+                        <thead>
+                            <tr>
+                            <th width="200">Name</th>
+                            <th width="200">price</th>
+                            <th width="200">updated at</th>
+                            <th width="150">
+                                <div class="btn btn-icon btn-sm btn-light-facebook me-5 container d-flex justify-content-center align-items-center  ">
+                                    <i class="fa-solid fa-certificate fs-3"></i>
+                                </div>
+                            </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in listitems %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.price }}</td>
+                                <td>{{ item.updated_at }}</td>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-label" data-item-id="{{ item.id }}" {% if item.purchased %} checked {% endif %}>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </form>
+            
+
+        {% else %}
+            <p>¡Ay caramba! Parece que esta lista está más vacía que un tanque de gasolina un domingo por la tarde. ¡A llenarla rápido antes de que nos invadan las telarañas!</p>
+        {% endif %}
+
+        
+    </div>
+
+    
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" id="kt_modal_lista">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Create List</h3>
+    
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+    
+                <div class="modal-body">
+                    <form id="shoppinglists" method="post" >
+                        {% crispy form %}
+                    </form>
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="shoppinglists"  class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

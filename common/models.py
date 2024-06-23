@@ -245,7 +245,7 @@ class RecurringPayment(models.Model):
 ### modelos de lista de compras 
 class ShoppingList(models.Model):
     # Usuario que crea la lista de compras
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    
     # Nombre de la lista de compras
     name = models.CharField(max_length=255)
     # Descripción opcional de la lista de compras
@@ -254,22 +254,25 @@ class ShoppingList(models.Model):
     created_at  = models.DateTimeField(auto_now_add=True)
     # Fecha y hora de la última actualización de la lista de compras
     updated_at  = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return self.name
 
 # items de esa compra 
 class ListItem(models.Model):
-    # Lista de compras a la que pertenece el elemento
-    shopping_list = models.ForeignKey(ShoppingList, on_delete=models.CASCADE)
-    # Nombre del elemento
+    # Relación con la lista de compras
+    shopping_list = models.ForeignKey(ShoppingList, related_name='items', on_delete=models.CASCADE)
+    # Nombre del producto
     name = models.CharField(max_length=255)
-    # Cantidad del elemento
-    quantity = models.PositiveIntegerField(default=1)
-    # Unidad de medida del elemento (opcional)
-    unit_of_measure = models.CharField(max_length=50, blank=True)
-    # Indicador de si el elemento ha sido comprado
+    # Precio del producto con hasta 10 dígitos en total y 2 decimales
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    # Checkbox para indicar si el producto ha sido comprado
     purchased = models.BooleanField(default=False)
-    # precio del items 
-    price =models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    # Timestamp para la fecha de actualización (se actualiza automáticamente)
+    updated_at = models.DateTimeField(auto_now=True)
     
+    def __str__(self):
+        return self.name
 
 ## notificacion del usuario 
 class UserNotification(models.Model):

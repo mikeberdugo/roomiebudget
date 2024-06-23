@@ -1,14 +1,30 @@
 {% extends 'base/base.html' %}
 {% load crispy_forms_tags %} 
 
+{% block title %}
+    Nomiweb.co - Portal Empresas - Lista Activos
+{% endblock %}
 
 
-{% block title %} 
-    Boards  
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-        Create board
-    </button>
-{% endblock %} 
+{% block css %}
+    
+{% endblock %}
+
+
+
+{% block sub_titulo1 %} 
+    empleados
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+Lista Activos
+{% endblock %}
+
+
+{% block titulo2 %} 
+Listado de Contratos Activos
+{% endblock %}
 
 
 {% block content %}
@@ -26,7 +42,7 @@
                 {% endfor %}
                 
             </div>
-            <div class="col">
+            <!-- <div class="col">
                 <h2>Tableros Financieros: Organiza y Comparte tus Gastos de Forma Eficiente</h2>
 
                 <p> Los tableros financieros ofrecen una plataforma versátil y eficaz para organizar y compartir información financiera de forma ágil y sencilla. 
@@ -40,7 +56,7 @@
                     así como aquellos destinados a actividades recreativas o compartidos con tu pareja. Esta segmentación te ofrece una visión más clara y detallada de tus flujos financieros, 
                     lo que facilita la toma de decisiones y la gestión efectiva de tus recursos económicos. 
                     Además, al separar los gastos de esta manera, puedes centrarte de manera más precisa en cada área y realizar un seguimiento más efectivo de tus ingresos y egresos.</p>
-            </div>
+            </div> -->
         </div>
     </div>
 

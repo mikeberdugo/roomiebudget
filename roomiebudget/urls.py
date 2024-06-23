@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include(('users.urls', 'login'))),
     path('', include(('shared_boards.urls', 'boards'))),
     path('', include(('accounts.urls', 'accounts'))),
+    path('', include(('shopping.urls', 'shopping'))),
 ]
 
