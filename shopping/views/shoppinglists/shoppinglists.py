@@ -32,14 +32,23 @@ def shoppinglists(request):
 def shoppinglistsviews(request,idlist):
     if request.method == 'POST':
         # Obtener los datos del formulario
-        form = ShoppingListForm(request.POST)
+        lists = ShoppingList.objects.get(id = idlist )        
+        form = ListItemForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            price = form.cleaned_data['price']
-            purchased = form.cleaned_data['purchased']
+            ListItem.objects.create(
+                shopping_list = lists,
+                name=form.cleaned_data['name'],
+                price = int (form.cleaned_data['price']),
+                purchased = form.cleaned_data['purchased']
+            ) 
+            messages.success(request, 'the Item has been created.')
+            return redirect('shopping:shoppinglistsviews',idlist)
+        else:
+            messages.error(request, 'Item creation failure.')
+            return redirect('shopping:shoppinglistsviews',idlist)           
     else: 
-        list = ShoppingList.objects.get(id = idlist )
-        listitems = ListItem.objects.filter(shopping_list = list)
+        lists = ShoppingList.objects.get(id = idlist )
+        listitems = ListItem.objects.filter(shopping_list = lists)
         form = ListItemForm()
     
     

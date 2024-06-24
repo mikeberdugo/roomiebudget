@@ -5,9 +5,8 @@ from common.models import Account
 
 
 
-def accounts(request,slug):
-    accounts = Account.objects.get(board__slug=slug)
-    
+def accounts(request ):
+    accounts = Account.objects.all()
     
     
     return render(request, './accounts/accounts.html' , {'accounts':accounts})

@@ -117,3 +117,20 @@ Lista Activos
     </div>
 
 {% endblock %}
+
+{% block js %}
+<script>
+    function formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    $(document).ready(function(){
+        $('#id_price input').on('input', function(e) {
+            let input = e.target.value.replace(/,/g, '');
+            if (!isNaN(input) && input.length > 0) {
+                e.target.value = formatNumber(input);
+            }
+        });
+    });
+</script>
+{% endblock %}
