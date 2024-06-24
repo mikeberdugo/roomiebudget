@@ -9,6 +9,7 @@ class TransactionForm(forms.Form):
         ('ingreso', 'Entrante'),
         ('egreso', 'Saliente')
     ]
+    
     METODO_PAGO_CHOICES = [
         ('Efectivo', 'Efectivo'),
         ('Tarjeta de Crédito', 'Tarjeta de Crédito'),
@@ -26,6 +27,22 @@ class TransactionForm(forms.Form):
         ('3', 'Realizada'),
     ]
 
+    ETIQUETAS_CHOICES = [
+        ('1', 'Pago de Deuda'),
+        ('2', 'Sueldo o Salario'),
+        ('3', 'Retiro por Fiesta'),
+        ('4', 'Alquiler o Hipoteca'),
+        ('5', 'Compras'),
+        ('6', 'Facturas de Servicios'),
+        ('7', 'Transporte'),
+        ('8', 'Ocio y Entretenimiento'),
+        ('9', 'Educación'),
+        ('10', 'Salud'),
+        ('11', 'Ahorros e Inversiones'),
+        ('12', 'Impuestos'),
+    ]
+
+    
     typet = forms.ChoiceField(label='Tipo de transacción', choices=TIPO_CHOICES)
     Account = forms.ModelChoiceField(label='Cuenta', queryset=Account.objects.all())
     status = forms.ChoiceField(label='Estado', choices=ESTADO_CHOICES)
@@ -34,7 +51,7 @@ class TransactionForm(forms.Form):
     description = forms.CharField(label='Descripción', required=False, widget=forms.Textarea(attrs={'rows': 3}))
     payment_method = forms.ChoiceField(label='Método de pago', choices=METODO_PAGO_CHOICES)
     addressee_sender = forms.CharField(label='Destinatario/Remitente', max_length=100)
-    labels = forms.CharField(label='Etiquetas',required=False)
+    labels = forms.ChoiceField(label='Etiquetas', choices=ETIQUETAS_CHOICES,required=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,3 +83,5 @@ class TransactionForm(forms.Form):
                 css_class='form-row'
             ),
         )
+        
+        

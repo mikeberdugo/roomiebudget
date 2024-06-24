@@ -69,7 +69,7 @@
                         {% crispy form %}
                     </div>
                     <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="¿Aún no tienes cuenta? ¡No te preocupes! Crear una es tan rápido que podrías hacerlo antes de que se caliente tu café" >
-                        <a href="#"  class="d-flex justify-content-center align-items-center text-success" >Crear una cuenta</a>
+                        <a href="{% url 'login:signup'%}"  class="d-flex justify-content-center align-items-center text-success" >Crear una cuenta</a>
                     </div>
                     <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Te enviaremos un correo electrónico con instrucciones para restablecer tu contraseña. ¡Es tan fácil que podrías hacerlo mientras preparas una taza de té!" >
                         <a href="#"  class="d-flex justify-content-center align-items-center text-success" >Restablecer la contraseña</a>

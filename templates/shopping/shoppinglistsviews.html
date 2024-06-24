@@ -67,8 +67,8 @@ Lista Activos
                                 <td>{{ item.price }}</td>
                                 <td>{{ item.updated_at }}</td>
                                 <td>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-label" data-item-id="{{ item.id }}" {% if item.purchased %} checked {% endif %}>
+                                    <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+                                        <input class="form-check-input " type="checkbox"  value="{{ item.id }}"   id="kt_flexSwitchCustomDefault_1_1" {% if item.purchased %} checked {% endif %}  />
                                     </div>
                                 </td>
                             </tr>

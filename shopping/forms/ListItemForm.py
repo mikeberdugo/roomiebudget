@@ -19,7 +19,7 @@ class  ListItemForm(forms.Form):
                 css_class='form-row'
             ),
             Row(
-                Column('purchased', css_class='form-group mb-0'), 
+                Column('purchased', css_class='form-check form-switch form-check-custom form-check-success form-check-solid'), 
                 css_class='form-row' 
             ),
         )

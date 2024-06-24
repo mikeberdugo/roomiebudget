@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+    Nomiweb.co - Portal Empresas - Lista Activos
+{% endblock %}
+
+
+
+
+{% block css %}
+    
+{% endblock %}
+
+
+
+
+{% block sub_titulo1 %} 
+    empleados
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+Lista Activos
+{% endblock %}
+
+
+{% block titulo2 %} 
+Listado de Transactiones
+{% endblock %}
+
+{% block actions %}
+    <!-- Button trigger modal -->
+    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+        New Transaction
+    </button>  
+    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+        New Transaction 2 
+    </button> 
+
+{% endblock %}
+
+
+{% block content %}
+
+{% crispy form %}
+    
+    <!-- Modal -->
+
+
+{% endblock %}
