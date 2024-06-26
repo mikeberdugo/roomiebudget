@@ -5,10 +5,10 @@ from accounts.forms.AccountForm import AccountForm
 
 
 
-def accounts(request):
+def accounts(request ):
     accounts = Account.objects.all()
     form = AccountForm()
     
-    return render(request, './accounts' , {'accounts':accounts
+    return render(request, './accounts/accounts.html' , {'accounts':accounts
                                                         ,'form':form 
                                                         })

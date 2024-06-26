@@ -41,6 +41,40 @@ Listado de Contratos Activos
 
 {% block content %}
     <div class="container">
+
+        <div class="table-responsive">
+            <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-certi-nomi'>
+                <thead>
+                    <tr>
+                    <th width="200">Name</th>
+                    <th width="200">Balance</th>
+                    <th width="200">Updated at</th>
+                    <th width="200">Account Type</th>
+                    <th width="200">status</th>
+                    <th width="150">
+                        <div class="btn btn-icon btn-sm btn-light-facebook me-5 container d-flex justify-content-center align-items-center  ">
+                            <i class="fa-solid fa-certificate fs-3"></i>
+                        </div>
+                    </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in accounts %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.balance }}</td>
+                        <td>{{ item.updated_at }}</td>
+                        <td>{{ item.account_type }}</td>
+                        <td>{{ item.status }}</td>
+                        <td>
+                            
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
         {% for list in lists %}
             <div class="card text-center mb-3" style="min-width: 18rem;" >
                 <div class="card-body">
@@ -58,7 +92,7 @@ Listado de Contratos Activos
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Create List</h3>
+                    <h3 class="modal-title">new Account</h3>
     
                     <!--begin::Close-->
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
