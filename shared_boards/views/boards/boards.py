@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from common.models import Board , AstradUser 
 from shared_boards.form.boardform import BoardForm
-
+from django.contrib import messages
 
 # Create your views here.
 
@@ -24,9 +24,10 @@ def boards(request):
             new_board.save()
             
             messages.success(request, 'El tablero ha sido Creado Correctamente ')
-            
+            return redirect('boards:boards')
         else :
             messages.success(request, 'Ha ocurrido un error inesperado')
+            return redirect('boards:boards')
             
     else:
         form = BoardForm()

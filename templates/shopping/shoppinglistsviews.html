@@ -32,10 +32,20 @@ Lista Activos
 {% endblock %}
 
 {% block actions %}
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+            New Items
+        </button>  
+        <a  class="btn btn-light-primary" href="{% url 'shopping:shoppinglists'  %}" >
+            Back
+            <i class="ki-duotone ki-exit-left fs-1  ">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </a> 
+    </div>
 <!-- Button trigger modal -->
-    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
-        New Items
-    </button>  
+    
 {% endblock %}
 
 
@@ -81,7 +91,12 @@ Lista Activos
             
 
         {% else %}
-            <p>¡Ay caramba! Parece que esta lista está más vacía que un tanque de gasolina un domingo por la tarde. ¡A llenarla rápido antes de que nos invadan las telarañas!</p>
+            <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">¡Ay caramba!</h4>
+                <p>Parece que esta lista está más vacía que un tanque de gasolina un domingo por la tarde. ¡Está tan desolada que hasta las telarañas se sienten solas y deprimidas!</p>
+                <hr>
+                <p class="mb-0">¡A llenarla rápido antes de que las arañas empiecen a organizar un sindicato por falta de trabajo!</p>
+            </div>
         {% endif %}
 
         

@@ -55,17 +55,18 @@
             
             <div class="col-md-3  ">
                 <div class="card ">
-                    <div class="card-body btn-primary draggable-handle ">
+                    <div class="card-body btn-secondary draggable-handle ">
                         <div class="d-flex flex-center h-200px">
-                            <img
-                                src=""
-                                data-src=""
-                                class="lozad rounded mw-100"
-                                alt="Logo"
-                            />
+                            <img alt="Logo" 
+                            src="{% static 'img/logo1.jpeg' %}" 
+                            class="h-150px theme-light-show" />
+                            <img alt="Logo" 
+                            src="{% static 'img/logo.png' %}" 
+                            class="h-150px theme-dark-show" />
+                            
                         </div>
 
-                        <h2 class="card-title text-center btn-primary ">Iniciar sesión</h2>
+                        <h2 class="card-title text-center btn-secondary ">Iniciar sesión</h2>
                         {% crispy form %}
                     </div>
                     <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="¿Aún no tienes cuenta? ¡No te preocupes! Crear una es tan rápido que podrías hacerlo antes de que se caliente tu café" >

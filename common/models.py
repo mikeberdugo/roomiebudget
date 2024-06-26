@@ -125,6 +125,9 @@ class Board(models.Model):
             # Calculamos el slug a partir de la cadena combinada
             self.slug = slugify(combined_string)
         super().save(*args, **kwargs)  # Guardamos el objeto en la base de datos
+        
+    def __str__(self):
+        return self.name
 
 
 

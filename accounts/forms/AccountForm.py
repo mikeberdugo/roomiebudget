@@ -39,7 +39,8 @@ class AccountForm(forms.Form):
     currency = forms.ChoiceField(label='Moneda', choices=CURRENCY_CHOICES)
     account_type = forms.ChoiceField(label='Tipo de cuenta', choices=ACCOUNT_TYPE_CHOICES)
     status = forms.ChoiceField(label='Estado', choices=STATUS_CHOICES)
-    #board = forms.ModelChoiceField(queryset=Board.objects.all(), label='Tablero asociado')
+
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
