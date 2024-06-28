@@ -141,7 +141,10 @@ class Account(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización de la cuenta
     account_type = models.CharField(max_length=50)  # Tipo de cuenta (ejemplo: Cuenta Corriente, Cuenta de Ahorros, Tarjeta de Crédito, etc.)
     status = models.CharField(max_length=20)  # Estado de la cuenta (ejemplo: Activa, Inactiva, Cerrada, etc.)
-    board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='invoices', default=1)  # Tablero asociado a la cuenta
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado a la cuenta
+
+    def __str__(self):
+        return self.name
 
 
 class Labels(models.Model):
@@ -167,7 +170,8 @@ class Transaction(models.Model):
     ]
     
     typet = models.CharField('Tipo de transaccion', max_length=30, choices=TIPO_CHOICES)  # tipo de transaccion
-    Account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='invoices', default=1) # tablero donde se genero
+    Account = models.ForeignKey(Account, on_delete=models.CASCADE, default=1,blank=True, null=True) # tablero donde se genero
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado la trassacion 
     user = models.TextField(blank=True, null=True)
     status = models.IntegerField('Estado', default=1) # estatus 0 programada, 1 realizada, 2 realizada agrupada, 3
     date = models.DateField() # fecha de creacion 

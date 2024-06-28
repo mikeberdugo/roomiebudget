@@ -53,8 +53,11 @@ class TransactionForm(forms.Form):
     addressee_sender = forms.CharField(label='Destinatario/Remitente', max_length=100)
     labels = forms.ChoiceField(label='Etiquetas', choices=ETIQUETAS_CHOICES,required=False)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args,slug=None, **kwargs):
         super().__init__(*args, **kwargs)
+        if slug:
+            self.fields['Account'].queryset = Account.objects.filter(board__slug=slug)
+        
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.layout = Layout(

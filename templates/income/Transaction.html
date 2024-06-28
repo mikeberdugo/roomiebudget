@@ -41,15 +41,64 @@ Listado de Transactiones
 
 {% block content %}
     <div class="container">
-        {% for list in lists %}
-            <div class="card text-center mb-3" style="min-width: 18rem;" >
-                <div class="card-body">
-                    <h5 class="card-title">{{ list.name }}</h5>
-                    <p class="card-text">{{ list.description }}</p>
-                    <a href="{% url 'shopping:shoppinglistsviews' list.id %}" class="btn btn-primary">Get Into</a>
+        
+        {% if transactions %}
+            <form id="listitems" method="post" >
+                {% csrf_token %}
+                <button type="submit" form="listitems"  class="btn btn-light-primary">Actualizar</button>
+                <br>
+                <div class="table-responsive">
+                    <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-certi-nomi'>
+                        <thead>
+                            <tr>
+                            <th width="200">Typet</th>
+                            <th width="200">Account</th>
+                            <th width="200">date</th>
+                            <th width="200">amount</th>
+                            <th width="200">description</th>
+                            <th width="200">payment method</th>
+                            <th width="200">status</th>
+                            <th width="150">
+                                <div class="btn btn-icon btn-sm btn-light-facebook me-5 container d-flex justify-content-center align-items-center  ">
+                                    <i class="fa-solid fa-certificate fs-3"></i>
+                                </div>
+                            </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in transactions %}
+                            <tr>
+                                <td>{{ item.typet }}</td>
+                                <td>{{ item.Account }}</td>
+                                <td>{{ item.date }}</td>
+                                <td>{{ item.amount }}</td>
+                                <td>{{ item.description }}</td>
+                                <td>{{ item.payment_method }}</td>
+                                <td>{{ item.status }}</td>
+                                <td>
+                                    <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+                                        <input class="form-check-input " type="checkbox"  value="{{ item.id }}"   id="kt_flexSwitchCustomDefault_1_1" {% if item.purchased %} checked {% endif %}  />
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
+
+            </form>
+            
+
+        {% else %}
+            <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">¡Ay caramba!</h4>
+                <p>Parece que esta lista está más vacía que un tanque de gasolina un domingo por la tarde. ¡Está tan desolada que hasta las telarañas se sienten solas y deprimidas!</p>
+                <hr>
+                <p class="mb-0">¡A llenarla rápido antes de que las arañas empiecen a organizar un sindicato por falta de trabajo!</p>
             </div>
-        {% endfor %}
+        {% endif %}
+
+
     </div>
 
     

@@ -4,6 +4,6 @@ from .views.accounts import accounts
 
 
 urlpatterns = [
-    path('boards/accounts', accounts.accounts, name='accounts'),
+    path('<str:slug>/accounts', accounts.accounts, name='accounts'),
     
 ]

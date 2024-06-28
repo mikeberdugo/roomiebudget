@@ -7,8 +7,8 @@ from django.contrib import messages
 
 
 def boards(request):
-    boards = Board.objects.all()
-    
+    user = request.user
+    boards = Board.objects.filter(creator_user = user)
     if request.method == 'POST':
         form = BoardForm(request.POST)
         if form.is_valid():

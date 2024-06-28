@@ -22,8 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('users.urls', 'login'))),
     path('boards/', include(('shared_boards.urls', 'boards'))),
-    path('accounts/', include(('accounts.urls', 'accounts'))),
-    path('shopping/', include(('shopping.urls', 'shopping'))),
-    path('income/', include(('income.urls', 'income'))),
+    path('boards/accounts/', include(('accounts.urls', 'accounts'))),
+    path('boards/shopping/', include(('shopping.urls', 'shopping'))),
+    path('boards/income/', include(('income.urls', 'income'))),
 ]
 

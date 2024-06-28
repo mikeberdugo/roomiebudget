@@ -1,14 +1,16 @@
-from django.shortcuts import render
-from common.models import Account
-from accounts.forms.AccountForm import AccountForm
+from django.shortcuts import render ,redirect
+from common.models import Account , Board
+from accounts.forms.AccountForm import AccountForm 
 from django.contrib import messages
 
 ## assets and liabilities - posible cambio de nombre y modelo 
 
-def accounts(request ):
-    
+def accounts(request ,slug):
+    board = Board.objects.get(slug = slug)
+
     if request.method == 'POST':
         form = AccountForm(request.POST)
+        user = request.user
         if form.is_valid():
             # Procesar los datos del formulario
             name = form.cleaned_data['name']
@@ -18,22 +20,25 @@ def accounts(request ):
             status = form.cleaned_data['status']
             
             Account.objects.create(
-                user =
-                name = 
-                balance =
-                currency = 
-                account_type = 
-                status = 
+                user = user,
+                name = name, 
+                balance = balance,
+                currency = currency, 
+                account_type = account_type, 
+                status = status, 
+                board = board 
             )
             messages.success(request, 'the Item has been created.')
-            return redirect('shopping:shoppinglistsviews')
+            return redirect('accounts:accounts',slug)
         else:
             messages.error(request, 'Item creation failure.')
-            return redirect('shopping:shoppinglistsviews')   
+            return redirect('accounts:accounts',slug)   
     else :
-        accounts = Account.objects.all()
+        accounts = Account.objects.filter(board = board)
         form = AccountForm()
         
-    return render(request, './accounts/accounts.html' , {'accounts':accounts
+    return render(request, './accounts/accounts.html' , {
+                                                        'accounts':accounts
                                                         ,'form':form 
+                                                        ,'board':board
                                                         })

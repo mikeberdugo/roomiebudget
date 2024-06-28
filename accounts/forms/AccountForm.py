@@ -59,7 +59,6 @@ class AccountForm(forms.Form):
             ),
             Row(
                 Column('status', css_class='form-group col-md-6 mb-0'),
-                Column('board', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
             Submit('submit', 'Guardar')
