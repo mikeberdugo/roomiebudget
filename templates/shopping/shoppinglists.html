@@ -11,9 +11,15 @@
 {% endblock %}
 
 {% block css %}
-    
+    .card-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Número de líneas a mostrar */
+        -webkit-box-orient: vertical;
+        height: calc(1.5em * 3); /* Altura según el número de líneas y el tamaño de la fuente */
+    }
 {% endblock %}
-
 
 
 
@@ -40,18 +46,38 @@ Listado de Contratos Activos
 
 
 {% block content %}
-    <div class="container">
-        {% for list in lists %}
-            <div class="card text-center mb-3" style="min-width: 18rem;" >
-                <div class="card-body">
-                    <h5 class="card-title">{{ list.name }}</h5>
-                    <p class="card-text">{{ list.description }}</p>
-                    <a href="{% url 'shopping:shoppinglistsviews' list.id %}" class="btn btn-primary">Get Into</a>
+    <div class="container mt-5" >
+        <div class="row">
+            {% for list in lists %}
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card">
+                        <div class="card-header ribbon ribbon-top ribbon-vertical">
+                            <div class="ribbon-label bg-success">
+                                <i class="bi bi-pencil fs-2 text-white"></i>
+                            </div>
+                            <div class="card-title">{{ list.name }}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center vh-20">
+                                <p class="card-text">{{ list.description }}</p>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center vh-20">
+                                <a href="{% url 'shopping:shoppinglistsviews' list.id %}" class="btn btn-primary">Get Into</a>
+                            </div>
+                        </div>
+                            <!--begin::Ribbon-->
+                            <div class="ribbon  ribbon-bottom-start border-gray-300">
+                                <!--begin::Ribbon icon-->
+                                <p class="card-text ms-3"> Creada : {{ list.created_at }}</p>
+                                <p class="card-text ms-3"> Actualizada : {{ list.updated_at }}</p>
+                                <!--end::Ribbon icon-->
+                            </div>
+                            <!--end::Ribbon-->
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
-
     
     <!-- Modal -->
     <div class="modal fade" tabindex="-1" id="kt_modal_lista">

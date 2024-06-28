@@ -6,11 +6,13 @@ from common.models import Account, Labels
 
 class TransactionForm(forms.Form):
     TIPO_CHOICES = [
+        ('', '-----------'),
         ('ingreso', 'Entrante'),
         ('egreso', 'Saliente')
     ]
     
     METODO_PAGO_CHOICES = [
+        ('', '-----------'),
         ('Efectivo', 'Efectivo'),
         ('Tarjeta de Crédito', 'Tarjeta de Crédito'),
         ('Transferencia Bancaria', 'Transferencia Bancaria'),
@@ -21,16 +23,17 @@ class TransactionForm(forms.Form):
     ]
     
     ESTADO_CHOICES =[
+        ('', '-----------'),
         ('0', 'Programada'),
         ('1', 'Pagada'),
         ('2', 'En Espera'),
-        ('3', 'Realizada'),
     ]
 
     ETIQUETAS_CHOICES = [
+        ('', '-----------'),
         ('1', 'Pago de Deuda'),
         ('2', 'Sueldo o Salario'),
-        ('3', 'Retiro por Fiesta'),
+        ('3', 'Retiro de Monto'),
         ('4', 'Alquiler o Hipoteca'),
         ('5', 'Compras'),
         ('6', 'Facturas de Servicios'),

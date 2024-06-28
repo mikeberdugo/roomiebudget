@@ -28,10 +28,10 @@ def accounts(request ,slug):
                 status = status, 
                 board = board 
             )
-            messages.success(request, 'the Item has been created.')
+            messages.success(request, 'the Account has been created.')
             return redirect('accounts:accounts',slug)
         else:
-            messages.error(request, 'Item creation failure.')
+            messages.error(request, 'Account creation failure.')
             return redirect('accounts:accounts',slug)   
     else :
         accounts = Account.objects.filter(board = board)

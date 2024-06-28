@@ -28,7 +28,7 @@ Lista Activos
 
 
 {% block titulo2 %} 
-Listado de Transactiones
+    Numero de Usuario - {{ user.id }}
 {% endblock %}
 
 {% block actions %}
@@ -124,10 +124,10 @@ Listado de Transactiones
                 </div>
         {% else %}
             <div class="alert alert-primary" role="alert">
-                <h4 class="alert-heading">¡Ay caramba!</h4>
-                <p>Parece que esta lista está más vacía que un tanque de gasolina un domingo por la tarde. ¡Está tan desolada que hasta las telarañas se sienten solas y deprimidas!</p>
+                <h4 class="alert-heading">¡Vaya!</h4>
+                <p>Por ahora, solo estás tú en este tablero. Es como una fiesta donde aún no ha llegado nadie.</p>
                 <hr>
-                <p class="mb-0">¡A llenarla rápido antes de que las arañas empiecen a organizar un sindicato por falta de trabajo!</p>
+                <p class="mb-0">¡Comparte este tablero y trae a más amigos! Sería una pena que te quedaras solo en esta fiesta.</p>
             </div>
         {% endif %}
 

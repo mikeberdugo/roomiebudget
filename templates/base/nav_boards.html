@@ -170,7 +170,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{% url 'income:typeTransaction' request.session.board_slug  %}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -351,7 +351,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{% url 'boards:userboard' request.session.board_slug  %}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>

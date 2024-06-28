@@ -4,8 +4,9 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 
 class  ListItemForm(forms.Form):
+    
     name = forms.CharField(label='Nombre del Producto ', max_length=255)
-    price = forms.DecimalField(label='Precio', max_digits=10, decimal_places=2)
+    price = forms.DecimalField(label='Precio', max_digits=10, decimal_places=2,required=False,initial=0.0)
     purchased = forms.BooleanField(label='Comprado', required=False)
 
     def __init__(self, *args, **kwargs):
@@ -15,11 +16,12 @@ class  ListItemForm(forms.Form):
         self.helper.layout = Layout(
             Row(
                 Column('name', css_class='form-group col-md-6 mb-0'),
-                Column('price', css_class='form-group mb-0'),
+                Column('price', css_class='form-group col-md-4 mb-0'),
+                
                 css_class='form-row'
             ),
             Row(
-                Column('purchased', css_class='form-check form-switch form-check-custom form-check-success form-check-solid'), 
-                css_class='form-row' 
+                Column('purchased', css_class='form-check form-check-custom form-check-solid form-check-lg'), 
+                css_class='form-row'
             ),
         )

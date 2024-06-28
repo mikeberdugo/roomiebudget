@@ -4,6 +4,7 @@ from crispy_forms.layout import Layout, Submit, Row, Column
 
 class AccountForm(forms.Form):
     CURRENCY_CHOICES = [
+        ('', '-----------'),
         ('COP', 'Peso Colombiano - COP'),
         ('USD', 'Dólar estadounidense - USD'),
         ('EUR', 'Euro - EUR'),
@@ -19,6 +20,7 @@ class AccountForm(forms.Form):
     ]
 
     ACCOUNT_TYPE_CHOICES = [
+        ('', '-----------'),
         ('Cuenta Corriente', 'Cuenta Corriente'),
         ('Cuenta de Ahorros', 'Cuenta de Ahorros'),
         ('Tarjeta de Crédito', 'Tarjeta de Crédito'),
@@ -28,6 +30,7 @@ class AccountForm(forms.Form):
     ]
 
     STATUS_CHOICES = [
+        ('', '-----------'),
         ('Activa', 'Activa'),
         ('Inactiva', 'Inactiva'),
         ('Cerrada', 'Cerrada'),
@@ -61,5 +64,4 @@ class AccountForm(forms.Form):
                 Column('status', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
-            Submit('submit', 'Guardar')
         )

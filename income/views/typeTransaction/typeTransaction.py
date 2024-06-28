@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from income.forms.TransactionForm import TransactionForm
-from common.models import Transaction, Board , Account
+from common.models import Transaction, Board , Category  
 from decimal import Decimal
+
 # Create your views here.
 
-def Transactions(request, slug):
+def typeTransactions(request, slug):
     board = Board.objects.get(slug=slug)
     
     if request.method == 'POST':
@@ -41,10 +42,10 @@ def Transactions(request, slug):
             # Redirect or render as appropriate
     else:
         
-        transactions = Transaction.objects.filter(board=board)
+        category = Category.objects.all()
         form = TransactionForm(slug=slug)
     
-    return render(request, './income/Transaction.html', {
-        'transactions': transactions,
+    return render(request, './income/typeTransaction.html', {
+        'category': category,
         'form': form,
     })

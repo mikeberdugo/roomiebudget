@@ -80,11 +80,18 @@ class Category(models.Model):
     @classmethod
     def initial_data(cls):
         initial_data = [
-            {'name': 'Comida', 'description': 'Categoría para gastos relacionados con alimentos'},
-            {'name': 'Transporte', 'description': 'Categoría para gastos relacionados con transporte'},
-            {'name': 'Entretenimiento', 'description': 'Categoría para gastos relacionados con entretenimiento'},
-            {'name': 'Facturas', 'description': 'Categoría para gastos relacionados con facturas'},
-            {'name': 'Otros', 'description': 'Categoría para otros gastos'},
+            {'name': 'Ahorros e Inversiones', 'description': 'Ahorros e inversiones financieras'},
+            {'name': 'Alquiler o Hipoteca', 'description': 'Pago de alquiler o hipoteca'},
+            {'name': 'Pago de Deuda', 'description': 'Pago de deudas pendientes'},
+            {'name': 'Sueldo o Salario', 'description': 'Ingresos por sueldo o salario'},
+            {'name': 'Retiro de Monto', 'description': 'Retiro de dinero'},
+            {'name': 'Compras', 'description': 'Compras de bienes'},
+            {'name': 'Facturas de Servicios', 'description': 'Pago de facturas de servicios'},
+            {'name': 'Transporte', 'description': 'Gastos relacionados con transporte'},
+            {'name': 'Ocio y Entretenimiento', 'description': 'Gastos relacionados con ocio y entretenimiento'},
+            {'name': 'Educación', 'description': 'Gastos relacionados con educación'},
+            {'name': 'Salud', 'description': 'Gastos relacionados con salud'},
+            {'name': 'Impuestos', 'description': 'Pago de impuestos'},
         ]
         
         for data in initial_data:
@@ -95,6 +102,7 @@ class Category(models.Model):
                 category.user = None
                 category.save()
                 
+
 
 @receiver(post_migrate)
 def load_initial_data(sender, **kwargs):

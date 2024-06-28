@@ -1,149 +1,204 @@
 {% extends 'base/base.html' %}
-{% load crispy_forms_tags %} 
+{% load crispy_forms_tags %}
 
 {% block title %}
     Nomiweb.co - Portal Empresas - Lista Activos
 {% endblock %}
-
 
 {% block navbar %}
     {% include 'base/nav_boards.html' %}
 {% endblock %}
 
 {% block css %}
-    
 {% endblock %}
 
-
-
-
-{% block sub_titulo1 %} 
+{% block sub_titulo1 %}
     empleados
 {% endblock %}
 
-
-{% block sub_titulo2 %} 
+{% block sub_titulo2 %}
 Lista Activos
 {% endblock %}
 
-
-{% block titulo2 %} 
+{% block titulo2 %}
     Listado de Productos
 {% endblock %}
 
 {% block actions %}
     <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+        <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_lista">
             New Items
-        </button>  
-        <a  class="btn btn-light-primary" href="{% url 'shopping:shoppinglists'  %}" >
+        </button>
+        <a class="btn btn-light-primary" href="{% url 'shopping:shoppinglists'  %}">
             Back
-            <i class="ki-duotone ki-exit-left fs-1  ">
+            <i class="ki-duotone ki-exit-left fs-1">
                 <span class="path1"></span>
                 <span class="path2"></span>
             </i>
-        </a> 
+        </a>
     </div>
-<!-- Button trigger modal -->
-    
+    <!-- Button trigger modal -->
+
 {% endblock %}
 
-
 {% block content %}
-    <div class="container">
-        {% if listitems %}
-            <form id="listitems" method="post" >
-                {% csrf_token %}
-                <button type="submit" form="listitems"  class="btn btn-light-primary">Actualizar</button>
-                <br>
-                <div class="table-responsive">
-                    <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-certi-nomi'>
-                        <thead>
-                            <tr>
+<div class="container">
+    {% if listitems %}
+        <div class="scroll h-600px px-5">
+            <div class="table-responsive">
+                <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-certi-nomi'>
+                    <thead>
+                        <tr>
                             <th width="200">Name</th>
-                            <th width="200">price</th>
-                            <th width="200">updated at</th>
+                            <th width="200">Price</th>
+                            <th width="200">Updated At</th>
                             <th width="150">
-                                <div class="btn btn-icon btn-sm btn-light-facebook me-5 container d-flex justify-content-center align-items-center  ">
-                                    <i class="fa-solid fa-certificate fs-3"></i>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <i class="ki-duotone ki-check-square fs-3x">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
                                 </div>
                             </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in listitems %}
-                            <tr>
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.price }}</td>
-                                <td>{{ item.updated_at }}</td>
-                                <td>
-                                    <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
-                                        <input class="form-check-input " type="checkbox"  value="{{ item.id }}"   id="kt_flexSwitchCustomDefault_1_1" {% if item.purchased %} checked {% endif %}  />
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in listitems %}
+                        <tr>
+                            <td>{{ item.name }}</td>
+                            <td class="d-flex justify-content-between align-items-center">
+                                <span class="price-span" data-id="{{ item.id }}">{{ item.price }}</span>
+                                <input type="text" class="price-input form-control" data-id="{{ item.id }}"
+                                    value="{{ item.price }}" style="display:none;">
+                                <button type="button" class="ms-3 btn btn-icon btn-light-primary edit-button"
+                                    data-id="{{ item.id }}">
+                                    <i class="ki-duotone ki-notepad-edit">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                    </i>
+                                </button>
+                            </td>
+                            <td>{{ item.updated_at }}</td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <div class="form-check form-check-custom form-check-success form-check-solid form-check-lg ">
+                                        <input class="form-check-input" type="checkbox" value=""
+                                            id="flexCheckDefault" data-id="{{ item.id }}" {% if item.purchased %}
+                                            checked {% endif %}>
                                     </div>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-            </form>
-            
-
-        {% else %}
-            <div class="alert alert-primary" role="alert">
-                <h4 class="alert-heading">¡Ay caramba!</h4>
-                <p>Parece que esta lista está más vacía que un tanque de gasolina un domingo por la tarde. ¡Está tan desolada que hasta las telarañas se sienten solas y deprimidas!</p>
-                <hr>
-                <p class="mb-0">¡A llenarla rápido antes de que las arañas empiecen a organizar un sindicato por falta de trabajo!</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        {% endif %}
+        </div>
+    {% else %}
+        <div class="alert alert-primary" role="alert">
+            <h4 class="alert-heading">¡Ay caramba!</h4>
+            <p>Parece que esta lista está más vacía que un tanque de gasolina un domingo por la tarde. ¡Está tan desolada que hasta las telarañas se sienten solas y deprimidas!</p>
+            <hr>
+            <p class="mb-0">¡A llenarla rápido antes de que las arañas empiecen a organizar un sindicato por falta de trabajo!</p>
+        </div>
+    {% endif %}
 
-        
-    </div>
 
-    
-    <!-- Modal -->
-    <div class="modal fade" tabindex="-1" id="kt_modal_lista">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">Create List</h3>
-    
-                    <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
-                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
-                    </div>
-                    <!--end::Close-->
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" tabindex="-1" id="kt_modal_lista">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create List</h3>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                    aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
                 </div>
-    
-                <div class="modal-body">
-                    <form id="shoppinglists" method="post" >
-                        {% crispy form %}
-                    </form>
-                </div>
-    
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="shoppinglists"  class="btn btn-primary">Create</button>
-                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <form id="shoppinglists" method="post">
+                    {% crispy form %}
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="shoppinglists" class="btn btn-primary">Create</button>
             </div>
         </div>
     </div>
+</div>
 
 {% endblock %}
 
 {% block js %}
-<script>
-    function formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
 
+
+
+
+<script>
     $(document).ready(function(){
-        $('#id_price input').on('input', function(e) {
-            let input = e.target.value.replace(/,/g, '');
-            if (!isNaN(input) && input.length > 0) {
-                e.target.value = formatNumber(input);
+        $('.form-check-input').change(function(){
+            var itemId = $(this).data('id');
+            $.ajax({
+                url: '/boards/shopping/update-item/' + itemId + '/',
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response){
+                    if(response.success){
+                        console.log('Item updated successfully');
+                    } else {
+                        console.log('Failed to update item');
+                    }
+                }
+            });
+        });
+
+        $('.edit-button').click(function(){
+            var itemId = $(this).data('id');
+            var editIcon = $(this).find('.ki-notepad-edit');
+            var saveIcon = '<i class="fa-regular fa-floppy-disk"></i>';
+            var priceSpan = $('.price-span[data-id="' + itemId + '"]');
+            var priceInput = $('.price-input[data-id="' + itemId + '"]');
+
+            if(editIcon.hasClass('ki-notepad-edit')){
+                editIcon.removeClass('ki-notepad-edit').addClass('fa-regular fa-floppy-disk');
+                priceSpan.hide();
+                priceInput.show().focus();
+            } else {
+                var newPrice = priceInput.val();
+                // Remove commas from the input before sending
+                newPrice = newPrice.replace(',', '');
+                $.ajax({
+                    url: '/boards/shopping/update-price/' + itemId + '/',
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'price': newPrice
+                    },
+                    success: function(response){
+                        if(response.success){
+                            // Format the price with commas
+                            var formattedPrice = Number(response.price).toLocaleString('en-US');
+                            priceSpan.text(formattedPrice);
+                            editIcon.removeClass('fa-regular fa-floppy-disk').addClass('ki-notepad-edit');
+                            priceSpan.show();
+                            priceInput.hide();
+                            console.log('Price updated successfully');
+                        } else {
+                            console.log('Failed to update price');
+                        }
+                    }
+                });
             }
         });
     });

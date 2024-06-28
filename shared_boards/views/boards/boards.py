@@ -14,7 +14,6 @@ def boards(request):
         if form.is_valid():
             
             data = form.cleaned_data
-            user = AstradUser.objects.get(id=1)
             new_board = Board(
                 name=data['name'],
                 creator_user= user,

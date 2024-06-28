@@ -34,7 +34,7 @@ Listado de Transactiones
 {% block actions %}
 <!-- Button trigger modal -->
     <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
-        New Transaction
+        New Transaction Type
     </button>  
 {% endblock %}
 
@@ -42,18 +42,13 @@ Listado de Transactiones
 {% block content %}
     <div class="container">
         
-        {% if transactions %}
+        {% if category %}
                 <div class="table-responsive">
-                    <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-transactions'>
+                    <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-typetransactions'>
                         <thead>
                             <tr>
-                            <th width="200">Typet</th>
-                            <th width="200">Account</th>
-                            <th width="200">date</th>
-                            <th width="200">amount</th>
-                            <th width="200">description</th>
-                            <th width="200">payment method</th>
-                            <th width="200">status</th>
+                            <th width="200">Name</th>
+                            <th width="200">Description</th>
                             <th width="150">
                                 <div class="btn btn-icon btn-sm btn-light-facebook me-5 container d-flex justify-content-center align-items-center  ">
                                     <i class="fa-solid fa-certificate fs-3"></i>
@@ -62,60 +57,11 @@ Listado de Transactiones
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in transactions %}
+                            {% for item in category %}
                             <tr>
-                                <td> 
-                                    {% if item.typet == 'ingreso' %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success" >
-                                            <i class="ki-duotone ki-arrow-down  fs-2 ms-3 ms-3">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                            Entrante
-                                        </p>
-                                    {% else %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger" >
-                                            <i class="ki-duotone ki-arrow-up fs-2 ms-3 ms-3">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                            Saliente
-                                        </p>
-                                    {% endif %}
-                                </td>
-
-                                <td>{{ item.Account }}</td>
-                                <td>{{ item.date | date:"Y-m-d" }}</td>
-                                <td>{{ item.amount }}</td>
+                                <td>{{ item.name }}</td>
                                 <td>{{ item.description }}</td>
-                                <td>{{ item.payment_method }}</td>
-
                                 <td>
-                                    {% if item.status == 0 %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" >
-                                            <i class="fa-solid fa-bars-progress"></i>
-                                            Programada
-                                        </p>
-                                    {% elif item.status == 1 %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success" >
-                                            <i class="fa-solid fa-square-check  fs-1"></i>
-                                            Pagada
-                                        </p>
-                                    {% elif item.status == 2 %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger" >
-                                            <i class="fa-solid fa-stop"></i>
-                                            En Espera
-                                        </p>
-                                    {% else %}
-                                        <p class="btn btn-danger" >
-                                            <i class="fa-solid fa-star-of-life"></i>
-                                            Falla
-                                        </p>
-                                    {% endif %}
-                                </td>
-
-                                <td>
-                                    
                                 </td>
                             </tr>
                             {% endfor %}
@@ -174,7 +120,7 @@ Listado de Transactiones
 
 <script>
     $(document).ready(function() {
-        $('#tabla-transactions').DataTable({
+        $('#tabla-typetransactions').DataTable({
             language: {
                 "decimal":        "",
                 "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
@@ -200,7 +146,7 @@ Listado de Transactiones
                 }
             },
             dom: 'frtip',
-            order: [[2, 'desc']], 
+            order: [[1, 'asc']], 
             "pageLength": 6,
             searching: false                
         });

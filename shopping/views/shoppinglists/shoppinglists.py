@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect ,  get_object_or_404
 from common.models import ShoppingList , ListItem
 from shopping.forms.ShoppingListForm  import ShoppingListForm  
 from django.contrib import messages
 from shopping.forms.ListItemForm import ListItemForm
+from django.http import JsonResponse
+
 
 
 def shoppinglists(request):
@@ -35,10 +37,11 @@ def shoppinglistsviews(request,idlist):
         lists = ShoppingList.objects.get(id = idlist )        
         form = ListItemForm(request.POST)
         if form.is_valid():
+            
             ListItem.objects.create(
                 shopping_list = lists,
                 name=form.cleaned_data['name'],
-                price = int (form.cleaned_data['price']),
+                price = float (form.cleaned_data['price']),
                 purchased = form.cleaned_data['purchased']
             ) 
             messages.success(request, 'the Item has been created.')
@@ -57,3 +60,24 @@ def shoppinglistsviews(request,idlist):
                     {'listitems':listitems,
                     'form' : form , 
                     })
+    
+    
+def update_item_status(request, item_id):
+    if request.method == 'POST':
+        item = get_object_or_404(ListItem, id=item_id)
+        item.purchased = not item.purchased
+        item.save()
+        item.shopping_list.save()
+        return JsonResponse({'success': True, 'purchased': item.purchased})
+    return JsonResponse({'success': False})
+
+def update_price(request, item_id):
+    if request.method == 'POST':
+        item = get_object_or_404(ListItem, id=item_id)
+        new_price = request.POST.get('price', '')
+        if new_price:
+            new_price = round(float(new_price), 2)
+            item.price = new_price
+            item.save()
+            return JsonResponse({'success': True, 'price': item.price})
+    return JsonResponse({'success': False})
