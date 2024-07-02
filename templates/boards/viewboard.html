@@ -34,20 +34,12 @@ Listado de Contratos Activos
 {% endblock %}
 
 {% block actions %}
-    {% comment %} <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary">Left</button>
-        <button type="button" class="btn btn-secondary">Left</button>
-        <button type="button" class="btn btn-secondary">Left</button>
-        <button type="button" class="btn btn-secondary">Left</button>        
-        <button type="button" class="btn btn-secondary">Middle</button>
-        <button type="button" class="btn btn-secondary">Right</button>
-    </div>
-     {% endcomment %}
 
     <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
         New list
     </button>  
-
+    <button class="btn btn-secondary" disabled> </button>
+    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards'  %}" >Exit Board</a> 
 {% endblock %}
 
 {% block content %}
