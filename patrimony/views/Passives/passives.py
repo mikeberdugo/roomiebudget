@@ -61,20 +61,31 @@ def passives(request, slug):
         patrimony = Patrimony.objects.filter(board=board)
 
         total_activos = asserts.aggregate(total=Sum('balance'))['total'] or 0
-        total_activos = format_value_float(total_activos)
         
         total_pasivos = passives.aggregate(total=Sum('balance'))['total'] or 0
+        
+        total = total_activos + total_pasivos
+        porcentaje_activos = (total_activos / total) * 100
+        porcentaje_pasivos = (total_pasivos / total) * 100
+        
+        
+        total_activos = format_value_float(total_activos)
         total_pasivos = format_value_float(total_pasivos)
         
         form1 = passivesform(prefix='form1')
         form2 = assetsform(prefix='form2')
+        
+        
+        
 
-    return render(request, './patrimony/passives.html', {
+    return render(request, './patrimony/patrimony.html', {
         'form1': form1,
         'form2': form2,
         'asserts': asserts,
         'passives': passives,
         'patrimony': patrimony,
         'total_activos': total_activos,
-        'total_pasivos': total_pasivos
+        'total_pasivos': total_pasivos,
+        'porcentaje_activos': porcentaje_activos,
+        'porcentaje_pasivos': porcentaje_pasivos,
     })

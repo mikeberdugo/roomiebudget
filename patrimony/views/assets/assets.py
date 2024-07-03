@@ -35,7 +35,9 @@ def assets(request,slug):
             messages.success(request, 'the Account has been created.')
             return redirect('patrimony:assets',slug)
         else:
-            messages.error(request, 'Account creation failure.')
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'{error}')
             return redirect('patrimony:assets',slug)   
     else :
         asserts = Patrimony.objects.filter(board = board ,type_dos=1 )
