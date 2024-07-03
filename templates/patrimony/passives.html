@@ -1,0 +1,661 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+    roomiebudget - Patrimonio - Pasivos
+{% endblock %}
+
+
+{% block navbar %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+{% block css %}
+    
+{% endblock %}
+
+
+
+
+{% block sub_titulo1 %} 
+    Patrimonio
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+    Lista Pasivos
+{% endblock %}
+
+
+{% block titulo2 %} 
+    Lista Pasivos
+{% endblock %}
+
+{% block actions %}
+     <!-- Primer grupo de botones -->
+     <div class="btn-group" role="group" >
+        <button id="kt_drawer_pasivo" class="btn btn-icon btn-info">
+            <i class="fa-solid fa-circle-question fs-2x"></i>
+        </button>
+        <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_pasivo">
+            Nuevo Pasivo
+        </button>
+    </div>
+
+    <!-- Separación entre grupos -->
+    <div style="width: 10px;"></div> <!-- Puedes ajustar el tamaño según sea necesario -->
+
+    <!-- Segundo grupo de botones -->
+    <div class="btn-group" role="group" >
+        <button id="kt_drawer_activos" class="btn btn-icon btn-info">
+            <i class="fa-solid fa-circle-question fs-2x"></i>
+        </button>
+        <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_activo">
+            Nuevo Activo
+        </button>
+    </div>
+    <div style="width: 10px;"></div>
+    <!-- Otro botón fuera de los grupos -->
+    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards' %}">Exit Board</a>
+
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+
+        <div class="d-flex rounded border p-5 p-lg-15 pb-lg-12 mb-10">
+            <!--begin::Stat-->
+            <div class="border border-gray-300 border-dashed rounded min-w-200px py-3 px-4 me-6 mb-3">
+                <!--begin::Number-->
+                <div class="d-flex align-items-center">
+                    <span class="svg-icon fs-3 text-success me-2">
+                        <i class="ki-duotone ki-arrow-up fs-3 text-success me-2"><span class="path1"></span><span class="path2"></span></i>
+                    </span>
+                    <div class="fs-2 fw-bold" id="kt_countup_2" >
+                        ${{ total_activos }}
+                    </div>
+                </div>
+                <!--end::Number-->
+            
+                <!--begin::Label-->
+                <div class="fw-semibold fs-6 ">Monto Total Activos.</div>
+                <!--end::Label-->
+            </div>
+            <!--end::Stat-->
+
+            <!--begin::Stat-->
+            <div class="border border-gray-300 border-dashed rounded min-w-200px py-3 px-4 me-6 mb-3">
+                <!--begin::Number-->
+                <div class="d-flex align-items-center">
+                    <span class="svg-icon fs-3 text-success me-2">
+                        <i class="ki-duotone ki-arrow-down fs-3 text-danger me-2"><span class="path1"></span><span class="path2"></span></i>
+                    </span>
+                    <div class="fs-2 fw-bold" id="kt_countup_2" >
+                        ${{ total_pasivos }}
+                    </div>
+                </div>
+                <!--end::Number-->
+            
+                <!--begin::Label-->
+                <div class="fw-semibold fs-6 ">Monto Total deudas.</div>
+                <!--end::Label-->
+            </div>
+            <!--end::Stat-->
+
+
+
+            
+        </div>
+        
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Patrimonio</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Activos</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Pasivos</button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                
+                {% if patrimony %}
+                    <div class="table-responsive">
+                        <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-patrimony'>
+                            <thead>
+                                <tr>
+                                    <th width="200">Type</th>
+                                    <th width="200">Name</th>
+                                    <th width="200">Balance</th>
+                                    <th width="200">Last Update</th>
+                                    <th width="200">Patrimony Type</th>
+                                    <th width="200">Currency</th>
+                                    <th width="200">Status</th>
+                                    <th width="150">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in patrimony %}
+                                <tr>
+                                    <td class="text-center">
+                                        {% if item.type_dos == 1 %}
+                                        
+                                            <i class="fa-solid fa-magnifying-glass-plus fs-3 text-success "></i>
+                                        {% elif item.type_dos == 2 %}
+                                            <i class="fa-solid fa-magnifying-glass-minus fs-3 text-danger "></i>
+
+                                        {% else %}
+                                            <i class="fa-solid fa-magnifying-glass-dollar fs-3"></i>
+                                        {% endif %}
+
+                                    </td>
+                                    <td class="text-center">{{ item.name }}</td>
+                                    <td class="text-center">{{ item.balance }}</td>
+                                    <td class="text-center">{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
+                                    <td class="text-center">{{ item.patrimony_type }}</td>
+                                    <td class="text-center">{{ item.currency }}</td>
+                                    <td class="text-center"> <!-- Agregado: centrar contenido -->
+                                        {% if item.status == 'Cancelado' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success">
+                                                <i class="fa-solid fa-bars-progress"></i>
+                                                Cancelado
+                                            </p>
+                                        {% elif item.status == 'Adeudo' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger">
+                                                <i class="fa-solid fa-stop"></i>
+                                                Adeudo
+                                            </p>
+                                        {% elif item.status == 'Activa' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success">
+                                                <i class="fa-solid fa-bars-progress"></i>
+                                                Activa
+                                            </p>
+                                        {% elif item.status == 'Inactiva' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-warning btn-active-light-warning">
+                                                <i class="fa-solid fa-square-check fs-1"></i>
+                                                Inactiva
+                                            </p>
+                                        {% elif item.status == 'Cerrada' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-dark btn-active-light-dark">
+                                                <i class="fa-solid fa-stop"></i>
+                                                Cerrada
+                                            </p>
+                                        {% elif item.status == 'Bloqueada' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger">
+                                                <i class="fa-solid fa-stop"></i>
+                                                Bloqueada
+                                            </p>
+                                        {% else %}
+                                            <p class="btn btn-danger">
+                                                <i class="fa-solid fa-star-of-life"></i>
+                                                Falla
+                                            </p>
+                                        {% endif %}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+        
+                {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">¡Ups!</h4>
+                        <p>Parece que esta lista está tan vacía como un parque en pleno invierno. ¡Está tan desierta que incluso los ecos se aburren de rebotar por aquí!</p>
+                        <hr>
+                        <p class="mb-0">¡Manos a la obra! ¡Llenémosla antes de que los fantasmas del aburrimiento decidan hacer de este lugar su hogar permanente!</p>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                {% if asserts %}
+                    <div class="table-responsive">
+                        <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-asserts'>
+                            <thead>
+                                <tr>
+                                    <th width="200">Name</th>
+                                    <th width="200">Balance</th>
+                                    <th width="200">Last Update</th>
+                                    <th width="200">Patrimony Type</th>
+                                    <th width="200">Currency</th>
+                                    <th width="200">Status</th>
+                                    <th width="150">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in asserts %}
+                                <tr>
+                                    <td class="text-center">{{ item.name }}</td>
+                                    <td class="text-center">{{ item.balance }}</td>
+                                    <td class="text-center">{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
+                                    <td class="text-center">{{ item.patrimony_type }}</td>
+                                    <td class="text-center">{{ item.currency }}</td>
+                                    <td class="text-center"> <!-- Agregado: centrar contenido -->
+                                        {% if item.status == 'Activa' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success">
+                                                <i class="fa-solid fa-bars-progress"></i>
+                                                Activa
+                                            </p>
+                                        {% elif item.status == 'Inactiva' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-warning btn-active-light-warning">
+                                                <i class="fa-solid fa-square-check fs-1"></i>
+                                                Inactiva
+                                            </p>
+                                        {% elif item.status == 'Cerrada' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-dark btn-active-light-dark">
+                                                <i class="fa-solid fa-stop"></i>
+                                                Cerrada
+                                            </p>
+                                        {% elif item.status == 'Bloqueada' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger">
+                                                <i class="fa-solid fa-stop"></i>
+                                                Bloqueada
+                                            </p>
+                                        {% else %}
+                                            <p class="btn btn-danger">
+                                                <i class="fa-solid fa-star-of-life"></i>
+                                                Falla
+                                            </p>
+                                        {% endif %}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+        
+                {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">¡Ups!</h4>
+                        <p>Parece que esta lista está tan vacía como un parque en pleno invierno. ¡Está tan desierta que incluso los ecos se aburren de rebotar por aquí!</p>
+                        <hr>
+                        <p class="mb-0">¡Manos a la obra! ¡Llenémosla antes de que los fantasmas del aburrimiento decidan hacer de este lugar su hogar permanente!</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"> 
+                {% if passives %}
+
+        
+                    <div class="table-responsive">
+                        <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-passives'>
+                            <thead>
+                                <tr>
+                                    <th width="200">Name</th>
+                                    <th width="200">Balance</th>
+                                    <th width="200">Last Update</th>
+                                    <th width="200">Patrimony Type</th>
+                                    <th width="200">Currency</th>
+                                    <th width="200">Status</th>
+                                    <th width="150">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in passives %}
+                                <tr>
+                                    <td class="text-center">{{ item.name }}</td>
+                                    <td class="text-center">{{ item.balance }}</td>
+                                    <td class="text-center">{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
+                                    <td class="text-center">{{ item.patrimony_type }}</td>
+                                    <td class="text-center">{{ item.currency }}</td>
+                                    <td class="text-center"> <!-- Agregado: centrar contenido -->
+                                        {% if item.status == 'Cancelado' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success">
+                                                <i class="fa-solid fa-bars-progress"></i>
+                                                Cancelado
+                                            </p>
+                                        {% elif item.status == 'Adeudo' %}
+                                            <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger">
+                                                <i class="fa-solid fa-stop"></i>
+                                                Adeudo
+                                            </p>
+                                        {% else %}
+                                            <p class="btn btn-danger">
+                                                <i class="fa-solid fa-star-of-life"></i>
+                                                Falla
+                                            </p>
+                                        {% endif %}
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+        
+                {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">¡Ups!</h4>
+                        <p>Parece que esta lista está tan vacía como un parque en pleno invierno. ¡Está tan desierta que incluso los ecos se aburren de rebotar por aquí!</p>
+                        <hr>
+                        <p class="mb-0">¡Manos a la obra! ¡Llenémosla antes de que los fantasmas del aburrimiento decidan hacer de este lugar su hogar permanente!</p>
+                    </div>
+                {% endif %}
+            </div>
+          </div>
+
+
+    <!-- Modal 1 -->
+    <div class="modal fade" tabindex="-1" id="kt_modal_pasivo">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Nuevo Pasivo</h3>
+    
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+    
+                <div class="modal-body">
+                    <form id="passivesform" method="post" enctype="multipart/form-data" >
+                        {% crispy form1 %}
+                    </form>
+                    
+                </div>
+    
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="passivesform"  class="btn btn-primary">Create</button>
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Modal 2 -->
+        <div class="modal fade" tabindex="-1" id="kt_modal_activo">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Nuevo Activo</h3>
+        
+                        <!--begin::Close-->
+                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                        </div>
+                        <!--end::Close-->
+                    </div>
+        
+                    <div class="modal-body">
+                        <form id="assetsform" method="post" enctype="multipart/form-data" >
+                            {% crispy form2 %}
+                        </form>
+                        
+                    </div>
+        
+                    <div class="modal-footer">
+                        
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="assetsform"  class="btn btn-primary">Create</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--begin::View component-->
+        <div  id="kt_drawer_pasivo" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_pasivo" data-kt-drawer-close="#kt_drawer_pasivo_close"  data-kt-drawer-width="{default:'300px', 'md': '500px'}" >
+            <!--begin::Card-->
+            <div class="card rounded-0 w-100">
+                <!--begin::Card header-->
+                <div class="card-header pe-5">
+                    <!--begin::Title-->
+                    <div class="card-title">
+                        <!--begin::User-->
+                        <div class="d-flex justify-content-center flex-column me-3">
+                            <a href="" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 lh-1"> <h2>¿Qué es un pasivo?</h2> </a>
+                        </div>
+                        <!--end::User-->
+                    </div>
+                    <!--end::Title-->
+        
+                     <!--begin::Card toolbar-->
+                     <div class="card-toolbar">
+                        <!--begin::Close-->
+                        <div class="btn btn-sm btn-icon btn-active-light-primary" id="kt_drawer_pasivo_close">
+                            <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                
+                        </div>
+                        <!--end::Close-->
+                    </div>
+                    <!--end::Card toolbar-->
+                </div>
+                <!--end::Card header-->
+        
+                <!--begin::Card body-->
+                <div class="card-body hover-scroll-overlay-y">
+
+                    <div>
+                        
+                        <p>Un pasivo es cualquier deuda u obligación financiera que tienes que pagar en el futuro. Puede incluir préstamos, tarjetas de crédito, hipotecas, o cualquier otro tipo de deuda. Registrar estos pasivos de manera adecuada te ayuda a tener un control claro de tus obligaciones financieras.</p>
+                    
+                        <h2>¿Por qué es importante registrar los pasivos?</h2>
+                        <p>Registrar tus pasivos tiene varias ventajas significativas:</p>
+                        <ul>
+                            <li><strong>Saber cuánto debes:</strong> Al registrar todos tus pasivos en un solo lugar, obtienes una visión clara y completa de todas tus deudas.</li>
+                            <li><strong>Planificar mejor tus pagos:</strong> Con un registro claro, puedes organizarte mejor y planificar cómo y cuándo pagar tus deudas, evitando pagos atrasados y cargos por intereses.</li>
+                            <li><strong>Evitar sorpresas:</strong> Mantener un registro actualizado te ayuda a no olvidar ninguna deuda y te permite estar preparado para cualquier obligación financiera futura.</li>
+                        </ul>
+                    
+                        <h2>Cómo usar este formulario:</h2>
+                        <p>Para registrar un nuevo pasivo, por favor sigue estos pasos:</p>
+                        <ol>
+                            <li><strong>Nombre de Pasivo:</strong> Ingresa un nombre descriptivo para identificar la deuda, como 'Préstamo del coche' o 'Tarjeta de crédito Banco X'.</li>
+                            <li><strong>Saldo:</strong> Indica el monto actual que debes. Asegúrate de ingresar el valor correcto para tener un registro preciso.</li>
+                            <li><strong>Moneda:</strong> Selecciona la moneda en la que está denominada la deuda, como 'COP' para pesos colombianos.</li>
+                            <li><strong>Tipo de Cuenta:</strong> Elige el tipo de cuenta o deuda que es, por ejemplo, 'Préstamo', 'Tarjeta de crédito', etc.</li>
+                            <li><strong>Estado:</strong> Selecciona el estado actual del pasivo, como 'Adeudo' si la deuda está pendiente o 'Cancelado' si ya ha sido pagada.</li>
+                        </ol>
+                    
+                        <h2>¿Qué hacer después?</h2>
+                        <p>Una vez que hayas ingresado toda la información requerida, presiona el botón <strong>'Crear Pasivo'</strong> para guardar los datos en el sistema. Esto permitirá mantener un registro organizado y actualizado de todas tus deudas, ayudándote a gestionar mejor tus finanzas personales.</p>
+                        <p>Mantener un control detallado de tus pasivos es esencial para una buena salud financiera. Te permitirá tomar decisiones informadas y gestionar tus recursos de manera efectiva, asegurando que siempre estés al tanto de tus obligaciones y puedas planificar tu futuro financiero con confianza.</p>
+                    </div>
+                    
+
+                    
+
+
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Card-->
+
+
+        
+        </div>
+        <!--end::View component-->
+
+        <!--begin::View component-->
+        <div  id="kt_drawer_activos" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_activos" data-kt-drawer-close="#kt_drawer_activos_close"  data-kt-drawer-width="{default:'300px', 'md': '500px'}" >
+            <!--begin::Card-->
+            <div class="card rounded-0 w-100">
+                <!--begin::Card header-->
+                <div class="card-header pe-5">
+                    <!--begin::Title-->
+                    <div class="card-title">
+                        <!--begin::User-->
+                        <div class="d-flex justify-content-center flex-column me-3">
+                            <a href="" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 lh-1"> <h2>¿Qué es un activo?</h2> </a>
+                        </div>
+                        <!--end::User-->
+                    </div>
+                    <!--end::Title-->
+        
+                     <!--begin::Card toolbar-->
+                     <div class="card-toolbar">
+                        <!--begin::Close-->
+                        <div class="btn btn-sm btn-icon btn-active-light-primary" id="kt_drawer_activos_close">
+                            <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                
+                        </div>
+                        <!--end::Close-->
+                    </div>
+                    <!--end::Card toolbar-->
+                </div>
+                <!--end::Card header-->
+        
+                <!--begin::Card body-->
+                <div class="card-body hover-scroll-overlay-y">
+
+                    <div>
+                        
+                        <p>Un activo es cualquier recurso económico que posees y que puede proporcionarte beneficios futuros. Pueden ser dinero en efectivo, propiedades inmobiliarias, inversiones financieras, vehículos, o cualquier otro bien tangible o intangible que tenga valor económico.</p>
+                    
+                        <h2>¿Por qué es importante registrar los activos?</h2>
+                        <p>Registrar tus activos te proporciona múltiples beneficios:</p>
+                        <ul>
+                            <li><strong>Conocer tu patrimonio:</strong> Mantener un registro detallado de tus activos te permite tener una visión clara de tu patrimonio neto, es decir, la diferencia entre tus activos y tus pasivos. Esto es crucial para entender tu situación financiera global.</li>
+                            <li><strong>Planificar tus finanzas:</strong> Al conocer qué activos posees y su valor, puedes planificar mejor cómo utilizarlos para generar ingresos adicionales, invertir en nuevas oportunidades o cubrir gastos importantes.</li>
+                            <li><strong>Evaluar tu situación financiera:</strong> Registrar tus activos te ayuda a evaluar tu solvencia financiera y tu capacidad para enfrentar contingencias. Esto incluye saber cuánto podrías liquidar rápidamente en caso de necesidad.</li>
+                            <li><strong>Facilitar la toma de decisiones:</strong> Con información precisa sobre tus activos, puedes tomar decisiones financieras más informadas y estratégicas, como la compra o venta de activos según las condiciones del mercado.</li>
+                        </ul>
+                    
+                        <h2>Cómo usar este formulario:</h2>
+                        <p>Para registrar un nuevo activo, sigue estos pasos:</p>
+                        <ol>
+                            <li><strong>Nombre de Activo:</strong> Ingresa un nombre descriptivo que identifique claramente el activo. Por ejemplo, 'Cuenta de ahorros Banco X' o 'Propiedad en Ciudad Y'.</li>
+                            <li><strong>Saldo:</strong> Indica el valor actual del activo. Esto puede ser el saldo de una cuenta bancaria, el valor de mercado de una propiedad, o el valor nominal de una inversión.</li>
+                            <li><strong>Moneda:</strong> Selecciona la moneda en la que está denominado el activo, por ejemplo, pesos colombianos (COP), dólares estadounidenses (USD), euros (EUR), etc.</li>
+                            <li><strong>Tipo de Activo:</strong> Elige el tipo de activo que estás registrando. Puede ser una cuenta corriente, cuenta de ahorros, propiedad inmobiliaria, vehículo, inversión financiera, entre otros.</li>
+                            <li><strong>Estado:</strong> Selecciona el estado actual del activo, como 'Activo' si está en uso y generando beneficios, 'Inactivo' si no está en uso pero aún es propiedad tuya, o 'Bloqueado' si no puedes disponer de él temporalmente por alguna razón.</li>
+                        </ol>
+                    
+                        <h2>¿Qué hacer después?</h2>
+                        <p>Una vez que hayas ingresado toda la información requerida, presiona el botón <strong>'Crear Activo'</strong> para guardar los datos en el sistema. Esto te permitirá mantener un registro organizado y actualizado de todos tus activos, facilitando una mejor gestión de tus finanzas personales y planificación financiera a largo plazo.</p>
+                        <p>Mantener un control detallado de tus activos es esencial para maximizar su valor y optimizar tus recursos financieros. Te proporciona la tranquilidad de saber que estás gestionando tus bienes de manera eficiente y aprovechando al máximo las oportunidades financieras que se presenten.</p>
+                    </div>
+                    
+                    
+
+                    
+
+
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Card-->
+
+
+        
+        </div>
+        <!--end::View component-->
+
+{% endblock %}
+
+
+
+{% block js %}
+
+
+
+<script>
+    $(document).ready(function() {
+        $('#tabla-asserts').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "No se encontraron registros coincidentes",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+                "aria": {
+                    "sortAscending":  ": activar para ordenar la columna ascendente",
+                    "sortDescending": ": activar para ordenar la columna descendente"
+                }
+            },
+            dom: 'frtip',
+            order: [[2, 'asc']], 
+            "pageLength": 6,
+            searching: false                
+        });
+
+        $('#tabla-passives').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "No se encontraron registros coincidentes",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+                "aria": {
+                    "sortAscending":  ": activar para ordenar la columna ascendente",
+                    "sortDescending": ": activar para ordenar la columna descendente"
+                }
+            },
+            dom: 'frtip',
+            order: [[2, 'asc']], 
+            "pageLength": 6,
+            searching: false                
+        });
+
+        $('#tabla-patrimony').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "No se encontraron registros coincidentes",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+                "aria": {
+                    "sortAscending":  ": activar para ordenar la columna ascendente",
+                    "sortDescending": ": activar para ordenar la columna descendente"
+                }
+            },
+            dom: 'frtip',
+            order: [[2, 'asc']], 
+            "pageLength": 6,
+            searching: false                
+        });
+    });
+</script>
+
+
+{% endblock %}

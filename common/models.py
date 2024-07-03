@@ -161,11 +161,26 @@ class Account(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización de la cuenta
     account_type = models.CharField(max_length=50)  # Tipo de cuenta (ejemplo: Cuenta Corriente, Cuenta de Ahorros, Tarjeta de Crédito, etc.)
     status = models.CharField(max_length=20)  # Estado de la cuenta (ejemplo: Activa, Inactiva, Cerrada, etc.)
-    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado a la cuenta
+    board = models.ForeignKey(Board, on_delete=models.CASCADE )  # Tablero asociado a la cuenta
 
     def __str__(self):
         return self.name
+    
+## modelo de patrimonio 
 
+class Patrimony(models.Model):
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)  # Nombre de la cuenta
+    balance = models.DecimalField(max_digits=10, decimal_places=2)  # Saldo de la cuenta
+    currency = models.CharField(max_length=3)  # Moneda de la cuenta (ejemplo: USD, EUR, MXN, etc.)
+    patrimony_type = models.CharField(max_length=50)  # Tipo de cuenta (ejemplo: Cuenta Corriente, Cuenta de Ahorros, Tarjeta de Crédito, etc.)
+    updated_at = models.DateTimeField(auto_now=True)
+    type_dos = models.IntegerField() # activo - 1  o pasivo - 2  
+    status = models.CharField(max_length=20)
+    board = models.ForeignKey(Board, on_delete=models.CASCADE )
+    def __str__(self):
+        return self.name
+    
 
 class Labels(models.Model):
     nombre = models.CharField(max_length=100)

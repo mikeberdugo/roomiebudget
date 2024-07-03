@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from shared_boards.form.userboardform import userboardForm
-from common.models import Transaction, Board , Account , AstradUser
+from common.models import Transaction, Board , Account , AstradUser , Permit
 from decimal import Decimal
 # Create your views here.
 
@@ -38,16 +38,16 @@ def userboard(request, slug):
     #     messages.success(request, 'Ha ocurrido un error inesperado')
     #     return redirect('boards:userboard', slug)
     
-    usersboards = board.linked_users.all()
+    usersboards = Permit.objects.filter(board = board )
     form = userboardForm()
     # Lista para almacenar la información de los usuarios como diccionarios
     lista_usuarios = []
     # Iterar sobre los usuarios vinculados y formar el diccionario
     for usuario in usersboards:
         usuario_dict = {
-            'inicial': usuario.username[0] if usuario.username else '' ,
-            'username': usuario.username,
-            'email': usuario.email,
+            'inicial': usuario.user.username[0] if usuario.user.username else '' ,
+            'username': usuario.user.username,
+            'email': usuario.user.email,
         }
         lista_usuarios.append(usuario_dict)
         

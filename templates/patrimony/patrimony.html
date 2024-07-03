@@ -1,0 +1,183 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+    roomiebudget - Patrimonio - Activos
+{% endblock %}
+
+
+{% block navbar %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+{% block css %}
+    
+{% endblock %}
+
+
+
+
+{% block sub_titulo1 %} 
+    Patrimonio
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+    Lista Activos
+{% endblock %}
+
+
+{% block titulo2 %} 
+    Lista Activos
+{% endblock %}
+
+{% block actions %}
+<!-- Button trigger modal -->
+    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+        Nuevo Activo
+    </button>  
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+
+        {% if asserts %}
+
+        
+        <div class="table-responsive">
+            <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-asserts'>
+                <thead>
+                    <tr>
+                        <th width="200">Name</th>
+                        <th width="200">Balance</th>
+                        <th width="200">Last Update</th>
+                        <th width="200">Account Type</th>
+                        <th width="200">Currency</th>
+                        <th width="200">Status</th>
+                        <th width="150">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in asserts %}
+                    <tr>
+                        <td class="text-center">{{ item.name }}</td>
+                        <td class="text-center">{{ item.balance }}</td>
+                        <td class="text-center">{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
+                        <td class="text-center">{{ item.account_type }}</td>
+                        <td class="text-center">{{ item.currency }}</td>
+                        <td class="text-center"> <!-- Agregado: centrar contenido -->
+                            {% if item.status == 'Activa' %}
+                                <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success">
+                                    <i class="fa-solid fa-bars-progress"></i>
+                                    Activa
+                                </p>
+                            {% elif item.status == 'Inactiva' %}
+                                <p class="btn btn-outline btn-outline-dashed btn-outline-warning btn-active-light-warning">
+                                    <i class="fa-solid fa-square-check fs-1"></i>
+                                    Inactiva
+                                </p>
+                            {% elif item.status == 'Cerrada' %}
+                                <p class="btn btn-outline btn-outline-dashed btn-outline-dark btn-active-light-dark">
+                                    <i class="fa-solid fa-stop"></i>
+                                    Cerrada
+                                </p>
+                            {% elif item.status == 'Bloqueada' %}
+                                <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger">
+                                    <i class="fa-solid fa-stop"></i>
+                                    Bloqueada
+                                </p>
+                            {% else %}
+                                <p class="btn btn-danger">
+                                    <i class="fa-solid fa-star-of-life"></i>
+                                    Falla
+                                </p>
+                            {% endif %}
+                        </td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+            <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">¡Ups!</h4>
+                <p>Parece que esta lista está tan vacía como un parque en pleno invierno. ¡Está tan desierta que incluso los ecos se aburren de rebotar por aquí!</p>
+                <hr>
+                <p class="mb-0">¡Manos a la obra! ¡Llenémosla antes de que los fantasmas del aburrimiento decidan hacer de este lugar su hogar permanente!</p>
+            </div>
+        {% endif %}
+    
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" id="kt_modal_lista">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">new Account</h3>
+    
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+    
+                <div class="modal-body">
+                    <form id="shoppinglists" method="post" >
+                        {% crispy form %}
+                    </form>
+                    
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="shoppinglists"  class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+
+{% block js %}
+
+
+<script>
+    $(document).ready(function() {
+        $('#tabla-asserts').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "No se encontraron registros coincidentes",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+                "aria": {
+                    "sortAscending":  ": activar para ordenar la columna ascendente",
+                    "sortDescending": ": activar para ordenar la columna descendente"
+                }
+            },
+            dom: 'frtip',
+            order: [[2, 'asc']], 
+            "pageLength": 6,
+            searching: false                
+        });
+    });
+</script>
+{% endblock %}
