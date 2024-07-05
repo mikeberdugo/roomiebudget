@@ -25,20 +25,18 @@ Lista Activos
 {% endblock %}
 
 {% block actions %}
-    <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_lista">
-            New Items
-        </button>
-        <a class="btn btn-light-primary" href="{% url 'shopping:shoppinglists'  %}">
-            Back
-            <i class="ki-duotone ki-exit-left fs-1">
-                <span class="path1"></span>
-                <span class="path2"></span>
-            </i>
-        </a>
-    </div>
-    <!-- Button trigger modal -->
-
+    <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_lista">
+        New Items
+    </button>
+    <a class="btn btn-light-primary" href="{% url 'shopping:shoppinglists'  %}">
+        Back
+        <i class="ki-duotone ki-exit-left fs-1">
+            <span class="path1"></span>
+            <span class="path2"></span>
+        </i>
+    </a>
+    <button class="btn btn-secondary" disabled> </button>
+    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards'  %}" >Exit Board</a> 
 {% endblock %}
 
 {% block content %}

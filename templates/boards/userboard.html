@@ -28,100 +28,159 @@ Lista Activos
 
 
 {% block titulo2 %} 
-    Numero de Usuario - {{ user.id }}
+    Numero de Usuario - {{ user.cdunico }}
 {% endblock %}
 
 {% block actions %}
 <!-- Button trigger modal -->
     <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
-        New Transaction
-    </button>  
+        New User
+    </button> 
+    <button class="btn btn-secondary" disabled> </button>
+    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards'  %}" >Exit Board</a>  
 {% endblock %}
 
 
 {% block content %}
+    
+
+
     <div class="container">
         
-        {% if transactions %}
-                <div class="table-responsive">
-                    <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-transactions'>
-                        <thead>
-                            <tr>
-                            <th width="200">Typet</th>
-                            <th width="200">Account</th>
-                            <th width="200">date</th>
-                            <th width="200">amount</th>
-                            <th width="200">description</th>
-                            <th width="200">payment method</th>
-                            <th width="200">status</th>
-                            <th width="150">
-                                <div class="btn btn-icon btn-sm btn-light-facebook me-5 container d-flex justify-content-center align-items-center  ">
-                                    <i class="fa-solid fa-certificate fs-3"></i>
+        {% if lista_usuarios %}
+            <div class="row"> 
+                {% comment %} <div class="col-xl-6">
+                    <!--begin::List widget 20-->
+                    <div class="card mb-5 mb-xl-8">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-900">Recommended for you</span>
+                                <span class="text-muted mt-1 fw-semibold fs-7">8k social visitors</span>
+                            </h3>
+                            
+                            <!--begin::Toolbar-->
+                            <div class="card-toolbar">   
+                                <a href="#" class="btn btn-sm btn-light">All Courses</a>             
+                            </div>
+                            <!--end::Toolbar-->
+                        </div>
+                        <!--end::Header-->
+                    
+                        <!--begin::Body-->
+                        <div class="card-body pt-6">
+                                
+                            {% for usuario in lista_usuarios %}
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed my-4"></div>
+                                <!--end::Separator--> 
+
+                                <!--begin::Item-->
+                                <div class="d-flex flex-stack">  
+                                    <!--begin::Symbol-->
+                                    <div class="symbol symbol-40px me-4">
+                                        <div class="symbol-label fs-2 fw-semibold bg-danger text-inverse-danger">{{usuario.inicial}}</div>
+                                    </div>
+                                    <!--end::Symbol-->
+                    
+                                    <!--begin::Section-->
+                                    <div class="d-flex align-items-center flex-row-fluid flex-wrap">
+                                        <!--begin:Author-->                    
+                                        <div class="flex-grow-1 me-2">
+                                            <a href="/saul-html-pro/pages/user-profile/overview.html" class="text-gray-800 text-hover-primary fs-4 fw-bold"> {{usuario.username}} </a>
+                                        </div>
+                                        <!--end:Author-->                      
+                                        
+                                        <!--begin::Actions-->
+                                        <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                            <i class="ki-duotone ki-arrow-right fs-2"><span class="path1"></span><span class="path2"></span></i>                    </a>
+                                        <!--begin::Actions-->    
+                                    </div>
+                                    <!--end::Section-->
                                 </div>
-                            </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in transactions %}
-                            <tr>
-                                <td> 
-                                    {% if item.typet == 'ingreso' %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success" >
-                                            <i class="ki-duotone ki-arrow-down  fs-2 ms-3 ms-3">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                            Entrante
-                                        </p>
-                                    {% else %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger" >
-                                            <i class="ki-duotone ki-arrow-up fs-2 ms-3 ms-3">
-                                                <span class="path1"></span>
-                                                <span class="path2"></span>
-                                            </i>
-                                            Saliente
-                                        </p>
-                                    {% endif %}
-                                </td>
-
-                                <td>{{ item.Account }}</td>
-                                <td>{{ item.date | date:"Y-m-d" }}</td>
-                                <td>{{ item.amount }}</td>
-                                <td>{{ item.description }}</td>
-                                <td>{{ item.payment_method }}</td>
-
-                                <td>
-                                    {% if item.status == 0 %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-primary btn-active-light-primary" >
-                                            <i class="fa-solid fa-bars-progress"></i>
-                                            Programada
-                                        </p>
-                                    {% elif item.status == 1 %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success" >
-                                            <i class="fa-solid fa-square-check  fs-1"></i>
-                                            Pagada
-                                        </p>
-                                    {% elif item.status == 2 %}
-                                        <p class="btn btn-outline btn-outline-dashed btn-outline-danger btn-active-light-danger" >
-                                            <i class="fa-solid fa-stop"></i>
-                                            En Espera
-                                        </p>
-                                    {% else %}
-                                        <p class="btn btn-danger" >
-                                            <i class="fa-solid fa-star-of-life"></i>
-                                            Falla
-                                        </p>
-                                    {% endif %}
-                                </td>
-
-                                <td>
-                                    
-                                </td>
-                            </tr>
+                                <!--end::Item-->
+                    
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed my-4"></div>
+                                <!--end::Separator--> 
                             {% endfor %}
-                        </tbody>
-                    </table>
+                                
+
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::List widget 20-->
+                </div> {% endcomment %}
+
+                <div class="col-xl-6">
+                    <!--begin::List widget 20-->
+                    <div class="card mb-5 mb-xl-8">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label fw-bold text-gray-900">Recommended for you</span>
+                                <span class="text-muted mt-1 fw-semibold fs-7">8k social visitors</span>
+                            </h3>
+                            
+                            <!--begin::Toolbar-->
+                            <div class="card-toolbar">   
+                                <a href="#" class="btn btn-sm btn-light">All Courses</a>             
+                            </div>
+                            <!--end::Toolbar-->
+                        </div>
+                        <!--end::Header-->
+                    
+                        <!--begin::Body-->
+                        <div class="card-body pt-6">
+                                
+                            {% for usuario in lista_usuarios %}
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed my-4"></div>
+                                <!--end::Separator--> 
+
+                                <!--begin::Item-->
+                                <div class="d-flex flex-stack">  
+                                    <!--begin::Symbol-->
+                                    <div class="symbol symbol-40px me-4">
+                                        <div class="symbol-label fs-2 fw-semibold bg-danger text-inverse-danger">{{usuario.inicial}}</div>
+                                    </div>
+                                    <!--end::Symbol-->
+                    
+                                    <!--begin::Section-->
+                                    <div class="d-flex align-items-center flex-row-fluid flex-wrap">
+                                        <!--begin:Author-->                    
+                                        <div class="flex-grow-1 me-2">
+                                            <a href="/saul-html-pro/pages/user-profile/overview.html" class="text-gray-800 text-hover-primary fs-4 fw-bold"> {{usuario.username}} </a>
+                                        </div>
+                                        <!--end:Author-->                      
+                                        
+                                        <!--begin::Actions-->
+                                        <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px"> 
+                                            <i class="ki-duotone ki-check-square fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
+                                        <!--begin::Actions-->    
+                                    </div>
+                                    <!--end::Section-->
+                                </div>
+                                <!--end::Item-->
+                    
+                                <!--begin::Separator-->
+                                <div class="separator separator-dashed my-4"></div>
+                                <!--end::Separator--> 
+                            {% endfor %}
+                                
+
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::List widget 20-->
                 </div>
+            </div>
         {% else %}
             <div class="alert alert-primary" role="alert">
                 <h4 class="alert-heading">¡Vaya!</h4>

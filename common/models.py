@@ -40,13 +40,11 @@ class AstradUser(AbstractUser):
         ('Otro', 'Otro'),
     ]
     
-    
-    # menbresia 
-    
+    # membresía 
     membership_paid = models.BooleanField(default=False)
     membership_expiry_date = models.DateField(null=True, blank=True)
     
-    ## general 
+    # general 
     role = models.CharField(max_length=50, choices=ROLES_CHOICES, default='Usuario Estándar')
     birth_date = models.DateField(null=True, blank=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, null=True, blank=True)
@@ -55,15 +53,22 @@ class AstradUser(AbstractUser):
     nationality = models.CharField(max_length=100, null=True, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
     financial_goals = models.TextField(null=True, blank=True)
+    cdunico = models.CharField(max_length=7, unique=True, editable=False, blank=True)
     
     # Añade related_name a las relaciones groups y user_permissions
     # groups = models.ManyToManyField(Group, verbose_name=_('groups'), blank=True, related_name='astraduser_set', related_query_name='user')
     # user_permissions = models.ManyToManyField(Permission, verbose_name=_('user permissions'), blank=True, related_name='astraduser_set', related_query_name='user')
-    
 
-    def number_of_boards(self):
-        return self.board_set.count()
+    def save(self, *args, **kwargs):
+        if not self.cdunico:
+            self.cdunico = self.generate_unique_cdunico()
+        super().save(*args, **kwargs)
 
+    def generate_unique_cdunico(self):
+        while True:
+            cdunico = ''.join(random.choices(string.ascii_uppercase + string.digits, k=7))
+            if AstradUser.objects.filter(cdunico=cdunico).count() == 0:
+                return cdunico
 
 
 # Modelo para Categoría
@@ -116,7 +121,6 @@ def load_initial_data(sender, **kwargs):
 class Board(models.Model):
     name = models.CharField(max_length=100)  # Nombre del tablero
     creator_user = models.ForeignKey(AstradUser, on_delete=models.CASCADE, related_name='created_boards')  # Usuario creador del tablero AUTOMATICO
-    linked_users = models.ManyToManyField(AstradUser, related_name='linked_boards' , blank=True)  # Usuarios enlazados al tablero
     description = models.TextField(blank=True)  # Descripción del tablero (opcional)
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación del tablero AUTOMATICO 
     last_updated = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del tablero AUTOMATICO
@@ -124,6 +128,7 @@ class Board(models.Model):
     slug = models.SlugField(unique=True, blank=True) ## AUTOMATICO 
 
     def save(self, *args, **kwargs):
+        
         if not self.id:  # Si es un nuevo objeto
             self.created_at = timezone.now()  # Asignamos la fecha y hora actual
             # Generamos un valor aleatorio basado en el usuario y la hora
@@ -138,6 +143,13 @@ class Board(models.Model):
         return self.name
 
 
+class Permit(models.Model):
+    board = models.ForeignKey(Board, on_delete=models.CASCADE)  # Tablero asociado 
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    # estatus 0 en espera , estatus 1 activo , estatus 2 eliminado , estatus 3 
+    status = models.IntegerField('Estado', default=0) 
+    def __str__(self):
+        return f'{self.board} - {self.user}' 
 
 # Modelo para Cuenta
 class Account(models.Model):
@@ -149,11 +161,26 @@ class Account(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización de la cuenta
     account_type = models.CharField(max_length=50)  # Tipo de cuenta (ejemplo: Cuenta Corriente, Cuenta de Ahorros, Tarjeta de Crédito, etc.)
     status = models.CharField(max_length=20)  # Estado de la cuenta (ejemplo: Activa, Inactiva, Cerrada, etc.)
-    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado a la cuenta
+    board = models.ForeignKey(Board, on_delete=models.CASCADE )  # Tablero asociado a la cuenta
 
     def __str__(self):
         return self.name
+    
+## modelo de patrimonio 
 
+class Patrimony(models.Model):
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)  # Nombre de la cuenta
+    balance = models.DecimalField(max_digits=10, decimal_places=2)  # Saldo de la cuenta
+    currency = models.CharField(max_length=3)  # Moneda de la cuenta (ejemplo: USD, EUR, MXN, etc.)
+    patrimony_type = models.CharField(max_length=50)  # Tipo de cuenta (ejemplo: Cuenta Corriente, Cuenta de Ahorros, Tarjeta de Crédito, etc.)
+    updated_at = models.DateTimeField(auto_now=True)
+    type_dos = models.IntegerField() # activo - 1  o pasivo - 2  
+    status = models.CharField(max_length=20)
+    board = models.ForeignKey(Board, on_delete=models.CASCADE )
+    def __str__(self):
+        return self.name
+    
 
 class Labels(models.Model):
     nombre = models.CharField(max_length=100)
