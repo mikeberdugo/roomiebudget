@@ -1,3 +1,4 @@
+
 """
 Django settings for roomiebudget project.
 
@@ -43,8 +44,7 @@ INSTALLED_APPS = [
     'income',          # Añadir esta línea
     'shared_boards',   # Añadir esta línea
     'shopping',        # Añadir esta línea
-    'patrimony',  # remplazo de cuentas - accounts 
-    'common', ## donde estan los modelos 
+    'common',
     'crispy_forms',
     "crispy_bootstrap5",
 ]
