@@ -11,20 +11,14 @@ def Transactions(request, slug):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
         if form.is_valid():
-            account = form.cleaned_data['Account']
+            patrimony = form.cleaned_data['patrimony']
             typet = form.cleaned_data['typet']
             amount = Decimal(form.cleaned_data['amount'])  # Convert to Decimal
             
-            if typet == 'ingreso':
-                account.balance += abs(amount)
-            elif typet == 'egreso':
-                account.balance -= abs(amount)
-            
-            account.save()
             
             Transaction.objects.create(
                 typet=typet,
-                Account=account,
+                patrimony=patrimony,
                 board=board,
                 user=request.user.username if request.user.is_authenticated else 'anonimo',
                 status=form.cleaned_data['status'],
@@ -34,6 +28,15 @@ def Transactions(request, slug):
                 payment_method=form.cleaned_data['payment_method'],
                 addressee_sender=form.cleaned_data['addressee_sender'],
             )
+            
+            if typet == 'ingreso':
+                patrimony.balance += abs(amount)
+            elif typet == 'egreso':
+                patrimony.balance -= abs(amount)
+            
+            patrimony.save()
+            
+            
             messages.success(request, 'The item has been created.')
             return redirect('income:Transaction', slug)
         else:

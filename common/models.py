@@ -205,7 +205,7 @@ class Transaction(models.Model):
     ]
     
     typet = models.CharField('Tipo de transaccion', max_length=30, choices=TIPO_CHOICES)  # tipo de transaccion
-    Account = models.ForeignKey(Account, on_delete=models.CASCADE, default=1,blank=True, null=True) # tablero donde se genero
+    patrimony = models.ForeignKey(Patrimony, on_delete=models.CASCADE, default=1,blank=True, null=True) # tablero donde se genero
     board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado la trassacion 
     user = models.TextField(blank=True, null=True)
     status = models.IntegerField('Estado', default=1) # estatus 0 programada, 1 realizada, 2 realizada agrupada, 3

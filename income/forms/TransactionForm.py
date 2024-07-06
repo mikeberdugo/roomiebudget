@@ -1,7 +1,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
-from common.models import Account, Labels
+from common.models import Account, Labels ,Patrimony
 
 
 class TransactionForm(forms.Form):
@@ -47,7 +47,7 @@ class TransactionForm(forms.Form):
 
     
     typet = forms.ChoiceField(label='Tipo de transacción', choices=TIPO_CHOICES)
-    Account = forms.ModelChoiceField(label='Cuenta', queryset=Account.objects.all())
+    patrimony = forms.ModelChoiceField(label='Patrimonio', queryset=Patrimony.objects.all())
     status = forms.ChoiceField(label='Estado', choices=ESTADO_CHOICES)
     date = forms.DateField(label='Fecha', widget=forms.DateInput(attrs={'type': 'date'}))
     amount = forms.DecimalField(label='Monto', max_digits=10, decimal_places=2, widget=forms.NumberInput(attrs={'id': 'amount-input'}))
@@ -59,14 +59,14 @@ class TransactionForm(forms.Form):
     def __init__(self, *args,slug=None, **kwargs):
         super().__init__(*args, **kwargs)
         if slug:
-            self.fields['Account'].queryset = Account.objects.filter(board__slug=slug)
+            self.fields['patrimony'].queryset = Patrimony.objects.filter(board__slug=slug)
         
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.layout = Layout(
             Row(
                 Column('typet', css_class='form-group col-md-6 mb-0'),
-                Column('Account', css_class='form-group col-md-6 mb-0'),
+                Column('patrimony', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
             Row(
