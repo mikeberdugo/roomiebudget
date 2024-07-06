@@ -49,7 +49,7 @@ Lista Activos
         
         {% if lista_usuarios %}
             <div class="row"> 
-                <div class="col-xl-6">
+                {% comment %} <div class="col-xl-6">
                     <!--begin::List widget 20-->
                     <div class="card mb-5 mb-xl-8">
                         <!--begin::Header-->
@@ -111,7 +111,7 @@ Lista Activos
                         <!--end::Body-->
                     </div>
                     <!--end::List widget 20-->
-                </div>
+                </div> {% endcomment %}
 
                 <div class="col-xl-6">
                     <!--begin::List widget 20-->
@@ -157,8 +157,12 @@ Lista Activos
                                         <!--end:Author-->                      
                                         
                                         <!--begin::Actions-->
-                                        <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
-                                            <i class="ki-duotone ki-arrow-right fs-2"><span class="path1"></span><span class="path2"></span></i>                    </a>
+                                        <a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px"> 
+                                            <i class="ki-duotone ki-check-square fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>
+                                        </a>
                                         <!--begin::Actions-->    
                                     </div>
                                     <!--end::Section-->

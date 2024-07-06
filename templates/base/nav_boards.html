@@ -85,7 +85,7 @@
                             <span class="path5"></span>
                         </i>
                     </span>
-                    <span class="menu-title">Cuenta</span>
+                    <span class="menu-title">Patrimonios</span>
                     <span class="menu-arrow"></span>
                 </span>
                 <!--end:Menu link-->
@@ -94,11 +94,45 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{% url 'accounts:accounts' request.session.board_slug  %}">
+                        <a class="menu-link" href="">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
                             <span class="menu-title">Cuentas</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <!--end:Menu sub-->
+
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-accordion">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{% url 'patrimony:assets' request.session.board_slug  %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Activos</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <!--end:Menu sub-->
+
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-accordion">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{% url 'patrimony:passives' request.session.board_slug  %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Pasivos</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
