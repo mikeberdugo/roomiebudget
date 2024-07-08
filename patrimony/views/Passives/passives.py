@@ -65,8 +65,13 @@ def passives(request, slug):
         total_pasivos = passives.aggregate(total=Sum('balance'))['total'] or 0
         
         total = total_activos + total_pasivos
-        porcentaje_activos = (total_activos / total) * 100
-        porcentaje_pasivos = (total_pasivos / total) * 100
+        
+        if total != 0:
+            porcentaje_activos = (total_activos / total) * 100
+            porcentaje_pasivos = (total_pasivos / total) * 100
+        else:
+            porcentaje_activos = 0
+            porcentaje_pasivos = 0
         
         
         total_activos = format_value_float(total_activos)

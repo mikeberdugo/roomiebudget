@@ -212,7 +212,7 @@
                         <i class="ki-duotone ki-handcart fs-1">
                         </i>
                     </span>
-                    <span class="menu-title">Lista de Compras</span>
+                    <span class="menu-title">Compras y Presupuestos</span>
                     <span class="menu-arrow"></span>
                 </span>
 
@@ -229,6 +229,23 @@
                                 <span class="bullet bullet-dot"></span>
                             </span>
                             <span class="menu-title">Listas de Compras</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <!--end:Menu sub-->
+
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-accordion">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{% url 'shopping:budget' request.session.board_slug  %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Presupuestos</span>
                         </a>
                         <!--end:Menu link-->
                     </div>

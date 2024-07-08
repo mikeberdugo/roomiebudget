@@ -25,18 +25,29 @@ Lista Activos
 {% endblock %}
 
 {% block actions %}
-    <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_lista">
-        New Items
-    </button>
-    <a class="btn btn-light-primary" href="{% url 'shopping:shoppinglists'  %}">
-        Back
-        <i class="ki-duotone ki-exit-left fs-1">
-            <span class="path1"></span>
-            <span class="path2"></span>
-        </i>
-    </a>
-    <button class="btn btn-secondary" disabled> </button>
-    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards'  %}" >Exit Board</a> 
+    
+    
+
+
+    <div class="btn-group" role="group" >
+        <button id="kt_drawer_list" class="btn btn-icon btn-info">
+            <i class="fa-solid fa-circle-question fs-2x"></i>
+        </button>
+        
+        <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_lista">
+            New Items
+        </button>
+        <div style="width: 5px;"></div>
+        <a class="btn btn-light-primary" href="{% url 'shopping:shoppinglists'  %}">
+            Back
+            <i class="ki-duotone ki-exit-left fs-1">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </a>
+    </div>
+    <div style="width: 5px;"></div>
+    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards'  %}" >Exit Board</a>  
 {% endblock %}
 
 {% block content %}
@@ -134,6 +145,79 @@ Lista Activos
     </div>
 </div>
 
+
+<!--begin::View component-->
+<div  id="kt_drawer_list" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_list" data-kt-drawer-close="#kt_drawer_list_close"  data-kt-drawer-width="{default:'300px', 'md': '500px'}" >
+    <!--begin::Card-->
+    <div class="card rounded-0 w-100">
+        <!--begin::Card header-->
+        <div class="card-header pe-5">
+            <!--begin::Title-->
+            <div class="card-title">
+                <!--begin::User-->
+                <div class="d-flex justify-content-center flex-column me-3">
+                    <a href="" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 lh-1"> <h2>Importancia de Generar Listas</h2> </a>
+                </div>
+                <!--end::User-->
+            </div>
+            <!--end::Title-->
+
+             <!--begin::Card toolbar-->
+             <div class="card-toolbar">
+                <!--begin::Close-->
+                <div class="btn btn-sm btn-icon btn-active-light-primary" id="kt_drawer_list_close">
+                    <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Card toolbar-->
+        </div>
+        <!--end::Card header-->
+
+        <!--begin::Card body-->
+        <div class="card-body hover-scroll-overlay-y">
+
+            <div>
+                <h1>Beneficios de Usar Listas de Compras y Gestionar Ítems</h1>
+            
+                <h2>Por qué usar listas de compras</h2>
+                <p>Las listas de compras son herramientas muy útiles para planificar lo que necesitas comprar antes de ir al supermercado. Aquí te explicamos por qué son importantes:</p>
+            
+                <ul>
+                    <li><strong>Organización:</strong> Te ayudan a no olvidar productos importantes y a evitar compras innecesarias.</li>
+                    <li><strong>Ahorro de tiempo:</strong> Reduces el tiempo en el supermercado al saber exactamente qué buscar.</li>
+                    <li><strong>Control de gastos:</strong> Te permite mantener un presupuesto y evitar gastos impulsivos.</li>
+                    <li><strong>Reducción de estrés:</strong> Planificar las compras de antemano te quita estrés y te hace sentir más organizado.</li>
+                    <li><strong>Sostenibilidad:</strong> Puedes comprar de manera más consciente, reduciendo el desperdicio y eligiendo productos más sostenibles.</li>
+                </ul>
+            
+                <h2>Añadir y gestionar ítems en la lista</h2>
+                <p>Para usar tu lista de compras de manera efectiva, sigue estos pasos simples:</p>
+            
+                <ul>
+                    <li><strong>Añadir ítems:</strong> Escribe el nombre del producto y su precio aproximado.</li>
+                    <li><strong>Marcar como comprado:</strong> Usa el checkbox para indicar si ya has comprado un ítem.</li>
+                    <li><strong>Actualizar automáticamente:</strong> La lista se actualiza automáticamente cada vez que marcas un ítem como comprado.</li>
+                    <li><strong>Flexibilidad y control:</strong> Puedes modificar tu lista fácilmente según tus necesidades.</li>
+                </ul>
+            
+                <h2>Conclusión</h2>
+                <p>Usar una lista de compras te hace más eficiente y te ayuda a administrar mejor tu tiempo y dinero. Aprovecha estas herramientas simples para hacer tus compras más organizadas y menos estresantes.</p>
+            
+                <p>Con estas prácticas, no solo mejoras tu experiencia de compra, sino que también contribuyes a un consumo más responsable y sostenible.</p>
+            </div>
+            
+            
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Card-->
+
+
+
+</div>
+<!--end::View component-->
+
 {% endblock %}
 
 {% block js %}
@@ -146,7 +230,7 @@ Lista Activos
         $('.form-check-input').change(function(){
             var itemId = $(this).data('id');
             $.ajax({
-                url: '/boards/shopping/update-item/' + itemId + '/',
+                url: '/boards/shopping/update-item-shoppinglist/' + itemId + '/',
                 type: 'POST',
                 data: {
                     'csrfmiddlewaretoken': '{{ csrf_token }}'

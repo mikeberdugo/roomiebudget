@@ -15,6 +15,8 @@ def Transactions(request, slug):
             typet = form.cleaned_data['typet']
             amount = Decimal(form.cleaned_data['amount'])  # Convert to Decimal
             
+            addressee_sender = f'De {form.cleaned_data["addressee"]} para {form.cleaned_data["sender"]}'
+
             
             Transaction.objects.create(
                 typet=typet,
@@ -26,7 +28,8 @@ def Transactions(request, slug):
                 amount=amount,
                 description=form.cleaned_data['description'],
                 payment_method=form.cleaned_data['payment_method'],
-                addressee_sender=form.cleaned_data['addressee_sender'],
+                addressee_sender=addressee_sender,
+                category = form.cleaned_data['category']
             )
             
             if typet == 'ingreso':

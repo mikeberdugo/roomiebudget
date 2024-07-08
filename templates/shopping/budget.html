@@ -1,0 +1,188 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+    Roomiebudget - Budgets
+{% endblock %}
+
+
+{% block navbar %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+{% block css %}
+    .card-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Número de líneas a mostrar */
+        -webkit-box-orient: vertical;
+        height: calc(1.5em * 3); /* Altura según el número de líneas y el tamaño de la fuente */
+    }
+{% endblock %}
+
+
+
+{% block sub_titulo1 %} 
+    Compras y Presupuestos
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+    Budgets
+{% endblock %}
+
+
+{% block titulo2 %} 
+Listado de Budgets
+{% endblock %}
+
+{% block actions %}
+<!-- Button trigger modal -->
+    <div class="btn-group" role="group" >
+        <button id="kt_drawer_budget" class="btn btn-icon btn-info">
+            <i class="fa-solid fa-circle-question fs-2x"></i>
+        </button>
+        <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+            New Budgets
+        </button>
+    </div>
+    <div style="width: 10px;"></div>
+    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards'  %}" >Exit Board</a>   
+{% endblock %}
+
+
+{% block content %}
+    <div class="container mt-5" >
+        <div class="row">
+            {% for budget in budgets %}
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card">
+                        <div class="card-header ribbon ribbon-top ribbon-vertical">
+                            <div class="ribbon-label bg-success">
+                                <i class="fa-solid fa-file-invoice fs-2 text-white "></i>
+                            </div>
+                            <div class="card-title">{{ budget.name }}</div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center align-items-center vh-20">
+                                <p class="card-text">{{ budget.description }}</p>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center vh-20">
+                                    <a href="{% url 'shopping:budgetitems' slug=request.session.board_slug  idbudget=budget.id  %}" class="btn btn-primary">Get Into</a> 
+                            </div>
+                        </div>
+                            <!--begin::Ribbon-->
+                            <div class="ribbon  ribbon-bottom-start border-gray-300">
+                                <!--begin::Ribbon icon-->
+                                <p class="card-text ms-3"> Actualizada : {{ budget.updated_at }}</p>
+                                <!--end::Ribbon icon-->
+                            </div>
+                            <!--end::Ribbon-->
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" id="kt_modal_lista">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Create Budgets</h3>
+    
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+    
+                <div class="modal-body">
+                    <form id="shoppinglists" method="post" >
+                        {% crispy form %}
+                    </form>
+                    
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="shoppinglists"  class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--begin::View component-->
+    <div  id="kt_drawer_budget" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_budget" data-kt-drawer-close="#kt_drawer_budget_close"  data-kt-drawer-width="{default:'300px', 'md': '500px'}" >
+        <!--begin::Card-->
+        <div class="card rounded-0 w-100">
+            <!--begin::Card header-->
+            <div class="card-header pe-5">
+                <!--begin::Title-->
+                <div class="card-title">
+                    <!--begin::User-->
+                    <div class="d-flex justify-content-center flex-column me-3">
+                        <a href="" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 lh-1"> <h2>¿Qué es un Presupuesto?</h2> </a>
+                    </div>
+                    <!--end::User-->
+                </div>
+                <!--end::Title-->
+    
+                 <!--begin::Card toolbar-->
+                 <div class="card-toolbar">
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-light-primary" id="kt_drawer_budget_close">
+                        <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Card toolbar-->
+            </div>
+            <!--end::Card header-->
+    
+            <!--begin::Card body-->
+            <div class="card-body hover-scroll-overlay-y">
+
+                <div>
+                    <p>Un presupuesto es una planificación financiera que te ayuda a asignar tus ingresos a diferentes gastos y ahorros, asegurando que puedas cumplir con tus metas económicas. Crear y seguir un presupuesto te permite controlar mejor tus finanzas y evitar problemas económicos en el futuro.</p>
+                
+                    <h2>¿Por qué es importante generar un presupuesto?</h2>
+                    <p>Generar un presupuesto tiene varias ventajas significativas:</p>
+                    <ul>
+                        <li><strong>Control de gastos:</strong> Al planificar tus gastos, puedes asegurarte de no gastar más de lo que ganas, evitando deudas innecesarias y permitiéndote mantener una estabilidad financiera.</li>
+                        <li><strong>Establecer prioridades:</strong> Un presupuesto te ayuda a decidir en qué es más importante gastar tu dinero, permitiéndote ahorrar para tus metas financieras a largo plazo, como la compra de una casa, la educación de tus hijos o la jubilación.</li>
+                        <li><strong>Preparación para imprevistos:</strong> Al incluir un fondo de emergencia en tu presupuesto, puedes estar preparado para gastos inesperados sin afectar tu estabilidad financiera, como reparaciones de automóviles, emergencias médicas o pérdida de empleo.</li>
+                        <li><strong>Reducción del estrés financiero:</strong> Tener un presupuesto bien planificado te proporciona una sensación de control y seguridad, reduciendo el estrés asociado con la incertidumbre financiera.</li>
+                        <li><strong>Mejora de hábitos de ahorro:</strong> Un presupuesto te permite identificar áreas donde puedes reducir gastos y aumentar tus ahorros, ayudándote a construir un colchón financiero para el futuro.</li>
+                    </ul>
+                
+                    <h2>Cómo usar este formulario:</h2>
+                    <p>Para generar un nuevo presupuesto, por favor sigue estos pasos:</p>
+                    <ol>
+                        <li><strong>Nombre del Presupuesto:</strong> Ingresa un nombre descriptivo para identificar el presupuesto, como 'Presupuesto Mensual' o 'Vacaciones de Verano'. Este nombre te ayudará a diferenciar entre varios presupuestos que puedas tener.</li>
+                        <li><strong>Descripción:</strong> Proporciona una breve descripción del presupuesto. Esto puede incluir el propósito del presupuesto, el período de tiempo que cubre, y cualquier detalle adicional que consideres relevante. Una buena descripción te ayudará a recordar el contexto y los objetivos del presupuesto.</li>
+                    </ol>
+                
+                    <h2>¿Qué hacer después?</h2>
+                    <p>Una vez que hayas ingresado toda la información requerida, presiona el botón <strong>'Create'</strong> para guardar los datos en el sistema. Esto te permitirá mantener un registro organizado y actualizado de tus ingresos y gastos, ayudándote a gestionar mejor tus finanzas personales.</p>
+                    <p>Seguir un presupuesto detallado es esencial para una buena salud financiera. Te permitirá tomar decisiones informadas, evitar gastos innecesarios y asegurar que siempre estés preparado para tus metas y obligaciones financieras futuras. Generar y mantener un presupuesto es un paso fundamental para lograr la estabilidad y el crecimiento económico personal.</p>
+                </div>
+                            
+
+                
+
+
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Card-->
+
+
+    
+    </div>
+    <!--end::View component-->
+
+{% endblock %}
