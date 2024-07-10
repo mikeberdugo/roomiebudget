@@ -109,10 +109,7 @@ class Category(models.Model):
                 
 
 
-@receiver(post_migrate)
-def load_initial_data(sender, **kwargs):
-    if sender.name == 'common':
-        Category.initial_data()
+
 
 
 
@@ -205,7 +202,7 @@ class Transaction(models.Model):
     ]
     
     typet = models.CharField('Tipo de transaccion', max_length=30, choices=TIPO_CHOICES)  # tipo de transaccion
-    Account = models.ForeignKey(Account, on_delete=models.CASCADE, default=1,blank=True, null=True) # tablero donde se genero
+    patrimony = models.ForeignKey(Patrimony, on_delete=models.CASCADE, default=1,blank=True, null=True) # tablero donde se genero
     board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado la trassacion 
     user = models.TextField(blank=True, null=True)
     status = models.IntegerField('Estado', default=1) # estatus 0 programada, 1 realizada, 2 realizada agrupada, 3
@@ -214,7 +211,7 @@ class Transaction(models.Model):
     description = models.TextField(blank=True, null=True) ## descriocion del movimiento 
     payment_method = models.CharField(max_length=50, choices=METODO_PAGO_CHOICES) # metodo de pago 
     addressee_sender = models.CharField(max_length=100) # enviado a nombre de la persona , generar modelo basado para crear enlace  
-    labels = models.ManyToManyField(Labels, blank=True) ## falta modelo basado en creacion 
+    category = models.ForeignKey(Category, blank=True,on_delete=models.CASCADE) ## falta modelo basado en creacion 
     reference = models.CharField(max_length=7, unique=True, editable=False) # numero de identificacion para generar facturas de movimiento 
     
     def save(self, *args, **kwargs):
@@ -325,3 +322,89 @@ class UserNotification(models.Model):
     type = models.TextField(default=0) # 0-NoClasificado, 1-PagoPrestamo
     class Meta:
         ordering = ['-date']
+        
+
+
+""" 
+Modelos de Presupuestos 
+"""
+
+
+class Budget(models.Model):
+    # Tablero asociado en el presupuesto 
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)
+    # Usuario dueño de la cuenta
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE) 
+    # Nombre del presupuesto
+    name = models.CharField(max_length=200, help_text="Nombre del presupuesto")
+    # Descripción opcional del presupuesto
+    description = models.TextField(blank=True, null=True, help_text="Descripción del presupuesto")
+    # Monto total del presupuesto
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, help_text="Monto total del presupuesto",default=0.0)
+    # Fecha y hora en que se actualizó el presupuesto por última vez
+    updated_at = models.DateTimeField(auto_now=True)
+    # estado del presupouesto 
+    state = models.BooleanField(default=True, help_text="Indica si esta activo o no ")
+    
+    def __str__(self):
+        return self.name
+
+class BudgetCategory(models.Model):
+    # Nombre de la categoría
+    name = models.CharField(max_length=200, help_text="Nombre de la categoría")
+    # Descripción opcional del presupuesto
+    description = models.TextField(blank=True, null=True, help_text="Descripción del presupuesto")
+
+    
+    def __str__(self):
+        return self.name
+    
+    @classmethod
+    def initial_data(cls):
+        initial_data = [
+            {"name": "Vivienda", "description": "Gastos relacionados con alquiler o hipoteca y servicios básicos del hogar."},
+            {"name": "Transporte", "description": "Gastos relacionados con el transporte diario."},
+            {"name": "Alimentos", "description": "Gastos relacionados con la compra de alimentos y comestibles."},
+            {"name": "Servicios Públicos", "description": "Gastos relacionados con servicios públicos como electricidad, agua, y gas."},
+            {"name": "Seguros", "description": "Pagos de seguros como salud, automóvil, o vivienda."},
+            {"name": "Cuidado de la Salud", "description": "Gastos relacionados con la salud, como medicamentos y visitas médicas."},
+            {"name": "Entretenimiento", "description": "Gastos destinados a entretenimiento y actividades recreativas."},
+            {"name": "Ahorros", "description": "Fondos destinados al ahorro para metas específicas o emergencias."},
+            {"name": "Deudas", "description": "Pagos mensuales de préstamos o tarjetas de crédito."},
+            {"name": "Misceláneos", "description": "Otros gastos no categorizados en las categorías anteriores."},
+        ]
+        
+        for category in initial_data:
+            BudgetCategory.objects.create(name=category["name"], description=category["description"])
+                
+
+class BudgetItem(models.Model):
+    # Categoría a la que pertenece el ítem
+    category = models.ForeignKey(BudgetCategory, related_name='items', on_delete=models.CASCADE)
+    # Nombre del ítem
+    name = models.CharField(max_length=200, help_text="Nombre del ítem")
+    # Descripción opcional del ítem
+    description = models.TextField(blank=True, null=True, help_text="Descripción del ítem")
+    # Monto del ítem
+    amount = models.DecimalField(max_digits=10, decimal_places=2, help_text="Monto del ítem")
+    # Indica si el ítem ha sido pagado
+    is_paid = models.BooleanField(default=False, help_text="Indica si el ítem ha sido pagado")
+
+    budget =  models.ForeignKey(Budget, related_name='budget', on_delete=models.CASCADE)
+    
+
+    
+    def __str__(self):
+        return self.name
+    
+
+
+
+## carga de datos basicos 
+
+@receiver(post_migrate)
+def load_initial_data(sender, **kwargs):
+    if sender.name == 'common':
+        Category.initial_data()
+        BudgetCategory.initial_data()
+

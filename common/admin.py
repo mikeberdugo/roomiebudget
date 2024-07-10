@@ -14,3 +14,7 @@ admin.site.register(AstradUser)
 admin.site.register(Transaction)
 admin.site.register(Permit)
 admin.site.register(Patrimony)
+
+admin.site.register(Budget)
+admin.site.register(BudgetCategory)
+admin.site.register(BudgetItem)

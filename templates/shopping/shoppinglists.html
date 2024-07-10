@@ -39,11 +39,16 @@ Listado de Contratos Activos
 
 {% block actions %}
 <!-- Button trigger modal -->
-    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
-        New list
-    </button>
-    <button class="btn btn-secondary" disabled> </button>
-    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards'  %}" >Exit Board</a>   
+    <div class="btn-group" role="group" >
+        <button id="kt_drawer_list" class="btn btn-icon btn-info">
+            <i class="fa-solid fa-circle-question fs-2x"></i>
+        </button>
+        <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+            New list
+        </button>
+    </div>
+    <div style="width: 10px;"></div>
+    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards'  %}" >Exit Board</a>    
 {% endblock %}
 
 
@@ -109,5 +114,78 @@ Listado de Contratos Activos
             </div>
         </div>
     </div>
+
+
+    <!--begin::View component-->
+    <div  id="kt_drawer_list" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_list" data-kt-drawer-close="#kt_drawer_list_close"  data-kt-drawer-width="{default:'300px', 'md': '500px'}" >
+        <!--begin::Card-->
+        <div class="card rounded-0 w-100">
+            <!--begin::Card header-->
+            <div class="card-header pe-5">
+                <!--begin::Title-->
+                <div class="card-title">
+                    <!--begin::User-->
+                    <div class="d-flex justify-content-center flex-column me-3">
+                        <a href="" class="fs-4 fw-bold text-gray-900 text-hover-primary me-1 lh-1"> <h2>Importancia de Generar Listas</h2> </a>
+                    </div>
+                    <!--end::User-->
+                </div>
+                <!--end::Title-->
+    
+                 <!--begin::Card toolbar-->
+                 <div class="card-toolbar">
+                    <!--begin::Close-->
+                    <div class="btn btn-sm btn-icon btn-active-light-primary" id="kt_drawer_list_close">
+                        <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>                
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Card toolbar-->
+            </div>
+            <!--end::Card header-->
+    
+            <!--begin::Card body-->
+            <div class="card-body hover-scroll-overlay-y">
+
+                <div>                
+                    <p>Generar y utilizar listas de compras es una práctica fundamental para una gestión eficiente y organizada de las actividades de compra. Ya sea para compras personales, familiares o comerciales, las listas de compras ofrecen varios beneficios clave:</p>
+                
+                    <h2>Organización y Planificación</h2>
+                    <p>Una lista de compras ayuda a organizar y planificar lo que se necesita comprar. Al enumerar específicamente los productos y cantidades requeridas, se minimiza el riesgo de olvidar artículos esenciales y se evita la compra impulsiva de cosas innecesarias.</p>
+                
+                    <h2>Optimización del Tiempo</h2>
+                    <p>Planificar las compras con una lista reduce el tiempo dedicado a ir de tienda en tienda o navegar por pasillos indecisos. Esto permite realizar las compras de manera más eficiente y dedicar más tiempo a otras actividades importantes.</p>
+                
+                    <h2>Control de Gastos</h2>
+                    <p>Una lista de compras ayuda a establecer un presupuesto claro y controlar los gastos. Al saber exactamente qué se va a comprar, es más fácil mantenerse dentro de los límites financieros y evitar compras impulsivas o innecesarias.</p>
+                
+                    <h2>Minimización del Desperdicio</h2>
+                    <p>Al planificar las compras con una lista, se reduce el riesgo de comprar en exceso o artículos que luego no se utilizarán. Esto contribuye a minimizar el desperdicio de alimentos y otros productos, promoviendo así un consumo más consciente y sostenible.</p>
+                
+                    <h2>Mejora de la Salud y Nutrición</h2>
+                    <p>En el contexto de compras de alimentos, una lista puede ayudar a seleccionar alimentos más saludables y equilibrados. Al planificar las comidas y los ingredientes necesarios de antemano, se facilita mantener una dieta más nutritiva y variada.</p>
+                
+                    <h2>Facilita la Compra Online</h2>
+                    <p>En el caso de compras en línea, una lista de compras puede ser aún más útil al permitir comparar precios, buscar ofertas y completar rápidamente la compra sin perder productos esenciales.</p>
+                
+                    <h2>Conclusión</h2>
+                    <p>En conclusión, generar y utilizar listas de compras no solo es una práctica organizativa, sino una herramienta poderosa para gestionar eficazmente el tiempo, el dinero y los recursos. Desde la planificación hasta la ejecución, una lista de compras ayuda a mantener el control sobre las actividades de compra, mejorar la eficiencia y promover hábitos de consumo más conscientes y responsables.</p>
+                
+                    <p>Integrar el hábito de crear y seguir listas de compras puede tener un impacto positivo significativo tanto a nivel personal como comercial, mejorando la calidad de vida y optimizando la gestión de recursos disponibles.</p>
+                </div>
+                
+
+                
+
+
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Card-->
+
+
+    
+    </div>
+    <!--end::View component-->
 
 {% endblock %}
