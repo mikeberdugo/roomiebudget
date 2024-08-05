@@ -1,6 +1,6 @@
 
 module.exports = {
-  darkMode: 'media',
+  darkMode: 'selector',
   
   theme: {
     extend: {
@@ -65,7 +65,8 @@ module.exports = {
   }),
   ],
   content: [
-    './src/**/*.{html,js,jsx,ts,tsx}', // Ajusta esto según las rutas de tus archivos
+    './static/**/*.{html,js,jsx,ts,tsx}', // Ajusta esto según las rutas de tus archivos
+    './templates/**/*.{html,js,jsx,ts,tsx}',
     './static/flowbite/**/*.js'
   ],
 }
