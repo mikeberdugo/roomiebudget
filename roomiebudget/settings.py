@@ -1,4 +1,3 @@
-
 """
 Django settings for roomiebudget project.
 
@@ -11,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
-import os
 from pathlib import Path
+import os
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -21,40 +21,33 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-l3xx7=@^-hlh@txymonbpc!a46%4opz@&$tm9gq$xn1gxmr^f)'
+SECRET_KEY = 'django-insecure-c$8g58k&fie@u6zq61**+6bxh+c!h*t6@p*s-=dbll!++w9mi2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',           # Añadir esta línea
-    'accounts',        # Añadir esta línea
-    'bills',           # Añadir esta línea
-    'income',          # Añadir esta línea
-    'shared_boards',   # Añadir esta línea
-    'shopping',        # Añadir esta línea
-    'common',
-    'crispy_forms',
-    "crispy_bootstrap5",
+    'compressor',
+    'shopping',
+    'users',
 ]
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
+COMPRESS_ROOT = BASE_DIR / 'static'
 
+COMPRESS_ENABLED = True
 
-AUTH_USER_MODEL = 'common.AstradUser'
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -119,6 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
+
 LANGUAGE_CODE = 'es-co'
 
 TIME_ZONE = 'America/Bogota'
@@ -134,7 +128,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
@@ -144,7 +137,6 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
