@@ -3,7 +3,8 @@
   <div class="d-flex flex-column justify-content-between h-100 hover-scroll-overlay-y my-2 mx-5 d-flex flex-column" id="kt_app_sidebar_main" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_header" data-kt-scroll-wrappers="#kt_app_main" data-kt-scroll-offset="5px">
       <!--begin::Sidebar menu-->
       <div id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false" class="flex-column-fluid menu menu-sub-indention menu-column menu-rounded menu-active-bg mb-7">
-            <!--begin:Menu item-->
+            
+            {% comment %} <!--begin:Menu item-->
                 <div data-kt-menu-trigger="click" class="menu-item here menu-accordion">
                     <!--begin:Menu link-->
                     <span class="menu-link">
@@ -35,7 +36,7 @@
                     </div>
                     <!--end:Menu sub-->
                 </div>
-            <!--begin:Menu item-->
+            <!--begin:Menu item--> {% endcomment %}
         
             
             <!--begin:Menu item-->
@@ -96,7 +97,8 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{% url 'patrimony:passives' request.session.board_slug  %}">
+                        <a class="menu-link" href=""> 
+                            {% comment %} {% url 'patrimony:passives'   %} {% endcomment %}
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -154,7 +156,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{% url 'income:Transaction' request.session.board_slug  %}">
+                        <a class="menu-link" href="">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -172,7 +174,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{% url 'income:typeTransaction' request.session.board_slug  %}">
+                        <a class="menu-link" href="">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -224,7 +226,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{% url 'shopping:shoppinglists'  %}">
+                        <a class="menu-link" href="">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -241,7 +243,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{% url 'shopping:budget' request.session.board_slug  %}">
+                        <a class="menu-link" href="">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
@@ -298,11 +300,28 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="#">
+                        <a class="menu-link" href="{% url 'bills:bills'   %}">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>
                             <span class="menu-title">Facturas</span>
+                        </a>
+                        <!--end:Menu link-->
+                    </div>
+                    <!--end:Menu item-->
+                </div>
+                <!--end:Menu sub-->
+
+                <!--begin:Menu sub-->
+                <div class="menu-sub menu-sub-accordion">
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <!--begin:Menu link-->
+                        <a class="menu-link" href="{% url 'bills:service'   %}">
+                            <span class="menu-bullet">
+                                <span class="bullet bullet-dot"></span>
+                            </span>
+                            <span class="menu-title">Servicios</span>
                         </a>
                         <!--end:Menu link-->
                     </div>
@@ -327,7 +346,7 @@
                 </div>
                 <!--end:Menu sub-->
 
-                <!--begin:Menu sub-->
+                {% comment %} <!--begin:Menu sub-->
                 <div class="menu-sub menu-sub-accordion">
                     <!--begin:Menu item-->
                     <div class="menu-item">
@@ -342,7 +361,7 @@
                     </div>
                     <!--end:Menu item-->
                 </div>
-                <!--end:Menu sub-->
+                <!--end:Menu sub--> {% endcomment %}
 
 
             </div>
@@ -370,7 +389,7 @@
                     <!--begin:Menu item-->
                     <div class="menu-item">
                         <!--begin:Menu link-->
-                        <a class="menu-link" href="{% url 'boards:userboard' request.session.board_slug  %}">
+                        <a class="menu-link" href="">
                             <span class="menu-bullet">
                                 <span class="bullet bullet-dot"></span>
                             </span>

@@ -69,6 +69,10 @@ class AstradUser(AbstractUser):
             cdunico = ''.join(random.choices(string.ascii_uppercase + string.digits, k=7))
             if AstradUser.objects.filter(cdunico=cdunico).count() == 0:
                 return cdunico
+    class Meta:
+        verbose_name = "User"
+        verbose_name_plural = "Users"
+        db_table = 'astrad_user'
 
 
 # Modelo para Categoría
@@ -80,6 +84,7 @@ class Category(models.Model):
     
     def __str__(self):
         return f"{self.name}"
+
     
     
     @classmethod
@@ -106,7 +111,10 @@ class Category(models.Model):
             if created:
                 category.user = None
                 category.save()
-                
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+        db_table = 'category'
 
 
 
@@ -138,7 +146,10 @@ class Board(models.Model):
         
     def __str__(self):
         return self.name
-
+    class Meta:
+        verbose_name = "Board"
+        verbose_name_plural = "Boards"
+        db_table = 'board'
 
 class Permit(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE)  # Tablero asociado 
@@ -148,6 +159,11 @@ class Permit(models.Model):
     def __str__(self):
         return f'{self.board} - {self.user}' 
 
+    class Meta:
+        verbose_name = "Permit"
+        verbose_name_plural = "Permits"
+        db_table = 'permit'
+    
 # Modelo para Cuenta
 class Account(models.Model):
     user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)  # Usuario dueño de la cuenta
@@ -158,10 +174,15 @@ class Account(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización de la cuenta
     account_type = models.CharField(max_length=50)  # Tipo de cuenta (ejemplo: Cuenta Corriente, Cuenta de Ahorros, Tarjeta de Crédito, etc.)
     status = models.CharField(max_length=20)  # Estado de la cuenta (ejemplo: Activa, Inactiva, Cerrada, etc.)
-    board = models.ForeignKey(Board, on_delete=models.CASCADE )  # Tablero asociado a la cuenta
+    # board = models.ForeignKey(Board, on_delete=models.CASCADE )  # Tablero asociado a la cuenta
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Account"
+        verbose_name_plural = "Accounts"
+        db_table = 'account'
     
 ## modelo de patrimonio 
 
@@ -174,16 +195,25 @@ class Patrimony(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     type_dos = models.IntegerField() # activo - 1  o pasivo - 2  
     status = models.CharField(max_length=20)
-    board = models.ForeignKey(Board, on_delete=models.CASCADE )
+    # board = models.ForeignKey(Board, on_delete=models.CASCADE )
     def __str__(self):
         return self.name
     
+    class Meta:
+        verbose_name = "Patrimony"
+        verbose_name_plural = "Patrimonies"
+        db_table = 'patrimony'
 
 class Labels(models.Model):
     nombre = models.CharField(max_length=100)
 
     def __str__(self):
         return self.nombre
+        
+    class Meta:
+        verbose_name = "Label"
+        verbose_name_plural = "Labels"
+        db_table = 'labels'
 
 
 # modelo de items tablero 
@@ -203,8 +233,8 @@ class Transaction(models.Model):
     
     typet = models.CharField('Tipo de transaccion', max_length=30, choices=TIPO_CHOICES)  # tipo de transaccion
     patrimony = models.ForeignKey(Patrimony, on_delete=models.CASCADE, default=1,blank=True, null=True) # tablero donde se genero
-    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado la trassacion 
-    user = models.TextField(blank=True, null=True)
+    # board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado la trassacion 
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
     status = models.IntegerField('Estado', default=1) # estatus 0 programada, 1 realizada, 2 realizada agrupada, 3
     date = models.DateField() # fecha de creacion 
     amount = models.DecimalField(max_digits=10, decimal_places=2) # monto de la transaccion 
@@ -219,11 +249,17 @@ class Transaction(models.Model):
         self.reference = ''.join(random.choices(string.digits + string.ascii_letters, k=5))  # Cinco letras aleatorias
         self.reference += ''.join(random.choices(string.digits, k=2))  # Dos números aleatorios
         super().save(*args, **kwargs)
+        
+    class Meta:
+        verbose_name = "Transaction"
+        verbose_name_plural = "Transactions"
+        db_table = 'transaction'
 
 
 
 # Modelo para Factura
 class Bill(models.Model):
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)  # Cuenta asociada a la factura
     description = models.CharField(max_length=255)  # Descripción de la factura
     amount = models.DecimalField(max_digits=10, decimal_places=2)  # Monto de la factura
@@ -232,6 +268,10 @@ class Bill(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación de la factura
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización de la factura
 
+    class Meta:
+        verbose_name = "Bill"
+        verbose_name_plural = "Bills"
+        db_table = 'bill'
 # Modelo para Pago
 class Payment(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)  # Cuenta asociada al pago
@@ -241,6 +281,66 @@ class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación del pago
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del pago
     
+    class Meta:
+        verbose_name = "Payment"
+        verbose_name_plural = "Payments"
+        db_table = 'payment'
+
+
+class Service(models.Model):
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    cost = models.DecimalField(max_digits=10, decimal_places=2)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    payment_date = models.DateField()
+    closet = models.BooleanField(default=False)
+    class Meta:
+        verbose_name = ("Service")
+        verbose_name_plural = ("Services")
+        db_table = 'services'
+
+    def __str__(self):
+        return self.name
+
+class Roomie(models.Model):
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    
+    
+    def __str__(self):
+        return self.name
+
+class Guest(models.Model):
+    name = models.CharField(max_length=100)
+    roomie = models.ForeignKey(Roomie, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    arrival_date = models.DateField()  # Fecha de llegada del invitado
+    departure_date = models.DateField()  # Fecha de salida del invitado
+    class Meta:
+        verbose_name = ("Guest")
+        verbose_name_plural = ("Guests")
+        db_table = 'guests'
+
+    def days_presence(self):
+        return (self.arrival_date - self.departure_date).days + 1
+    
+    def __str__(self):
+        return self.name
+    
+class Calculation(models.Model):
+    roomie = models.ForeignKey(Roomie, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    value =  models.DecimalField(max_digits=10, decimal_places=2)
+    
+    class Meta:
+        verbose_name = ("Calculation")
+        verbose_name_plural = ("Calculations")
+        db_table = 'calculation'
+
+
+
+
 
 
 """  
@@ -250,12 +350,18 @@ modelo de pagos basico para generar los pagos que se dieron en el mes y generar 
 """
 
 class Spent(models.Model):
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
     name = models.TextField(null=False, blank=False)
     expensedate = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, related_name='boards', on_delete=models.CASCADE)   # Categorías asociadas al pago 
     taxes = models.CharField(max_length=100)
     paid = models.BooleanField(default=False) 
     paymenttype = models.CharField(max_length=100)
+    
+    class Meta:
+        verbose_name = "Spent"
+        verbose_name_plural = "Spents"
+        db_table = 'spent'
 
 
 # pago recurrentes , progamados mes a mes o en un tiempo determinado 
@@ -279,12 +385,15 @@ class RecurringPayment(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     # Fecha y hora de la última actualización del registro de pago recurrente
     
-    
+    class Meta:
+        verbose_name = "RecurringPayment"
+        verbose_name_plural = "RecurringPayments"
+        db_table = 'recurringPayment'
     
 ### modelos de lista de compras 
 class ShoppingList(models.Model):
     # Usuario que crea la lista de compras
-    
+    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
     # Nombre de la lista de compras
     name = models.CharField(max_length=255)
     # Descripción opcional de la lista de compras
@@ -296,7 +405,10 @@ class ShoppingList(models.Model):
     
     def __str__(self):
         return self.name
-
+    class Meta:
+        verbose_name = "ShoppingList"
+        verbose_name_plural = "ShoppingLists"
+        db_table = 'shoppingList'
 # items de esa compra 
 class ListItem(models.Model):
     # Relación con la lista de compras
@@ -312,6 +424,10 @@ class ListItem(models.Model):
     
     def __str__(self):
         return self.name
+    class Meta:
+        verbose_name = "ListItem"
+        verbose_name_plural = "ListItems"
+        db_table = 'listitem'
 
 ## notificacion del usuario 
 class UserNotification(models.Model):
@@ -322,6 +438,9 @@ class UserNotification(models.Model):
     type = models.TextField(default=0) # 0-NoClasificado, 1-PagoPrestamo
     class Meta:
         ordering = ['-date']
+        verbose_name = "Notification"
+        verbose_name_plural = "Notifications"
+        db_table = 'notification'
         
 
 
@@ -332,7 +451,7 @@ Modelos de Presupuestos
 
 class Budget(models.Model):
     # Tablero asociado en el presupuesto 
-    board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)
+    # board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)
     # Usuario dueño de la cuenta
     user = models.ForeignKey(AstradUser, on_delete=models.CASCADE) 
     # Nombre del presupuesto
@@ -348,6 +467,11 @@ class Budget(models.Model):
     
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name = "Budget"
+        verbose_name_plural = "Budgets"
+        db_table = 'budget'
 
 class BudgetCategory(models.Model):
     # Nombre de la categoría
@@ -376,7 +500,11 @@ class BudgetCategory(models.Model):
         
         for category in initial_data:
             BudgetCategory.objects.create(name=category["name"], description=category["description"])
-                
+    
+    class Meta:
+        verbose_name = "BudgetCategory"
+        verbose_name_plural = "BudgetCategorys"
+        db_table = 'budgetCategory'
 
 class BudgetItem(models.Model):
     # Categoría a la que pertenece el ítem
@@ -397,7 +525,10 @@ class BudgetItem(models.Model):
     def __str__(self):
         return self.name
     
-
+    class Meta:
+            verbose_name = "Budget Item"
+            verbose_name_plural = "Budget Items"
+            db_table = 'budget_item'
 
 
 ## carga de datos basicos 

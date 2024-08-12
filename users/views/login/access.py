@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from users.forms.accessform import LoginForm, SignupForm
 from common.models import AstradUser
 import random
-
+from django.contrib.auth.decorators import login_required
 
 frases_falla = [
     "¡Parece que el nombre de usuario o la contraseña están tramando algo! ¡Vamos a poner orden por aquí!",
@@ -42,6 +42,10 @@ def login_view(request):
         return render(request, './users/login.html', {'form': form})
 
 
+
+
+
+@login_required
 def logout_view(request):
     logout(request)
     return redirect('login:login')  # Redirigir a la página de inicio de sesión después de cerrar sesión

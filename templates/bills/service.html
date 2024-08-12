@@ -1,0 +1,168 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+    Nomiweb.co - Portal Empresas - Lista Activos
+{% endblock %}
+
+{% block navbar %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+
+{% block css %}
+    .card-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Número de líneas a mostrar */
+        -webkit-box-orient: vertical;
+        height: calc(1.5em * 3); /* Altura según el número de líneas y el tamaño de la fuente */
+    }
+{% endblock %}
+
+
+
+
+{% block sub_titulo1 %} 
+    Facturas
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+    Servicios
+{% endblock %}
+
+
+{% block titulo2 %} 
+    Listado de Servicios
+{% endblock %}
+
+{% block actions %}
+<!-- Button trigger modal -->
+    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+        Nuevo Servicio
+    </button>  
+{% endblock %}
+
+
+{% block content %}
+    <div class="container" >
+        <div class="row">
+            {% if services %}
+            <div class="table-responsive">
+                <table class="table table-rounded table-striped border gy-7 gs-7" id='id-Service'>
+                    <thead>
+                        <tr>
+                            <th width="200">Nombre</th>
+                            <th width="200">Costo</th>
+                            <th width="200">Fecha Inicio </th>
+                            <th width="200">Fecha Fin</th>
+                            <th width="200">Fecha de pago</th>
+                            <th width="200"> Actiones </th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in services %}
+                        <tr>
+                            <td class="text-center">{{ item.name }}</td>
+                            <td class="text-center">{{ item.cost }}</td>
+                            <td class="text-center">{{ item.start_date | date:"Y-m-d" }}</td>
+                            <td class="text-center">{{ item.end_date | date:"Y-m-d"  }}</td>
+                            <td class="text-center">{{ item.payment_date | date:"Y-m-d"   }}</td>
+                            <td class="text-center"> 
+                                <div class="d-inline-flex">
+                                    <a href="{% url 'bills:calculator' id=item.id %}" class="btn btn-icon btn-sm  me-2 btn-light-facebook" data-bs-toggle="tooltip" data-bs-placement="top" title="Realizar Calculo">
+                                        <i class="fa-solid fa-calculator fs-3 "></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% else %}
+                <div class="alert alert-primary" role="alert">
+                    <h4 class="alert-heading">¡Ups!</h4>
+                    <p>Parece que esta lista está tan vacía como un parque en pleno invierno. ¡Está tan desierta que incluso los ecos se aburren de rebotar por aquí!</p>
+                    <hr>
+                    <p class="mb-0">¡Manos a la obra! ¡Llenémosla antes de que los fantasmas del aburrimiento decidan hacer de este lugar su hogar permanente!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    
+    <!-- Modal -->
+    <div class="modal fade" tabindex="-1" id="kt_modal_lista">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Create Service</h3>
+    
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+    
+                <div class="modal-body">
+                    <form id="shoppinglists" method="post" >
+                        {% crispy form %}
+                    </form>
+                    
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="shoppinglists"  class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block js %}
+
+<script>
+$(document).ready(function() {
+    $('#id-Service').DataTable({
+        language: {
+            "decimal":        "",
+            "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
+            "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+            "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Mostrar _MENU_ entradas",
+            "loadingRecords": "Cargando...",
+            "processing":     "Procesando...",
+            "search":         "Buscar:",
+            "zeroRecords":    "No se encontraron registros coincidentes",
+            "paginate": {
+                "first":      "Primero",
+                "last":       "Último",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "aria": {
+                "sortAscending":  ": activar para ordenar la columna ascendente",
+                "sortDescending": ": activar para ordenar la columna descendente"
+            }
+        },
+        dom: 'frtip',
+        order: [[2, 'asc']], 
+        "pageLength": 6,
+        searching: false                
+    });
+
+});
+</script>
+{% endblock %}

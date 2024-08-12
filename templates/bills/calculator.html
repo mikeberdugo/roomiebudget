@@ -1,0 +1,496 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+    Nomiweb.co - Portal Empresas - Lista Activos
+{% endblock %}
+
+{% block navbar %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+
+{% block css %}
+    .card-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Número de líneas a mostrar */
+        -webkit-box-orient: vertical;
+        height: calc(1.5em * 3); /* Altura según el número de líneas y el tamaño de la fuente */
+    }
+
+    #calendar {
+        max-width: 500px; /* Adjust as needed */
+        margin: 0 auto;   /* Center the calendar */
+    }
+{% endblock %}
+
+
+
+
+{% block sub_titulo1 %} 
+    Facturas
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+    Servicios
+{% endblock %}
+
+
+{% block titulo2 %} 
+{% endblock %}
+
+{% block actions %}
+    <a href="{% url 'bills:service' %}"  class="btn btn-light-primary"   >
+        Atras
+        <i class="ki-duotone ki-exit-left fs-2x ">             
+            <span class="path1"></span>
+            <span class="path2"></span>
+        </i>
+    </a>  
+{% endblock %}
+
+
+{% block content %}
+
+
+
+<div class="card card-dashed">
+    <div class="card-header">
+        <h3 class="card-title"> {{service.name}} &nbsp; <span class="badge badge-outline badge-success"> {{ service.start_date | date:"Y/m/d" }}  - {{ service.end_date | date:"Y/m/d" }}  </span> </h3>
+        <div class="card-toolbar">
+            <!-- Primer grupo de botones -->
+            <div class="btn-group" role="group" >
+                <button  type="button" class="btn btn-icon btn-info" data-bs-toggle="popover" data-bs-html="true" title="¿Quién es un ocupante?" data-bs-content="Un <b class='text-danger'>ocupante permanente</b> es cualquier persona que vive en el apartamento o casa de manera continua y estable. En otras palabras, ¡es quien convierte ese espacio en su hogar diario!" >
+                    <i class="fa-solid fa-circle-question fs-2x"></i>
+                </button>
+
+                <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_ocupante">
+                    <i class="fa-solid fa-plus"></i>
+                    Ocupante
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="card-body">
+
+        <div class="container" >
+            <div class="row">
+                {% if ocupantes %}
+                <div class="table-responsive">
+                    <table class="table table-rounded table-striped border gy-7 gs-7" id='id-Service'>
+                        <thead>
+                            <tr>
+                                <th width="200" class="text-center" >Nombre</th>
+                                <th width="200" class="text-center" >Pago</th>
+                                <th width="200" class="text-center" >
+                                    Visitantes
+                                    <span class="badge badge-primary badge-circle badge-lg">{{total}}</span>
+                                </th>
+                                <th width="200" class="text-center" >
+                                    Agregar
+                                    <a href="" class="btn btn-icon btn-sm  me-2 btn-light-facebook"  data-bs-placement="top" title="Agregar Visitante" data-bs-toggle="modal" data-bs-target="#kt_modal_visitante" >
+                                        <i class="fa-solid fa-plus fs-3 "></i>
+                                    </a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in ocupantes %}
+                            <tr>
+                                <td class="text-center">{{ item.name }}</td>
+                                <td class="text-center">{{ item.pago }}</td>
+                                <td class="text-center">
+                                    {% for visita in item.visitante %}
+                                        <span class="badge badge-light-primary">{{visita}}</span>
+                                    {% endfor %}
+                                </td>
+                                <td class="text-center"> 
+                                    <span class="badge badge-primary badge-circle badge-lg">{{item.nvisitante}}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+    
+                {% else %}
+                    <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading">¡Oye, mira esto!</h4>
+                        <p>Este lugar está tan vacío que hasta el Wi-Fi se siente solo. ¡Podrías bailar una salsa y no molestarías a nadie!</p>
+                        <hr>
+                        <p class="mb-0">¡Es hora de llenar este espacio con algo emocionante antes de que se convierta en una sala de meditación por sí sola!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_ocupante">
+            Generar Calculo
+        </button>
+    </div>
+    <div class="card-footer">
+        
+        <!--begin::Accordion-->
+        <div class="accordion" id="kt_accordion_1">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="kt_accordion_1_header_1">
+                    <button class="accordion-button fs-4 fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_1" aria-expanded="true" aria-controls="kt_accordion_1_body_1">
+                        Resumen por día
+                    </button>
+                </h2>
+                <div id="kt_accordion_1_body_1" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_1" data-bs-parent="#kt_accordion_1">
+                    <div class="accordion-body">
+                        
+                        <table id="kt_accordion_1_body_1_data" class="table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Manuel</th>
+                                    <th>Invitados Manuel</th>
+                                    <th>Alex</th>
+                                    <th>Invitados Alex</th>
+                                    <th>David</th>
+                                    <th>Invitados David</th>
+                                    <th>Valor Día</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Los datos se cargarán aquí -->
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="kt_accordion_1_header_2">
+                    <button class="accordion-button fs-4 fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_2" aria-expanded="false" aria-controls="kt_accordion_1_body_2">
+                        Resumen por calendario
+                    </button>
+                </h2>
+                <div id="kt_accordion_1_body_2" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_2" data-bs-parent="#kt_accordion_1">
+                    <div class="accordion-body">
+                        ...
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="kt_accordion_1_header_3">
+                    <button class="accordion-button fs-4 fw-semibold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#kt_accordion_1_body_3" aria-expanded="false" aria-controls="kt_accordion_1_body_3">
+                        Próximamente 
+                    </button>
+                </h2>
+                <div id="kt_accordion_1_body_3" class="accordion-collapse collapse" aria-labelledby="kt_accordion_1_header_3" data-bs-parent="#kt_accordion_1">
+                    <div class="accordion-body">
+                    ...
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end::Accordion-->
+
+    </div>
+</div>
+
+
+
+
+
+
+
+{% comment %} <div id='calendar'></div> {% endcomment %}
+
+    
+    
+    <!-- Modal 1 -->
+    <div class="modal fade" tabindex="-1" id="kt_modal_ocupante">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Create Roomie</h3>
+    
+                    <!--begin::Close-->
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                    <!--end::Close-->
+                </div>
+    
+                <div class="modal-body">
+                    <form id="shoppinglists" method="post" >
+                        {% crispy form1 %}
+                    </form>
+                    
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="shoppinglists"  class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- Modal 2 -->
+        <div class="modal fade" tabindex="-1" id="kt_modal_visitante">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Create Roomie</h3>
+        
+                        <!--begin::Close-->
+                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                        </div>
+                        <!--end::Close-->
+                    </div>
+        
+                    <div class="modal-body">
+                        <form id="shoppinglists2" method="post" >
+                            {% crispy form2 %}
+                        </form>
+                        
+                    </div>
+        
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="shoppinglists2"  class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+
+{% block js %}
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Selecciona todos los botones de acordeón
+        var accordionButtons = document.querySelectorAll('#kt_accordion_1 .accordion-button');
+    
+        accordionButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Obtén el ID del objetivo del colapso
+                var targetId = button.getAttribute('aria-controls');
+                var table = document.querySelector(`#${targetId}_data`);
+                var tbody = table ? table.querySelector('tbody') : null; // Selecciona el tbody dentro de la tabla
+                var url;
+    
+                switch (targetId) {
+                    case 'kt_accordion_1_body_1':
+                        url = '/boards/bills/service/{{service.id}}/api1'; // Reemplaza con el endpoint para "Resumen por día"
+                        break;
+                    case 'kt_accordion_1_body_2':
+                        url = '/app2/endpoint'; // Reemplaza con el endpoint para "Resumen por calendario"
+                        break;
+                    case 'kt_accordion_1_body_3':
+                        url = '/proximamente/endpoint'; // Reemplaza con el endpoint para "Próximamente"
+                        break;
+                    default:
+                        console.error('ID de objetivo desconocido:', targetId);
+                        return;
+                }
+    
+                if (url) {
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Datos recibidos:', data);
+    
+                            var informe = data.informe; // Ajusta según la estructura del JSON
+    
+                            if (typeof informe !== 'object' || informe === null) {
+                                console.error('La propiedad informe no es un objeto:', informe);
+                                return;
+                            }
+    
+                            // Crear un objeto para almacenar los datos agregados por fecha
+                            var rows = '';
+                            for (var fecha in informe) {
+                                if (informe.hasOwnProperty(fecha)) {
+                                    var items = informe[fecha];
+                                    
+                                    // Crear un objeto para almacenar los datos de cada fecha
+                                    var dataRow = {
+                                        fecha: fecha,
+                                        manuel: '',
+                                        invitados_manuel: '',
+                                        alex: '',
+                                        invitados_alex: '',
+                                        david: '',
+                                        invitados_david: '',
+                                        valor_dia: ''
+                                    };
+                                    
+                                    items.forEach(item => {
+                                        var valorDia = parseFloat(item.valor_dia);
+                                        if (!isNaN(valorDia)) {
+                                            switch (item.nombre) {
+                                                case 'manuel':
+                                                    dataRow.manuel = valorDia.toFixed(2); // Formatear a dos decimales
+                                                    dataRow.invitados_manuel = item.invitados;
+                                                    break;
+                                                case 'alex':
+                                                    dataRow.alex = valorDia.toFixed(2); // Formatear a dos decimales
+                                                    dataRow.invitados_alex = item.invitados;
+                                                    break;
+                                                case 'david':
+                                                    dataRow.david = valorDia.toFixed(2); // Formatear a dos decimales
+                                                    dataRow.invitados_david = item.invitados;
+                                                    break;
+                                            }
+                                        } else {
+                                            console.warn('Valor no numérico para valor_dia:', item.valor_dia);
+                                        }
+                                    });
+    
+                                    // Manejar valor_dia (si existe) como un número formateado
+                                    var valorDia = parseFloat(items[0]?.valor_dia); // Tomar el primer valor para el ejemplo
+                                    if (!isNaN(valorDia)) {
+                                        dataRow.valor_dia = valorDia.toFixed(2); // Formatear a dos decimales
+                                    } else {
+                                        dataRow.valor_dia = '';
+                                    }
+    
+                                    rows += `<tr>
+                                        <td>${dataRow.fecha}</td>
+                                        <td>${dataRow.manuel}</td>
+                                        <td>${dataRow.invitados_manuel}</td>
+                                        <td>${dataRow.alex}</td>
+                                        <td>${dataRow.invitados_alex}</td>
+                                        <td>${dataRow.david}</td>
+                                        <td>${dataRow.invitados_david}</td>
+                                        <td>${dataRow.valor_dia}</td> <!-- Asegúrate de que el valor día también esté formateado -->
+                                    </tr>`;
+                                }
+                            }
+    
+                            if (tbody) {
+                                tbody.innerHTML = ''; // Limpia los datos antiguos
+                                tbody.innerHTML = rows; // Agrega las nuevas filas
+                            } else {
+                                console.error('No se encontró el tbody dentro de la tabla con ID:', `${targetId}_data`);
+                            }
+                        })
+                        .catch(error => console.error('Error en fetch:', error));
+                }
+            });
+        });
+    });
+    
+    
+    
+    
+</script>
+
+
+
+{% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth'
+        },
+        initialView: 'dayGridMonth',
+        events: [
+          {
+            id: 'a',
+            title: 'Meeting',
+            start: '2024-08-15',
+            end: '2024-08-30',
+            display: 'background',
+            backgroundColor: '#ff9999',  // Light red background
+            borderColor: '#cc0000',      // Dark red border
+            textColor: '#ffffff'  ,   
+            extendedProps: {
+              department: 'HR',
+              description: 'Discuss project status',
+              gente:'nose, tu y yo '
+            }
+          },
+          {
+            id: 'b',
+            title: 'Meeting',
+            start: '2024-07-05',
+            end: '2024-08-15',
+            display: 'background',
+            backgroundColor: '#ff9999',  // Light red background
+            borderColor: '#cc0000',      // Dark red border
+            textColor: '#ffffff'  ,  
+            extendedProps: {
+              description: 'HR'
+            }
+          }
+          
+        ],
+        eventDidMount: function(info) {
+          // Initialize popover
+          $(info.el).popover({
+            title: info.event.title,
+            content: `
+              <strong>Description:</strong> ${info.event.extendedProps.description || 'N/A'}<br>
+              <strong>Department:</strong> ${info.event.extendedProps.department || 'N/A'}<br>
+              <strong>gente:</strong> ${info.event.extendedProps.gente || 'N/A'}<br>
+            `,
+            trigger: 'hover',
+            placement: 'top',
+            html: true
+          });
+        }
+      });
+
+      calendar.render();
+    });
+</script> {% endcomment %}
+
+
+
+<script>
+$(document).ready(function() {
+    $('#id-Service').DataTable({
+        language: {
+            "decimal":        "",
+            "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
+            "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+            "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Mostrar _MENU_ entradas",
+            "loadingRecords": "Cargando...",
+            "processing":     "Procesando...",
+            "search":         "Buscar:",
+            "zeroRecords":    "No se encontraron registros coincidentes",
+            "paginate": {
+                "first":      "Primero",
+                "last":       "Último",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "aria": {
+                "sortAscending":  ": activar para ordenar la columna ascendente",
+                "sortDescending": ": activar para ordenar la columna descendente"
+            }
+        },
+        dom: 'frtip',
+        "pageLength": 6,
+        searching: false                
+    });
+
+});
+</script>
+{% endblock %}
