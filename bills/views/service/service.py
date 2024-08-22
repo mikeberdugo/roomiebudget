@@ -10,6 +10,11 @@ from .calculate import calcular_precio_recibo
 from components.humaniza import format_value_float
 from django.contrib.auth.decorators import login_required
 
+
+
+from django.views.decorators.csrf import csrf_protect
+import json
+
 @login_required
 def service(request):
     user = request.user
@@ -99,7 +104,7 @@ def calculator(request,id):
         
         for data in ocupantes:
             visitante = Guest.objects.filter(roomie = data ,service = service)
-            calculation = Calculation.objects.filter(roomie = data ,service = service).filter()
+            
             ocu = data.id
             if ocu not in acumulados:
                 acumulados[ocu] = {
@@ -111,9 +116,14 @@ def calculator(request,id):
             
             for v in visitante:
                 acumulados[ocu]['visitante'].append(v.name)  
-            
-            if calculation :
-                acumulados[ocu]['pago'] = format_value_float(calculation.value)
+                
+            if service.closet == False :
+                acumulados[ocu]['pago'] = 0
+            else:
+                calculation = Calculation.objects.get(roomie = data ,service = service)
+                if calculation :
+                    acumulados[ocu]['pago'] = calculation.value
+                
 
             acumulados[ocu]['nvisitante'] = len(acumulados[ocu]['visitante'])
             total += len(acumulados[ocu]['visitante'])
@@ -132,59 +142,76 @@ def calculator(request,id):
                                                         'total':total,
                                                         
                                                         })
-    
-@login_required
-def closet(request,id):
-    service = get_object_or_404(Service, pk=id)
-    user = request.user
-    
-    ocupantes = Roomie.objects.filter(user=user)
-    
-    ocupantes_list = []
 
-    for data in ocupantes:
-        visitante = Guest.objects.filter(roomie=data, service=service)
-        invitados = [
-            {
-                'fecha_inicio': str(v.arrival_date),
-                'fecha_fin': str(v.departure_date)
-            } for v in visitante
-        ]
-        
-        ocupantes_list.append({
-            'nombre': data.name,
-            'id':data.id,
-            'invitados': invitados
-        })
 
-    
-    result = {
-        'fecha_inicio_servicio': str(service.start_date),
-        'fecha_fin_servicio': str(service.end_date),
-        'valor_servicio_mensual': int(service.cost),
-        'ocupantes': ocupantes_list
-    }
-    
-    data = calcular_precio_recibo(result) 
-    
-    # Crear un diccionario para acceso rápido a los resultados por nombre
-    resultados_dict = {res['nombre']: res['total_a_pagar'] for res in data['resultados']}
-    
-    for ocupante in ocupantes_list:
-        nombre = ocupante['nombre']
-        total_a_pagar = resultados_dict.get(nombre, 0)  # Obtener el valor total a pagar, por defecto 0 si no se encuentra
-        roomie = get_object_or_404(Roomie, pk=ocupante['id'])
+
+@csrf_protect
+def closet(request):
+
+    if request.method == 'POST':
+        try:
+            service_id = request.POST.get('service_id', '')  # Obtén el ID desde el cuerpo de la solicitud
+            if not service_id:
+                return JsonResponse({'status': 'error', 'message': 'ID no proporcionado'}, status=400)
+            
+            service = get_object_or_404(Service, pk=service_id)
+            user = request.user
+            
+            ocupantes = Roomie.objects.filter(user=user)
+            
+            ocupantes_list = []
+
+            for data in ocupantes:
+                visitante = Guest.objects.filter(roomie=data, service=service)
+                invitados = [
+                    {
+                        'fecha_inicio': str(v.arrival_date),
+                        'fecha_fin': str(v.departure_date)
+                    } for v in visitante
+                ]
+                
+                ocupantes_list.append({
+                    'nombre': data.name,
+                    'id': data.id,
+                    'invitados': invitados
+                })
+
+            result = {
+                'fecha_inicio_servicio': str(service.start_date),
+                'fecha_fin_servicio': str(service.end_date),
+                'valor_servicio_mensual': int(service.cost),
+                'ocupantes': ocupantes_list
+            }
+            
+            data2 = calcular_precio_recibo(result) 
+            
+            # Crear un diccionario para acceso rápido a los resultados por nombre
+            resultados_dict = {res['nombre']: res['total_a_pagar'] for res in data2['resultados']}
+            
+            for ocupante in ocupantes_list:
+                nombre = ocupante['nombre']
+                total_a_pagar = resultados_dict.get(nombre, 0)  # Obtener el valor total a pagar, por defecto 0 si no se encuentra
+                roomie = get_object_or_404(Roomie, pk=ocupante['id'])
+                
+                # Crear la instancia de Calculation con el valor correcto
+                data = Calculation(
+                    roomie=roomie,
+                    service=service,
+                    value=total_a_pagar,
+                )
+                data.service.closet = True
+                data.service.save()
+                data.save()
+            
+            return JsonResponse({'status': 'ok'})
         
-        # Crear la instancia de Calculation con el valor correcto
-        data = Calculation(
-            roomie=roomie,
-            service=service,
-            value=total_a_pagar,
-        )
-        data.service.closet = True
-        data.save()
-    
-    return JsonResponse({'status': 'ok'})
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Error en los datos de la solicitud'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Método no permitido'}, status=405)
+
+
+
 
 @login_required
 def api1(request,id):
@@ -219,5 +246,5 @@ def api1(request,id):
     }
     
     data = calcular_precio_recibo(result) 
-    return JsonResponse(data)
+    return JsonResponse({'status': 'ok'})
 
