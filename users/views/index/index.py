@@ -2,13 +2,17 @@ from django.shortcuts import render,redirect
 from common.models import Board 
 from shared_boards.form.boardform import BoardForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 ### index login 
 
+
+
+
+@login_required
 def index_login(request):
     user = request.user
-    print(user.cdunico)
     boards = Board.objects.filter(creator_user = user)
     if request.method == 'POST':
         form = BoardForm(request.POST)

@@ -26,5 +26,6 @@ urlpatterns = [
     path('boards/patrimony/', include(('patrimony.urls', 'patrimony'))),
     path('boards/shopping/', include(('shopping.urls', 'shopping'))),
     path('boards/income/', include(('income.urls', 'income'))),
+    path('boards/bills/', include(('bills.urls', 'bills'))),
 ]
 

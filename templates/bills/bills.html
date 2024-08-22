@@ -25,24 +25,24 @@
 
 
 {% block sub_titulo1 %} 
-    empleados
+    Facturas
 {% endblock %}
 
 
 {% block sub_titulo2 %} 
-Lista Activos
+    Facturas
 {% endblock %}
 
 
 {% block titulo2 %} 
-Listado de Contratos Activos
+    Listado de Facturas
 {% endblock %}
 
 {% block actions %}
 <!-- Button trigger modal -->
-    {% comment %} <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
-        New Board
-    </button>   {% endcomment %}
+    <button type="button"  class="btn btn-light-primary"  data-bs-toggle="modal" data-bs-target="#kt_modal_lista" >
+        Nueva Factura
+    </button>  
 {% endblock %}
 
 
@@ -151,7 +151,7 @@ Listado de Contratos Activos
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title">Create List</h3>
+                    <h3 class="modal-title">Create Bills</h3>
     
                     <!--begin::Close-->
                     <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -162,7 +162,7 @@ Listado de Contratos Activos
     
                 <div class="modal-body">
                     <form id="shoppinglists" method="post" >
-                        {% crispy form %}
+                        {% comment %} {% crispy form %} {% endcomment %}
                     </form>
                     
                 </div>

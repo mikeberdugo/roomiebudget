@@ -355,10 +355,26 @@ License: For each use you must have a valid license purchased only from above li
                     <!--begin::Footer-->
                     <div id="kt_app_footer" class="app-footer align-items-center justify-content-center justify-content-md-between flex-column flex-md-row py-3">
                         <!--begin::Copyright-->
-                        <div class="text-gray-900 order-2 order-md-1">
-                            <span class="text-muted fw-semibold me-1">2023&copy;</span>
-                            <a href="" target="_blank" class="text-gray-800 text-hover-primary">Fotter prueba </a>
-                        </div>
+                        <!-- Footer -->
+                        <div class="row">
+                            <!-- Información de la Empresa -->
+                            {% comment %} <div class="col-sm-6 mb-4">
+                                <p class="mb-1"><strong>Tartaro Systems</strong></p>
+                                <p class="mb-0">Soluciones tecnológicas innovadoras.</p>
+                            </div>
+                            <!-- Enlaces Útiles -->
+                            <!-- Información de Contacto -->
+                            <div class="col-sm-6 mb-4">
+                                <p class="mb-1"><strong>Contacto</strong></p>
+                                <p class="mb-0">
+                                    <i class="fas fa-envelope"></i> <a href="mailto:info@tartarosystems.com" class="text-light">info@tartarosystems.com</a><br>
+                                    <i class="fas fa-phone"></i> +1 234 567 890
+                                </p>
+                            </div>
+                            </div> {% endcomment %}
+                            <hr class="col-sm-4 my-2">
+                            <p class="mb-0">&copy; 2024 Tartaro Systems</p>
+                            </div>
                         <!--end::Copyright-->
                         <!--begin::Menu-->
                         
@@ -384,7 +400,8 @@ License: For each use you must have a valid license purchased only from above li
     <!--begin::Modals-->
     <!--begin::Modal -->
     
-    
+        <link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
+        <script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}  "></script>
         <!--begin::Global Javascript Bundle(mandatory for all pages)-->
         <script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
         <script src="{% static 'js/scripts.bundle.js' %}"></script>
