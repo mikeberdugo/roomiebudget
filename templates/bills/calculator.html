@@ -336,6 +336,7 @@
                 success: function(response) {
                     if (response.status === 'ok') {
                         toastr.success('Service closed successfully!');
+                        
                     } else {
                         toastr.error('Error closing the service.');
                     }
