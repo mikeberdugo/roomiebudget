@@ -1,6 +1,13 @@
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 
 
-def creditcard():
+def creditcard(request):
     
-    return 0
+    
+    
+    return render(request, './patrimony/patrimony.html', {
+        'form': form,
+        
+    })
