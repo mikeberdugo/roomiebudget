@@ -204,6 +204,27 @@ class Patrimony(models.Model):
         verbose_name_plural = "Patrimonies"
         db_table = 'patrimony'
 
+
+
+class CreditCard(models.Model):
+    user = models.ForeignKey('AstradUser', on_delete=models.CASCADE)  # Usuario asociado a la tarjeta
+    name = models.CharField(max_length=100)  # Nombre o identificador de la tarjeta
+    balance = models.DecimalField(max_digits=12, decimal_places=2)  # Saldo actual disponible en la tarjeta
+    credit_limit = models.DecimalField(max_digits=12, decimal_places=2)  # Límite de crédito de la tarjeta
+    cut_off_date = models.DateField()  # Fecha de corte del estado de cuenta
+    handling_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)  # Cuota de manejo inicial en cero
+    interest_rate = models.DecimalField(max_digits=5, decimal_places=2)  # Porcentaje de intereses de la tarjeta
+    updated_at = models.DateTimeField(auto_now=True)  # Fecha de última actualización
+    status = models.CharField(max_length=20)  # Estado actual de la tarjeta
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Credit Card"
+        verbose_name_plural = "Credit Cards"
+        db_table = 'credit_card'
+
 class Labels(models.Model):
     nombre = models.CharField(max_length=100)
 

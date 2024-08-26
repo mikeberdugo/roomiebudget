@@ -121,9 +121,16 @@ def calculator(request,id):
             if service.closet == False :
                 acumulados[ocu]['pago'] = 0
             else:
-                calculation = Calculation.objects.get(roomie = data ,service = service)
-                if calculation :
-                    acumulados[ocu]['pago'] = calculation.value
+                try:
+                    calculation = Calculation.objects.get(roomie = data ,service = service)
+                    
+                    if calculation :
+                        acumulados[ocu]['pago'] = calculation.value
+                except Exception as e:
+                    pass
+                
+
+                
                 
 
             acumulados[ocu]['nvisitante'] = len(acumulados[ocu]['visitante'])
