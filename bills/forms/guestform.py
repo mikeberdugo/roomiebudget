@@ -33,7 +33,7 @@ class GuestForm(forms.Form):
         
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.form_id = 'Filto_conceptos'
+        self.helper.form_id = 'Filto_Guest'
         self.helper.layout = Layout(
             Row(
                 Column('name', css_class='form-group mb-0'),

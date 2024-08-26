@@ -1,15 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db.models import Sum
-from common.models import Board, Patrimony
+from common.models import  Patrimony
 from patrimony.form.passivesform import passivesform
 from patrimony.form.assetsform import assetsform
 from components.humaniza import format_value_float
 
 
 
-def passives(request, slug):
-    board = Board.objects.get(slug=slug)
+def passives(request):
+    
+    
     user = request.user
 
     if request.method == 'POST':
@@ -23,12 +24,11 @@ def passives(request, slug):
                 balance=form1_data['balance'],
                 currency=form1_data['currency'],
                 patrimony_type=form1_data['patrimony_type'],
-                status=form1_data['status'],
-                board=board,
+                status= 'Adeudo',
                 type_dos=2,
             )
             messages.success(request, 'The Passives have been created.')
-            return redirect('patrimony:passives', slug)
+            return redirect('patrimony:passives')
         else:
             for field, errors in form1.errors.items():
                 for error in errors:
@@ -44,21 +44,20 @@ def passives(request, slug):
                 balance=form2_data['balance'],
                 currency=form2_data['currency'],
                 patrimony_type=form2_data['patrimony_type'],
-                status=form2_data['status'],
-                board=board,
+                status= form2_data['status'] ,
                 type_dos=1,
             )
             messages.success(request, 'The Assets have been created.')
-            return redirect('patrimony:passives', slug)
+            return redirect('patrimony:passives')
         else:
             for field, errors in form2.errors.items():
                 for error in errors:
                     messages.error(request, f'{error}')
 
     else:
-        asserts = Patrimony.objects.filter(board=board, type_dos=1)
-        passives = Patrimony.objects.filter(board=board, type_dos=2)
-        patrimony = Patrimony.objects.filter(board=board)
+        asserts = Patrimony.objects.filter(user=user, type_dos=1)
+        passives = Patrimony.objects.filter(user=user, type_dos=2)
+        patrimony = Patrimony.objects.filter(user=user)
 
         total_activos = asserts.aggregate(total=Sum('balance'))['total'] or 0
         

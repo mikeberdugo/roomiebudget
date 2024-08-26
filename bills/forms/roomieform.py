@@ -10,6 +10,7 @@ class RoomieForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
+        self.helper.form_id = 'form_Roomie'
         self.helper.layout = Layout(
             Row(
                 Column('name', css_class='form-group mb-0'),

@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %} 
 
 {% block title %}
-    Nomiweb.co - Portal Empresas - Lista Activos
+    Roomiebudget - Servicios - {{service.name}}
 {% endblock %}
 
 {% block navbar %}
@@ -66,11 +66,17 @@
                 <button  type="button" class="btn btn-icon btn-info" data-bs-toggle="popover" data-bs-html="true" title="¿Quién es un ocupante?" data-bs-content="Un <b class='text-danger'>ocupante permanente</b> es cualquier persona que vive en el apartamento o casa de manera continua y estable. En otras palabras, ¡es quien convierte ese espacio en su hogar diario!" >
                     <i class="fa-solid fa-circle-question fs-2x"></i>
                 </button>
-
-                <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_ocupante">
-                    <i class="fa-solid fa-plus"></i>
-                    Ocupante
-                </button>
+                {% if service.closet %}
+                    <button type="button" class="btn btn-light-primary"  data-bs-delay-hide="500" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Servicio Cerrado">
+                        <i class="fa-solid fa-plus"></i>
+                        Ocupante
+                    </button>
+                {% else %}
+                    <button type="button" class="btn btn-light-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_ocupante">
+                        <i class="fa-solid fa-plus"></i>
+                        Ocupante
+                    </button>
+                {% endif %}
 
             </div>
 
@@ -83,7 +89,7 @@
             <div class="row">
                 {% if ocupantes %}
                 <div class="table-responsive">
-                    <table class="table table-rounded table-striped border gy-7 gs-7" id='id-Service'>
+                    <table class="table table-striped gy-7 gs-7" id='id-Service'>
                         <thead>
                             <tr>
                                 <th width="200" class="text-center" >Nombre</th>
@@ -94,9 +100,16 @@
                                 </th>
                                 <th width="200" class="text-center" >
                                     Agregar
-                                    <a  class="btn btn-icon btn-sm  me-2 btn-light-facebook"  data-bs-placement="top" title="Agregar Visitante" data-bs-toggle="modal" data-bs-target="#kt_modal_visitante" >
-                                        <i class="fa-solid fa-plus fs-3 "></i>
-                                    </a>
+                                    {% if service.closet %}
+                                        <a  class="btn btn-icon btn-sm  me-2 btn-light-facebook " data-bs-delay-hide="500" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Servicio Cerrado" >
+                                            <i class="fa-solid fa-plus fs-3 "></i>
+                                        </a>
+                                    {% else %}
+                                        <a  class="btn btn-icon btn-sm  me-2 btn-light-facebook"  data-bs-placement="top" title="Agregar Visitante" data-bs-toggle="modal" data-bs-target="#kt_modal_visitante" >
+                                            <i class="fa-solid fa-plus fs-3 "></i>
+                                        </a>
+                                    {% endif %}
+                                    
                                 </th>
                             </tr>
                         </thead>
@@ -121,10 +134,10 @@
                 
                     <div class="d-flex justify-content-start">
                         {% if service.closet %}
-                            <button type="button" class="btn btn-light-primary btn-sm"  >
+                            <a href="{% url 'bills:report' service.id %}" class="btn btn-light-primary btn-sm">
                                 <i class="fa-solid fa-download"></i>
-                                Generar Cálculo
-                            </button>
+                                Generar Informe 
+                            </a>
                         {% else %}
                             <button type="button" class="btn btn-light-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_cierre">
                                 <i class="fa-solid fa-lock"></i>
@@ -227,15 +240,12 @@
                     </div>
         
                     <div class="modal-body">
-                        <form id="shoppinglists" method="post" >
-                            {% crispy form1 %}
-                        </form>
-                        
+                        {% crispy form1 %}
                     </div>
         
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" form="shoppinglists"  class="btn btn-primary">Create</button>
+                        <button type="submit" form="form_Roomie"  class="btn btn-primary">Create</button>
                     </div>
                 </div>
             </div>
@@ -247,7 +257,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title">Create Roomie</h3>
+                        <h3 class="modal-title">Create Visitor</h3>
         
                         <!--begin::Close-->
                         <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -257,15 +267,12 @@
                     </div>
         
                     <div class="modal-body">
-                        <form id="shoppinglists2" method="post" >
-                            {% crispy form2 %}
-                        </form>
-                        
+                        {% crispy form2 %}
                     </div>
         
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" form="shoppinglists2"  class="btn btn-primary">Create</button>
+                        <button type="submit" form="Filto_Guest"  class="btn btn-primary">Create</button>
                     </div>
                 </div>
             </div>
@@ -336,6 +343,9 @@
                 success: function(response) {
                     if (response.status === 'ok') {
                         toastr.success('Service closed successfully!');
+                        setTimeout(function(){
+                            location.reload();  // Recargar la página después de que el Toastr se desvanezca
+                        }, 5000); 
                         
                     } else {
                         toastr.error('Error closing the service.');
@@ -350,37 +360,43 @@
 </script>
 
 
-$(document).ready(function() {
-    $('#id-Service').DataTable({
-        language: {
-            "decimal":        "",
-            "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
-            "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-            "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
-            "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Mostrar _MENU_ entradas",
-            "loadingRecords": "Cargando...",
-            "processing":     "Procesando...",
-            "search":         "Buscar:",
-            "zeroRecords":    "No se encontraron registros coincidentes",
-            "paginate": {
-                "first":      "Primero",
-                "last":       "Último",
-                "next":       "Siguiente",
-                "previous":   "Anterior"
+<script>
+    $(document).ready(function() {
+        $('#id-Service').DataTable({
+            language: {
+                "decimal":        "",
+                "emptyTable":     "No tiene certificados para este contrato o no ha seleccionado un contrato.",
+                "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered":   "(filtrado de _MAX_ entradas totales)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing":     "Procesando...",
+                "search":         "Buscar:",
+                "zeroRecords":    "No se encontraron registros coincidentes",
+                "paginate": {
+                    "first":      "Primero",
+                    "last":       "Último",
+                    "next":       "Siguiente",
+                    "previous":   "Anterior"
+                },
+                "aria": {
+                    "sortAscending":  ": activar para ordenar la columna ascendente",
+                    "sortDescending": ": activar para ordenar la columna descendente"
+                }
             },
-            "aria": {
-                "sortAscending":  ": activar para ordenar la columna ascendente",
-                "sortDescending": ": activar para ordenar la columna descendente"
-            }
-        },
-        dom: 'frtip',
-        "pageLength": 6,
-        searching: false                
+            dom: 'frtip',
+            "pageLength": 6,
+            searching: false,
+            columnDefs: [
+                {
+                    targets: -1, // Aplica a la última columna
+                    orderable: false // Desactiva el ordenamiento
+                }
+            ]
+        });
     });
-
-});
 </script>
 {% endblock %}

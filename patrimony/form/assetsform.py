@@ -7,17 +7,17 @@ class assetsform(forms.Form):
     CURRENCY_CHOICES = [
         ('', '-----------'),
         ('COP', 'Peso Colombiano - COP'),
-        # ('USD', 'Dólar estadounidense - USD'),
-        # ('EUR', 'Euro - EUR'),
-        # ('MXN', 'Peso mexicano - MXN'),
-        # ('GBP', 'Libra esterlina - GBP'),
-        # ('JPY', 'Yen japonés - JPY'),
-        # ('CAD', 'Dólar canadiense - CAD'),
-        # ('AUD', 'Dólar australiano - AUD'),
-        # ('CNY', 'Yuan chino - CNY'),
-        # ('CHF', 'Franco suizo - CHF'),
-        # ('SEK', 'Corona sueca - SEK'),
-        # ('NZD', 'Dólar neozelandés - NZD'),
+        ('USD', 'Dólar estadounidense - USD'),
+        ('EUR', 'Euro - EUR'),
+        ('MXN', 'Peso mexicano - MXN'),
+        ('GBP', 'Libra esterlina - GBP'),
+        ('JPY', 'Yen japonés - JPY'),
+        ('CAD', 'Dólar canadiense - CAD'),
+        ('AUD', 'Dólar australiano - AUD'),
+        ('CNY', 'Yuan chino - CNY'),
+        ('CHF', 'Franco suizo - CHF'),
+        ('SEK', 'Corona sueca - SEK'),
+        ('NZD', 'Dólar neozelandés - NZD'),
     ]
 
     ACCOUNT_TYPE_CHOICES = [
@@ -47,6 +47,35 @@ class assetsform(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.form_id = 'form_assets'
+        self.fields['currency'].widget.attrs.update({
+            'data-control': 'select2',
+            'data-tags':'true',
+            'data-dropdown-parent': '#kt_modal_activo',
+            'data-hide-search': 'true' ,
+            'class': 'form-select',
+            
+        })
+        
+        self.fields['patrimony_type'].widget.attrs.update({
+            'data-control': 'select2',
+            'data-tags':'true',
+            'data-dropdown-parent': '#kt_modal_activo',
+            'data-hide-search': 'true' ,
+            'class': 'form-select',
+            
+        })
+        
+        self.fields['status'].widget.attrs.update({
+            'data-control': 'select2',
+            'data-tags':'true',
+            'data-dropdown-parent': '#kt_modal_activo',
+            'data-hide-search': 'true' ,
+            'class': 'form-select',
+            
+        })
+        
         self.helper.layout = Layout(
             Row(
                 Column('name', css_class='form-group col-md-6 mb-0'),
@@ -54,12 +83,13 @@ class assetsform(forms.Form):
                 css_class='form-row'
             ),
             Row(
-                Column('currency', css_class='form-group col-md-6 mb-0'),
+                Column('status', css_class='form-group col-md-6 mb-0'),
                 Column('patrimony_type', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
             Row(
-                Column('status', css_class='form-group col-md-6 mb-0'),
+                Column('currency', css_class='form-group mb-0'),
+                
                 css_class='form-row'
             ),
         )

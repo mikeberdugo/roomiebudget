@@ -82,10 +82,6 @@
         </button>
     </div>
 
-    <div style="width: 10px;"></div>
-    <!-- Otro botón fuera de los grupos -->
-    <a type="button" class="btn btn-light-info" href="{% url 'boards:boards' %}">Exit Board</a>
-
 {% endblock %}
 
 
@@ -166,26 +162,39 @@
                         <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-patrimony'>
                             <thead>
                                 <tr>
-                                    <th>Type</th>
-                                    <th>Name</th>
-                                    <th>Balance</th>
-                                    <th>Last Update</th>
-                                    <th>Patrimony Type</th>
-                                    <th>Currency</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th class="text-center" >Type</th>
+                                    <th class="text-center" >Name</th>
+                                    <th class="text-center" >Balance</th>
+                                    <th class="text-center" >Last Update</th>
+                                    <th class="text-center" >Patrimony Type</th>
+                                    <th class="text-center" >Currency</th>
+                                    <th class="text-center" >Status</th>
+                                    <th class="text-center" >Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for item in patrimony %}
                                 <tr>
-                                    <td>{{ item.type_dos }}</td>
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.balance }}</td>
-                                    <td>{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
-                                    <td>{{ item.patrimony_type }}</td>
-                                    <td>{{ item.currency }}</td>
-                                    <td class="text-center">
+                                    <td class="text-center" >
+                                
+                                    {% if item.type_dos == 1 %}
+                                        <span class="svg-icon fs-3 text-success me-2" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Activo" >
+                                            <i class="ki-duotone ki-arrow-up fs-3 text-success me-2"><span class="path1"></span><span class="path2"></span></i>
+                                        </span>
+                                    {% else %}
+                                        <span class="svg-icon fs-3 text-success me-2" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Pasivo" >
+                                            <i class="ki-duotone ki-arrow-down fs-3 text-danger me-2"><span class="path1"></span><span class="path2"></span></i>
+                                        </span>
+                                    {% endif %}
+    
+
+                                    </td>
+                                    <td class="text-center" >{{ item.name }}</td>
+                                    <td class="text-center" >{{ item.balance }}</td>
+                                    <td class="text-center" >{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
+                                    <td class="text-center" >{{ item.patrimony_type }}</td>
+                                    <td class="text-center" >{{ item.currency }}</td>
+                                    <td class="text-center"  >
                                         {% if item.status == 'Cancelado' %}
                                         <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success">
                                             <i class="fa-solid fa-bars-progress"></i> Cancelado
@@ -208,7 +217,7 @@
                                         </p>
                                         {% endif %}
                                     </td>
-                                    <td></td>
+                                    <td class="text-center" ></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -231,24 +240,24 @@
                         <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-asserts'>
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Balance</th>
-                                    <th>Last Update</th>
-                                    <th>Patrimony Type</th>
-                                    <th>Currency</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th class="text-center" >Name</th>
+                                    <th class="text-center" >Balance</th>
+                                    <th class="text-center" >Last Update</th>
+                                    <th class="text-center" >Patrimony Type</th>
+                                    <th class="text-center" >Currency</th>
+                                    <th class="text-center" >Status</th>
+                                    <th class="text-center" >Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for item in asserts %}
                                 <tr>
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.balance }}</td>
-                                    <td>{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
-                                    <td>{{ item.patrimony_type }}</td>
-                                    <td>{{ item.currency }}</td>
-                                    <td class="text-center">
+                                    <td class="text-center" >{{ item.name }}</td>
+                                    <td class="text-center" >{{ item.balance }}</td>
+                                    <td class="text-center" >{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
+                                    <td class="text-center" >{{ item.patrimony_type }}</td>
+                                    <td class="text-center" >{{ item.currency }}</td>
+                                    <td class="text-center" >
                                         {% if item.status == 'Activa' %}
                                         <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success">
                                             <i class="fa-solid fa-bars-progress"></i> Activa
@@ -263,7 +272,7 @@
                                         </p>
                                         {% endif %}
                                     </td>
-                                    <td></td>
+                                    <td class="text-center" ></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -286,23 +295,23 @@
                         <table class="table table-rounded table-striped border gy-7 gs-7" id='tabla-passives'>
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Balance</th>
-                                    <th>Last Update</th>
-                                    <th>Patrimony Type</th>
-                                    <th>Currency</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
+                                    <th class="text-center" >Name</th>
+                                    <th class="text-center" >Balance</th>
+                                    <th class="text-center" >Last Update</th>
+                                    <th class="text-center" >Patrimony Type</th>
+                                    <th class="text-center" >Currency</th>
+                                    <th class="text-center" >Status</th>
+                                    <th class="text-center" >Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for item in passives %}
                                 <tr>
-                                    <td>{{ item.name }}</td>
-                                    <td>{{ item.balance }}</td>
-                                    <td>{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
-                                    <td>{{ item.patrimony_type }}</td>
-                                    <td>{{ item.currency }}</td>
+                                    <td class="text-center">{{ item.name }}</td>
+                                    <td class="text-center">{{ item.balance }}</td>
+                                    <td class="text-center">{{ item.updated_at | date:"Y/m/d - H:i:s" }}</td>
+                                    <td class="text-center">{{ item.patrimony_type }}</td>
+                                    <td class="text-center">{{ item.currency }}</td>
                                     <td class="text-center">
                                         {% if item.status == 'Cancelado' %}
                                         <p class="btn btn-outline btn-outline-dashed btn-outline-success btn-active-light-success">
@@ -318,7 +327,7 @@
                                         </p>
                                         {% endif %}
                                     </td>
-                                    <td></td>
+                                    <td class="text-center"></td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -354,16 +363,13 @@
                 </div>
     
                 <div class="modal-body">
-                    <form id="passivesform" method="post" enctype="multipart/form-data" >
-                        {% crispy form1 %}
-                    </form>
-                    
+                    {% crispy form1 %}
                 </div>
     
                 <div class="modal-footer">
                     
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="passivesform"  class="btn btn-primary">Create</button>
+                    <button type="submit" form="form_passives"  class="btn btn-primary">Create</button>
                     
 
                 </div>
@@ -386,16 +392,13 @@
                     </div>
         
                     <div class="modal-body">
-                        <form id="assetsform" method="post" enctype="multipart/form-data" >
-                            {% crispy form2 %}
-                        </form>
-                        
+                        {% crispy form2 %}
                     </div>
         
                     <div class="modal-footer">
                         
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" form="assetsform"  class="btn btn-primary">Create</button>
+                        <button type="submit" form="form_assets"  class="btn btn-primary">Create</button>
 
                     </div>
                 </div>
