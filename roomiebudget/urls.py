@@ -21,11 +21,11 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(('users.urls', 'login'))),
-    path('boards/', include(('shared_boards.urls', 'boards'))),
-    path('boards/accounts/', include(('accounts.urls', 'accounts'))), ## eliminar despues 
-    path('boards/patrimony/', include(('patrimony.urls', 'patrimony'))),
-    path('boards/shopping/', include(('shopping.urls', 'shopping'))),
-    path('boards/income/', include(('income.urls', 'income'))),
-    path('boards/bills/', include(('bills.urls', 'bills'))),
+    path('', include(('shared_boards.urls', 'boards'))),
+    path('accounts/', include(('accounts.urls', 'accounts'))), ## eliminar despues 
+    path('patrimony/', include(('patrimony.urls', 'patrimony'))),
+    path('shopping/', include(('shopping.urls', 'shopping'))),
+    path('income/', include(('income.urls', 'income'))),
+    path('bills/', include(('bills.urls', 'bills'))),
 ]
 

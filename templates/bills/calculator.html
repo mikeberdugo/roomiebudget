@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %} 
 
 {% block title %}
-    Nomiweb.co - Portal Empresas - Lista Activos
+    Roomiebudget - Servicios - {{service.name}}
 {% endblock %}
 
 {% block navbar %}
@@ -121,10 +121,10 @@
                 
                     <div class="d-flex justify-content-start">
                         {% if service.closet %}
-                            <button type="button" class="btn btn-light-primary btn-sm"  >
+                            <a href="{% url 'bills:report' service.id %}" class="btn btn-light-primary btn-sm">
                                 <i class="fa-solid fa-download"></i>
-                                Generar Cálculo
-                            </button>
+                                Generar Informe 
+                            </a>
                         {% else %}
                             <button type="button" class="btn btn-light-primary btn-sm" data-bs-toggle="modal" data-bs-target="#kt_modal_cierre">
                                 <i class="fa-solid fa-lock"></i>
@@ -336,6 +336,9 @@
                 success: function(response) {
                     if (response.status === 'ok') {
                         toastr.success('Service closed successfully!');
+                        setTimeout(function(){
+                            location.reload();  // Recargar la página después de que el Toastr se desvanezca
+                        }, 5000); 
                         
                     } else {
                         toastr.error('Error closing the service.');
@@ -349,7 +352,7 @@
     });
 </script>
 
-
+<script>
 $(document).ready(function() {
     $('#id-Service').DataTable({
         language: {

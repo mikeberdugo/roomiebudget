@@ -6,10 +6,11 @@ from bills.forms.guestform import GuestForm
 
 from django.contrib import messages
 from django.http import JsonResponse
-from .calculate import calcular_precio_recibo
+from .calculate import calcular_precio_recibo ,generar_informe
 from components.humaniza import format_value_float
 from django.contrib.auth.decorators import login_required
-
+import openpyxl
+from django.http import HttpResponse
 
 
 from django.views.decorators.csrf import csrf_protect
@@ -41,7 +42,7 @@ def service(request):
             messages.error(request, 'Error en la creación de servicio.')
             return redirect('bills:service')   
     else : 
-        services = Service.objects.filter(user = user )
+        services = Service.objects.filter(user = user ).order_by('-id')
         form = ServiceForm()
     return render(request, './bills/service.html' , {
                                                         'form' : form,
@@ -54,7 +55,7 @@ def calculator(request,id):
     visitante = []
     acumulados = {}
     total = 0
-    service = get_object_or_404(Service, pk=id)
+    service = Service.objects.get(pk=id)
     user = request.user
     if request.method == 'POST':
         
@@ -214,12 +215,12 @@ def closet(request):
 
 
 @login_required
-def api1(request,id):
-    service = get_object_or_404(Service, pk=id)
+def report(request, id):
+    service = Service.objects.get(pk=id)
     user = request.user
-    
+
     ocupantes = Roomie.objects.filter(user=user)
-    
+
     ocupantes_list = []
 
     for data in ocupantes:
@@ -230,21 +231,48 @@ def api1(request,id):
                 'fecha_fin': str(v.departure_date)
             } for v in visitante
         ]
-        
+
         ocupantes_list.append({
             'nombre': data.name,
-            'id':data.id,
+            'id': data.id,
             'invitados': invitados
         })
 
-    
     result = {
         'fecha_inicio_servicio': str(service.start_date),
         'fecha_fin_servicio': str(service.end_date),
         'valor_servicio_mensual': int(service.cost),
         'ocupantes': ocupantes_list
     }
+
+    data = generar_informe(result)
+    # return JsonResponse(data)
     
-    data = calcular_precio_recibo(result) 
-    return JsonResponse({'status': 'ok'})
+
+    # Crear un workbook y una hoja
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet.title = 'Datos'
+
+    # Añadir encabezados
+    headers = ["Fecha"] + list(next(iter(data.values())).keys())
+    sheet.append(headers)
+
+    # Añadir los datos
+    for date, values in data.items():
+        row = [date] + [values.get(name, 0) for name in headers[1:]]
+        sheet.append(row)
+
+    # Configurar la respuesta HTTP
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=datos.xlsx'
+
+    # Guardar el workbook en la respuesta
+    workbook.save(response)
+    return response
+
+
+
+
+
 
