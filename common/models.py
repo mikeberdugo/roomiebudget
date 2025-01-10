@@ -8,10 +8,26 @@ import random
 import string
 
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractUser #, Group , Permission
+from django.contrib.auth.models import AbstractUser ,BaseUserManager
 from django.db import models
 
-class AstradUser(AbstractUser):
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError(('El email es obligatorio'))
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(email, password, **extra_fields)
+
+class User(AbstractUser):
     
     ROLES_CHOICES = [
         ('Usuario Estándar', 'Usuario Estándar'),
@@ -40,10 +56,18 @@ class AstradUser(AbstractUser):
         ('Otro', 'Otro'),
     ]
     
+
     # membresía 
     membership_paid = models.BooleanField(default=False)
     membership_expiry_date = models.DateField(null=True, blank=True)
     
+    # user
+
+    email = models.EmailField(unique=True)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
     # general 
     role = models.CharField(max_length=50, choices=ROLES_CHOICES, default='Usuario Estándar')
     birth_date = models.DateField(null=True, blank=True)
@@ -52,12 +76,18 @@ class AstradUser(AbstractUser):
     occupation = models.CharField(max_length=100, choices=OCCUPATION_CHOICES, null=True, blank=True)
     nationality = models.CharField(max_length=100, null=True, blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', null=True, blank=True)
-    financial_goals = models.TextField(null=True, blank=True)
     cdunico = models.CharField(max_length=7, unique=True, editable=False, blank=True)
     
     # Añade related_name a las relaciones groups y user_permissions
-    # groups = models.ManyToManyField(Group, verbose_name=_('groups'), blank=True, related_name='astraduser_set', related_query_name='user')
-    # user_permissions = models.ManyToManyField(Permission, verbose_name=_('user permissions'), blank=True, related_name='astraduser_set', related_query_name='user')
+    username = None
+    groups = None
+    user_permissions = None
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = CustomUserManager()
+
 
     def save(self, *args, **kwargs):
         if not self.cdunico:
@@ -67,7 +97,7 @@ class AstradUser(AbstractUser):
     def generate_unique_cdunico(self):
         while True:
             cdunico = ''.join(random.choices(string.ascii_uppercase + string.digits, k=7))
-            if AstradUser.objects.filter(cdunico=cdunico).count() == 0:
+            if User.objects.filter(cdunico=cdunico).count() == 0:
                 return cdunico
     class Meta:
         verbose_name = "User"
@@ -79,7 +109,7 @@ class AstradUser(AbstractUser):
 class Category(models.Model):
     name = models.CharField(max_length=100)  # Nombre de la categoría
     description = models.TextField(blank=True)  # Descripción de la categoría (opcional)
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE, related_name='created_category_user',blank=True ,null=True)  # Usuario que creó la categoría
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_category_user',blank=True ,null=True)  # Usuario que creó la categoría
 
     
     def __str__(self):
@@ -120,53 +150,10 @@ class Category(models.Model):
 
 
 
-
-
-# Modelo para Tablero
-class Board(models.Model):
-    name = models.CharField(max_length=100)  # Nombre del tablero
-    creator_user = models.ForeignKey(AstradUser, on_delete=models.CASCADE, related_name='created_boards')  # Usuario creador del tablero AUTOMATICO
-    description = models.TextField(blank=True)  # Descripción del tablero (opcional)
-    created_at = models.DateTimeField(auto_now_add=True)  # Fecha y hora de creación del tablero AUTOMATICO 
-    last_updated = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización del tablero AUTOMATICO
-    is_active = models.BooleanField(default=True)  # Indica si el tablero está activo AUTOMATICO AL INICIAR - CAMBIO POR USUARIO 
-    slug = models.SlugField(unique=True, blank=True) ## AUTOMATICO 
-
-    def save(self, *args, **kwargs):
-        
-        if not self.id:  # Si es un nuevo objeto
-            self.created_at = timezone.now()  # Asignamos la fecha y hora actual
-            # Generamos un valor aleatorio basado en el usuario y la hora
-            random_value = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
-            # Combinamos el nombre del tablero, el valor aleatorio y el ID del usuario
-            combined_string = f"{self.name}-{random_value}-{self.creator_user.id}"
-            # Calculamos el slug a partir de la cadena combinada
-            self.slug = slugify(combined_string)
-        super().save(*args, **kwargs)  # Guardamos el objeto en la base de datos
-        
-    def __str__(self):
-        return self.name
-    class Meta:
-        verbose_name = "Board"
-        verbose_name_plural = "Boards"
-        db_table = 'board'
-
-class Permit(models.Model):
-    board = models.ForeignKey(Board, on_delete=models.CASCADE)  # Tablero asociado 
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
-    # estatus 0 en espera , estatus 1 activo , estatus 2 eliminado , estatus 3 
-    status = models.IntegerField('Estado', default=0) 
-    def __str__(self):
-        return f'{self.board} - {self.user}' 
-
-    class Meta:
-        verbose_name = "Permit"
-        verbose_name_plural = "Permits"
-        db_table = 'permit'
     
 # Modelo para Cuenta
 class Account(models.Model):
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)  # Usuario dueño de la cuenta
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Usuario dueño de la cuenta
     name = models.CharField(max_length=100)  # Nombre de la cuenta
     balance = models.DecimalField(max_digits=10, decimal_places=2)  # Saldo de la cuenta
     currency = models.CharField(max_length=3)  # Moneda de la cuenta (ejemplo: USD, EUR, MXN, etc.)
@@ -174,7 +161,6 @@ class Account(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # Última fecha y hora de actualización de la cuenta
     account_type = models.CharField(max_length=50)  # Tipo de cuenta (ejemplo: Cuenta Corriente, Cuenta de Ahorros, Tarjeta de Crédito, etc.)
     status = models.CharField(max_length=20)  # Estado de la cuenta (ejemplo: Activa, Inactiva, Cerrada, etc.)
-    # board = models.ForeignKey(Board, on_delete=models.CASCADE )  # Tablero asociado a la cuenta
 
     def __str__(self):
         return self.name
@@ -187,7 +173,7 @@ class Account(models.Model):
 ## modelo de patrimonio 
 
 class Patrimony(models.Model):
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)  # Nombre de la cuenta
     balance = models.DecimalField(max_digits=10, decimal_places=2)  # Saldo de la cuenta
     currency = models.CharField(max_length=3)  # Moneda de la cuenta (ejemplo: USD, EUR, MXN, etc.)
@@ -207,7 +193,7 @@ class Patrimony(models.Model):
 
 
 class CreditCard(models.Model):
-    user = models.ForeignKey('AstradUser', on_delete=models.CASCADE)  # Usuario asociado a la tarjeta
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Usuario asociado a la tarjeta
     name = models.CharField(max_length=100)  # Nombre o identificador de la tarjeta
     balance = models.DecimalField(max_digits=12, decimal_places=2)  # Saldo actual disponible en la tarjeta
     credit_limit = models.DecimalField(max_digits=12, decimal_places=2)  # Límite de crédito de la tarjeta
@@ -255,7 +241,7 @@ class Transaction(models.Model):
     typet = models.CharField('Tipo de transaccion', max_length=30, choices=TIPO_CHOICES)  # tipo de transaccion
     patrimony = models.ForeignKey(Patrimony, on_delete=models.CASCADE, default=1,blank=True, null=True) # tablero donde se genero
     # board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)  # Tablero asociado la trassacion 
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.IntegerField('Estado', default=1) # estatus 0 programada, 1 realizada, 2 realizada agrupada, 3
     date = models.DateField() # fecha de creacion 
     amount = models.DecimalField(max_digits=10, decimal_places=2) # monto de la transaccion 
@@ -280,7 +266,7 @@ class Transaction(models.Model):
 
 # Modelo para Factura
 class Bill(models.Model):
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     account = models.ForeignKey(Account, on_delete=models.CASCADE)  # Cuenta asociada a la factura
     description = models.CharField(max_length=255)  # Descripción de la factura
     amount = models.DecimalField(max_digits=10, decimal_places=2)  # Monto de la factura
@@ -309,7 +295,7 @@ class Payment(models.Model):
 
 
 class Service(models.Model):
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
     start_date = models.DateField()
@@ -325,7 +311,7 @@ class Service(models.Model):
         return self.name
 
 class Roomie(models.Model):
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     
     
@@ -371,7 +357,7 @@ modelo de pagos basico para generar los pagos que se dieron en el mes y generar 
 """
 
 class Spent(models.Model):
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.TextField(null=False, blank=False)
     expensedate = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, related_name='boards', on_delete=models.CASCADE)   # Categorías asociadas al pago 
@@ -387,7 +373,7 @@ class Spent(models.Model):
 
 # pago recurrentes , progamados mes a mes o en un tiempo determinado 
 class RecurringPayment(models.Model):
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     # Usuario que crea el pago recurrente
     description  = models.CharField(max_length=255)
     # Descripción breve del pago recurrente
@@ -414,7 +400,7 @@ class RecurringPayment(models.Model):
 ### modelos de lista de compras 
 class ShoppingList(models.Model):
     # Usuario que crea la lista de compras
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     # Nombre de la lista de compras
     name = models.CharField(max_length=255)
     # Descripción opcional de la lista de compras
@@ -455,7 +441,7 @@ class UserNotification(models.Model):
     message = models.TextField()
     date = models.DateTimeField()
     read = models.BooleanField(default=False)
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.TextField(default=0) # 0-NoClasificado, 1-PagoPrestamo
     class Meta:
         ordering = ['-date']
@@ -474,7 +460,7 @@ class Budget(models.Model):
     # Tablero asociado en el presupuesto 
     # board = models.ForeignKey(Board, on_delete=models.CASCADE, default=1)
     # Usuario dueño de la cuenta
-    user = models.ForeignKey(AstradUser, on_delete=models.CASCADE) 
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
     # Nombre del presupuesto
     name = models.CharField(max_length=200, help_text="Nombre del presupuesto")
     # Descripción opcional del presupuesto

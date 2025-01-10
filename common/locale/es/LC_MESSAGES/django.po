@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-28 07:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Title"
+msgstr "Inicio de sesión - Roomiebudget - Crear Cuenta"
+
+
+msgid "Email"
+msgstr "Correo"
+
+msgid "Password"
+msgstr "Contraseña"
+
+msgid "Login"
+msgstr "Iniciar sesión"
+
+msgid "Login2"
+msgstr "Ingresar"
+
+msgid "NewPass"
+msgstr "Restablecer la contraseña"
+
+msgid "Create"
+msgstr "Crear una cuenta"
+
+msgid "no_account_message"
+msgstr "¿Aún no tienes cuenta? ¡No te preocupes! Crear una es tan rápido que lo harías antes de que termine el primer sorbo de tu café."
+
+msgid "reset_password_message"
+msgstr "Te enviaremos un correo electrónico con instrucciones para restablecer tu contraseña. ¡Es tan fácil que podrías hacerlo mientras preparas una taza de té!"
+
+
+
+

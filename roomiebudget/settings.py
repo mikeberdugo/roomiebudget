@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -43,7 +44,7 @@ INSTALLED_APPS = [
     # # 'income',          # Añadir esta línea
     # # 'shared_boards',   # Añadir esta línea
     # # 'shopping',        # Añadir esta línea
-    # # 'common',
+    'common',
     'crispy_forms',
     "crispy_bootstrap5",
 ]
@@ -53,7 +54,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 
-AUTH_USER_MODEL = 'common.AstradUser'
+AUTH_USER_MODEL = 'common.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 ROOT_URLCONF = 'roomiebudget.urls'
@@ -128,6 +130,21 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Idiomas disponibles
+LANGUAGES = [
+    ('en', 'English'),
+    ('es', 'Español'),
+    ('fr', 'French'),
+    ('ru', 'Russian'),
+    ('ja', 'Japanese'),
+]
+
+LANGUAGE_CODE = 'es'
+
+
+LOCALE_PATHS = [
+    BASE_DIR / 'common/locale',  # Apunta a la carpeta donde están las traducciones
+]
 
 
 # Static files (CSS, JavaScript, Images)

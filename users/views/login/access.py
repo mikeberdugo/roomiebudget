@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from users.forms.accessform import LoginForm, SignupForm
-from common.models import AstradUser
+from common.models import User
 import random
 from django.contrib.auth.decorators import login_required
 
@@ -71,10 +71,10 @@ def signup_view(request):
             password1 = form.cleaned_data['password1']
             password2 = form.cleaned_data['password2']
             if password1 == password2:
-                if AstradUser.objects.filter(username=username).exists():
+                if User.objects.filter(username=username).exists():
                     messages.error(request, '¡Ups! Parece que este nombre de usuario ya ha sido tomado. ¿Podrías intentar con otro?')
                 else:
-                    user = AstradUser.objects.create_user(username=username, email=email, password=password1)
+                    user = User.objects.create_user(username=username, email=email, password=password1)
                     login(request, user)
                     frase_aleatoria = random.choice(frases)
                     messages.success(request, frase_aleatoria)

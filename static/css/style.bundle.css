@@ -4,6 +4,15 @@
  * Copyright 2011-2023 The Bootstrap Authors
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+
+
+
+ @font-face {
+  font-family: 'PrimaryFont';
+  src: url('static/fonts/AGENCYB.TTF') format('truetype');
+}
+
+
 :root,
 [data-bs-theme=light] {
   --bs-blue: #0d6efd;
@@ -32,7 +41,7 @@
   --bs-light: #F9F9F9;
   --bs-primary: #1B84FF;
   --bs-secondary: #F9F9F9;
-  --bs-success: #17C653;
+  --bs-success: #ACF158;
   --bs-info: #7239EA;
   --bs-warning: #F6C000;
   --bs-danger: #F8285A;
@@ -71,7 +80,7 @@
   --bs-dark-border-subtle: #99A1B7;
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
-  --bs-font-sans-serif: Inter, Helvetica, "sans-serif";
+  --bs-font-sans-serif: 'PrimaryFont', Helvetica, "sans-serif";
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);

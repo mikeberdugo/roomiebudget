@@ -16,16 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(('users.urls', 'login'))),
-    # path('', include(('shared_boards.urls', 'boards'))),
-    path('accounts/', include(('accounts.urls', 'accounts'))), ## eliminar despues 
-    path('patrimony/', include(('patrimony.urls', 'patrimony'))),
-    path('shopping/', include(('shopping.urls', 'shopping'))),
-    path('income/', include(('income.urls', 'income'))),
-    path('bills/', include(('bills.urls', 'bills'))),
+    #path('', include(('users.urls', 'login'))),
+   
 ]
 
+
+urlpatterns += i18n_patterns(
+    # incluimos el fichero de urls de la aplicación web
+    path('', include(('users.urls', 'login')))
+)

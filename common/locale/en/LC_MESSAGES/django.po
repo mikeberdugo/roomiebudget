@@ -1,0 +1,50 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-28 07:10+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Title"
+msgstr "Login - Roomiebudget"
+
+msgid "TitleSignUp"
+msgstr "Login - Roomiebudget - SignUp"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Login"
+msgstr "Login"
+
+msgid "Login2"
+msgstr "Log in"
+
+msgid "NewPass"
+msgstr "Reset Password"
+
+msgid "Create"
+msgstr "Create an Account"
+
+msgid "no_account_message"
+msgstr "Don&#39;t have an account yet? Don&#39;t worry! It&#39;s so quick to create one, you could do it before your first sip of coffee."
+
+msgid "reset_password_message"
+msgstr "We&#39;ll send you an email with instructions to reset your password. It&#39;s so easy, you could do it while making a cup of tea!"

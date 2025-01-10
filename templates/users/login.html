@@ -1,11 +1,12 @@
 {% load static %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <title>{% trans "Title" %}</title>
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
     <!--end::Fonts-->
@@ -20,6 +21,9 @@
     
     <!-- <link rel="icon" href="{% static 'img/logonomiweb.ico' %}" type="image/x-icon"> -->
     <style>
+        .asteriskField {
+            display: none !important;
+        }
         /* Estilo personalizado para el enlace */
         .enlace-redondo {
           position: fixed;
@@ -58,52 +62,45 @@
                     <div class="card-body btn-secondary draggable-handle ">
                         <div class="d-flex flex-center h-200px">
                             <img alt="Logo" 
-                            src="{% static 'img/logo.png' %}" 
-                            class="h-60px theme-light-show" />
+                            src="{% static 'img/logos/01_Versión cuadrada.jpg' %}" 
+                            class="h-200px theme-light-show" />
                             <img alt="Logo" 
-                            src="{% static 'img/logo.png' %}" 
-                            class="h-60px theme-dark-show" />
+                            src="{% static 'img/logos/01_Versión cuadrada.jpg' %}" 
+                            class="h-200px theme-dark-show" />
                             
                         </div>
 
-                        <h2 class="card-title text-center btn-secondary ">Iniciar sesión</h2>
-                        {% crispy form %}
+                        <h2 class="card-title text-center btn-secondary ">{% trans "Login" %}</h2>
+                        {% csrf_token %}
+                        {{ form|crispy }}
                     </div>
-                    <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="¿Aún no tienes cuenta? ¡No te preocupes! Crear una es tan rápido que podrías hacerlo antes de que se caliente tu café" >
-                        <a href="{% url 'login:signup'%}"  class="d-flex justify-content-center align-items-center text-success" >Crear una cuenta</a>
+                    <div data-bs-toggle="tooltip" data-bs-placement="bottom" title='{% trans "no_account_message" %}' >
+                        <a href="{% url 'login:signup'%}"  class="d-flex justify-content-center align-items-center text-success" >{% trans "Create" %}</a>
                     </div>
-                    <div data-bs-toggle="tooltip" data-bs-placement="bottom" title="Te enviaremos un correo electrónico con instrucciones para restablecer tu contraseña. ¡Es tan fácil que podrías hacerlo mientras preparas una taza de té!" >
-                        <a href="#"  class="d-flex justify-content-center align-items-center text-success" >Restablecer la contraseña</a>
+                    <div data-bs-toggle="tooltip" data-bs-placement="bottom" title='{% trans "reset_password_message" %}' >
+                        <a href="#"  class="d-flex justify-content-center align-items-center text-success" >{% trans "NewPass" %}</a>
                     </div>
                     <br>
                     <br>
                 </div>
+                <div class="text-center">
+                    <a class="fs-4" href="/en/">{% trans "English" %}</a> | 
+                    <a class="fs-4" href="/es/">{% trans "Spanish" %}</a> 
+                    <!-- <a class="fs-4" href="/ru/">{% trans "Russian" %}</a> |
+                    <a class="fs-4" href="/ja/">{% trans "Japanese" %}</a> |
+                    <a class="fs-4" href="/fr/">{% trans "French" %}</a>  -->
+                </div>
                 
+
             </div>
             
+
+
             <a href="" class="enlace-redondo" id="enlace-oculto"></a>
         </div>
         
         
-        
-    {% comment %} <div class="d-flex flex-column flex-root" id="kt_app_root">
-        
-        <div class="d-flex flex-column flex-lg-row flex-column-fluid">
-            <div class="d-flex flex-column flex-lg-row-auto bg-primary w-xl-600px positon-xl-relative">
 
-            </div>
-            <div class="d-flex flex-column  bg-primary flex-lg-row-fluid py-10">
-
-                <a href="#" class="enlace-redondo" id="enlace-oculto"></a>
-
-                <div class="d-flex flex-center flex-column flex-column-fluid">
-                    <div class="w-lg-1000px p-10 p-lg-15 mx-auto">
-                        {% crispy form %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> {% endcomment %}
 
 <!--begin::Global Javascript Bundle(mandatory for all pages)-->
 <script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
