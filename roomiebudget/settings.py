@@ -38,12 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',           # Añadir esta línea
-    'accounts',        # Añadir esta línea
-    'bills',           # Añadir esta línea
-    'income',          # Añadir esta línea
-    'shared_boards',   # Añadir esta línea
-    'shopping',        # Añadir esta línea
-    'common',
+    # # 'accounts',        # Añadir esta línea
+    # # 'bills',           # Añadir esta línea
+    # # 'income',          # Añadir esta línea
+    # # 'shared_boards',   # Añadir esta línea
+    # # 'shopping',        # Añadir esta línea
+    # # 'common',
     'crispy_forms',
     "crispy_bootstrap5",
 ]
