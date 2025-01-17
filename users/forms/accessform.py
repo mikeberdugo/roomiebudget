@@ -5,12 +5,12 @@ from django.utils.translation import gettext_lazy as _
 
 class LoginForm(forms.Form):
     email = forms.CharField(
-        label=' ',
+        label='',
         widget=forms.TextInput(attrs={'placeholder': _('Email')}),
         max_length=150
     )
     password = forms.CharField(
-        label=' ',
+        label='',
         widget=forms.PasswordInput(attrs={'placeholder': _('Password')})
     )
     
@@ -32,7 +32,6 @@ class LoginForm(forms.Form):
 
 
 class SignupForm(forms.Form):
-    username = forms.CharField(label='Nombre de usuario', widget=forms.TextInput(attrs={'placeholder': 'Nombre de usuario'}), max_length=150)
     email = forms.EmailField(label='Correo electrónico', widget=forms.EmailInput(attrs={'placeholder': 'Correo electrónico'}))
     password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}))
     password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput(attrs={'placeholder': 'Confirmar contraseña'}))
@@ -41,10 +40,6 @@ class SignupForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Row(
-                Column('username', css_class='form-group mb-0'),
-                css_class='row'
-            ),
             Row(
                 Column('email', css_class='form-group mb-0'),
                 css_class='row'

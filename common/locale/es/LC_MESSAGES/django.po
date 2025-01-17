@@ -20,8 +20,10 @@ msgstr ""
 
 
 msgid "Title"
-msgstr "Inicio de sesión - Roomiebudget - Crear Cuenta"
+msgstr "Inicio de sesión - Roomiebudget"
 
+msgid "TitleSignUp"
+msgstr "Inicio de sesión - Roomiebudget - Crear Cuenta"
 
 msgid "Email"
 msgstr "Correo"

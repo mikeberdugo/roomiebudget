@@ -17,7 +17,7 @@
     <link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
     
     <link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
-
+    <link rel="icon" href="{% static 'img/logos/03_Isotipo.png' %}" type="image/x-icon">
     
     <!-- <link rel="icon" href="{% static 'img/logonomiweb.ico' %}" type="image/x-icon"> -->
     <style>
@@ -81,15 +81,30 @@
                         <a href="#"  class="d-flex justify-content-center align-items-center text-success" >{% trans "NewPass" %}</a>
                     </div>
                     <br>
+                    
+                    
+                    <a href="" class="btn btn-light-google mx-2" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Oops...Google aún está tomando su café, funcionalidad no disponible por ahora.">
+                        <i class="fab fa-google fs-4"></i>
+                    </a>
                     <br>
-                </div>
+
+                    
+                <!--
+                    <div class="btn-group my-3 mx-2" role="group" aria-label="Basic example">
+                       
+                        <a href="" class="btn btn-icon btn-light-twitter mx-2" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Oops... microsoft  aún está tomando su café, funcionalidad no disponible por ahora.">
+                            <i class="fa-brands fa-microsoft fs-4"></i>
+                        </a>
+                    </div>
+                
+                
                 <div class="text-center">
                     <a class="fs-4" href="/en/">{% trans "English" %}</a> | 
                     <a class="fs-4" href="/es/">{% trans "Spanish" %}</a> 
-                    <!-- <a class="fs-4" href="/ru/">{% trans "Russian" %}</a> |
+                     <a class="fs-4" href="/ru/">{% trans "Russian" %}</a> |
                     <a class="fs-4" href="/ja/">{% trans "Japanese" %}</a> |
-                    <a class="fs-4" href="/fr/">{% trans "French" %}</a>  -->
-                </div>
+                    <a class="fs-4" href="/fr/">{% trans "French" %}</a>  
+                </div>-->
                 
 
             </div>
