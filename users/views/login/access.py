@@ -28,9 +28,9 @@ def login_view(request):
         if request.method == 'POST':
             form = LoginForm(request.POST)
             if form.is_valid():
-                username = form.cleaned_data['username']
+                email = form.cleaned_data['email']
                 password = form.cleaned_data['password']
-                user = authenticate(request, username=username, password=password)
+                user = authenticate(request, email=email, password=password)
                 if user is not None:
                     login(request, user)
                     return redirect('login:home')  # Redirigir a la página de inicio después de iniciar sesión
@@ -66,21 +66,22 @@ def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password1 = form.cleaned_data['password1']
             password2 = form.cleaned_data['password2']
             if password1 == password2:
-                if User.objects.filter(username=username).exists():
-                    messages.error(request, '¡Ups! Parece que este nombre de usuario ya ha sido tomado. ¿Podrías intentar con otro?')
+                if User.objects.filter(email=email).exists():
+                    messages.error(request, '¡Ups! Este correo ya está ocupado. Tal vez tu gemelo malvado se te adelantó. Intenta con otro o recupéralo si es tuyo.')
                 else:
-                    user = User.objects.create_user(username=username, email=email, password=password1)
+                    # Crea el usuario si el correo es único
+                    user = User.objects.create_user(email=email, password=password1)
                     login(request, user)
                     frase_aleatoria = random.choice(frases)
                     messages.success(request, frase_aleatoria)
-                    return redirect('login:home')  # Redirigir a la página de inicio después de registrarse
+                    return redirect('login:home')  # Redirige a la página de inicio # Redirigir a la página de inicio después de registrarse
             else:
                 messages.error(request, '¡Oye, las contraseñas no se están poniendo de acuerdo aquí! Vamos, ustedes dos, ¡pongan de su parte y coincidan de una vez!')
+                return redirect('login:signup') 
     else:
         form = SignupForm()
     return render(request, './users/signup.html', {'form': form})

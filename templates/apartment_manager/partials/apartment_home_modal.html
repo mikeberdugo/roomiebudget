@@ -1,0 +1,84 @@
+<div class="modal-content" id="modal-content">
+    <div class="modal-header">
+        <h3 class="modal-title">Crear un nuevo hogar</h3>
+        <!--begin::Close-->
+        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" up-dismiss aria-label="Cerrar">
+            <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+        </div>
+        <!--end::Close-->
+    </div>   
+    <div class="separator my-5"></div> 
+    <!--begin::Input group-->        
+    <div class="modal-body">
+        <div class="container">
+            <p>Completa la información necesaria para registrar tu nuevo hogar.</p>
+            
+            <form method="post" action="{% url 'apartment:apartment_home_add' %}" class="apartment-form" id="form_home" up-target="#global-messages" up-layer="root" >
+                {% csrf_token %}
+            
+                <div class="row">
+                    <div class="col-md-6 input-group-sm">
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Nombre del hogar" required>
+                    </div>
+                    <div class="col-md-6 input-group-sm ">
+                        <select id="type" name="type" class="form-select form-select-sm"  data-control="select2" data-placeholder="Seleccione un valor"  required>
+                            <option value=""></option>
+                            <option value="apartment">Apartamento</option>
+                            <option value="house">Casa</option>
+                            <option value="loft">Loft</option>
+                            <option value="studio">Estudio</option>
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="row mt-3 ">
+                    <div class="col-md-6 input-group-sm">
+                        <input type="text" x-mask:dynamic="$money($input, '.', ',', 4)" id="rent_amount" name="rent_amount" class="form-control" placeholder="Canon de arrendamiento" required>
+                    </div>
+                    <div class="col-md-6 input-group-sm">
+                        <input type="text" x-mask:dynamic="$money($input, '.', ',', 4)" id="admin_fee" name="admin_fee" class="form-control" placeholder="Valor de administración (opcional)">
+                    </div>
+                </div>
+            
+                <div class="row mt-3">
+                    <div class="col-md-4 input-group-sm">
+                        <input type="number" id="number_of_occupants" name="number_of_occupants" class="form-control" placeholder="Número de habitantes" min="1" required>
+                        
+                    </div>
+                    <div class="col-md-4 input-group-sm">
+                        <input type="number" id="number_of_rooms" name="number_of_rooms" class="form-control" placeholder="Número de habitaciones" min="1" required>
+                        
+                    </div>
+
+                    <div class="col-md-4 input-group-sm">
+                        <input type="number" id="number_of_bathrooms" name="number_of_bathrooms" class="form-control" placeholder="Número de baños" min="1" required>
+                        
+                    </div>
+                </div>
+            
+            
+                <div class="row mt-3">
+
+                    <div class="col-md-6 d-flex align-items-center">
+                        <input type="checkbox" id="includes_admin" name="includes_admin" class="me-2">
+                        <label for="includes_admin" class="form-check-label">¿Incluye administración?</label>
+                    </div>
+
+                    <div class="col-md-6 d-flex align-items-center">
+                        <input type="checkbox" id="has_parking" name="has_parking" class="me-2">
+                        <label for="has_parking" class="form-check-label">¿Tiene parqueadero?</label>
+                    </div>
+                </div>
+            
+            </form>
+
+        </div>
+    </div>
+    <div class="separator my-5"></div>
+    <div class="modal-footer btn-group">
+        <button type="button" class="btn btn-light-danger" up-dismiss>Cancelar</button>
+        <div style="width: 10px;"></div>
+        <button type="submit" form="form_home"  class="btn btn-light-info">Guardar hogar</button>
+    </div>
+</div>
+

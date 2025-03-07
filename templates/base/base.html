@@ -27,7 +27,14 @@ License: For each use you must have a valid license purchased only from above li
   <link href="{% static 'plugins/global/plugins.bundle.css' %}" rel="stylesheet" type="text/css" />
   <link href="{% static 'css/style.bundle.css' %}" rel="stylesheet" type="text/css" />
   <link rel="icon" href="{% static 'img/logos/03_Isotipo.png' %}" type="image/x-icon">
-    
+  <script src="https://cdn.jsdelivr.net/npm/unpoly@3.10.2/unpoly.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/unpoly@3.10.2/unpoly.min.css">
+
+  <!-- Alpine Plugins -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+  
+  <!-- Alpine Core -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
   <style>
     {% block css %}
@@ -397,6 +404,7 @@ License: For each use you must have a valid license purchased only from above li
     <!--end::Scrolltop-->
     <!--begin::Modals-->
     <!--begin::Modal -->
+    
     
         <link href="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.css' %}" rel="stylesheet" type="text/css" />
         <script src="{% static 'plugins/custom/fullcalendar/fullcalendar.bundle.js' %}  "></script>

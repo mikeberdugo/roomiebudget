@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',           # Añadir esta línea
+    'apartment_manager',
     # # 'accounts',        # Añadir esta línea
     # # 'bills',           # Añadir esta línea
     # # 'income',          # Añadir esta línea

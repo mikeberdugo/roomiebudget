@@ -1,0 +1,239 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}
+roomiebudget.co - Portal Empresas - Lista Activos
+{% endblock %}
+
+{% block navbar %}
+    {% include 'base/nav_boards.html' %}
+{% endblock %}
+
+
+
+
+{% block css %}
+
+.card-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Número de líneas a mostrar */
+    -webkit-box-orient: vertical;
+    height: calc(1.5em * 3); /* Altura según el número de líneas y el tamaño de la fuente */
+}
+
+up-modal[size=large] up-modal-box {
+    border-radius: 0.75rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    
+}
+
+up-modal[size=medium] up-modal-box {
+    border-radius: 0.75rem;
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    text-align: left;
+}
+
+.select2-container .select2-search--dropdown .select2-search__field {
+    height: 28px; /* Ajusta la altura según prefieras */
+    padding: 4px 8px; /* Ajusta el padding para hacerlo más delgado */
+    font-size: 14px; /* Si quieres un texto más pequeño */
+    border-radius: 8px; /* Bordes más suaves si te gusta */
+}
+
+
+.select2-container .select2-results__option {
+    text-align: left;
+}
+
+
+.swal2-container {
+    z-index: 9999 !important; /* Más alto que el z-index de los modales de Unpoly */
+}
+
+
+
+
+{% endblock %}
+
+
+
+{% block sub_titulo1 %} 
+Hogar
+{% endblock %}
+
+
+{% block sub_titulo2 %} 
+Hogar
+{% endblock %}
+
+
+{% block titulo2 %} 
+Lista de Hogares
+{% endblock %}
+
+{% block actions %}
+    
+    
+    {% comment %} <!-- Botón adicional -->
+    <a
+        class='btn btn-light-info'
+        up-layer='new modal'
+        up-target=".modal-content"
+        up-size = "medium"
+        up-align = "center"
+        up-backdrop = "true"
+        up-history = "false"
+        up-dismissable ="false"
+        up-cache="false"
+        href="{% url 'apartment:apartment_home_add' %}" 
+        
+        >
+        <i class="fa-solid fa-square-plus fs-3"></i>
+        Agregar Hogar
+    </a> {% endcomment %}
+
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="card mb-5 mb-xl-10">
+    <div class="card-body pt-9 pb-0">
+        <!--begin::Details-->
+        <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
+            <!--begin::Info-->
+            <div class="flex-grow-1">
+                <!--begin::Stats-->
+                <div class="d-flex flex-wrap flex-stack">
+                    <!--begin::Wrapper-->
+                    <div class="d-flex flex-column flex-grow-1 pe-8">
+                        <!--begin::Stats-->
+                        <div class="d-flex flex-wrap">
+                            <!--begin::Stat-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <span class="me-2"><i class="fa-solid fa-bed"></i></span>
+                                <span>{{ apartment.number_of_rooms }}</span>
+                            </div>
+                            <!--end::Stat-->
+
+                            <!--begin::Stat-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <span class="me-2">
+                                    <i class="ki-duotone ki-profile-circle fs-4 me-1">
+                                        <span class="path1"></span><span class="path2"></span><span class="path3"></span>
+                                    </i>
+                                </span>
+                                <span>{{ apartment.number_of_occupants }}</span>
+                            </div>
+                            <!--end::Stat-->
+
+                            <!--begin::Stat-->
+                            <div class="border border-gray-300 border-dashed rounded min-w-125px py-3 px-4 me-6 mb-3">
+                                <span class="me-2"><i class="fa-solid fa-bath"></i></span>
+                                <span>{{ apartment.number_of_bathrooms }}</span>
+                            </div>
+                            <!--end::Stat-->
+                        </div>
+                        <!--end::Stats-->
+                    </div>
+                    <!--end::Wrapper-->
+
+                    <!--begin::Progress-->
+                    <div class="d-flex align-items-center w-200px w-sm-300px flex-column mt-3">
+                        <div class="d-flex justify-content-between w-100 mt-auto mb-2">
+                            <span class="fw-semibold fs-6 text-gray-500">Profile Compleation</span>
+                            <span class="fw-bold fs-6">50%</span>
+                        </div>
+
+                        <div class="h-5px mx-3 w-100 bg-light mb-3">
+                            <div class="bg-success rounded h-5px" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <!--end::Progress-->
+                </div>
+                <!--end::Stats-->
+            </div>
+            <!--end::Info-->
+        </div>
+        <!--end::Details-->   
+
+        <!--begin::Navs-->
+        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fs-5 fw-bold">
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 active" href="/saul-html-pro/account/overview.html">
+                        Overview                    </a>
+                </li>
+                <!--end::Nav item-->
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 " href="/saul-html-pro/account/settings.html">
+                        Settings                    </a>
+                </li>
+                <!--end::Nav item-->
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 " href="/saul-html-pro/account/security.html">
+                        Security                    </a>
+                </li>
+                <!--end::Nav item-->
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 " href="/saul-html-pro/account/activity.html">
+                        Activity                    </a>
+                </li>
+                <!--end::Nav item-->
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 " href="/saul-html-pro/account/billing.html">
+                        Billing                    </a>
+                </li>
+                <!--end::Nav item-->
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 " href="/saul-html-pro/account/statements.html">
+                        Statements                    </a>
+                </li>
+                <!--end::Nav item-->
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 " href="/saul-html-pro/account/referrals.html">
+                        Referrals                    </a>
+                </li>
+                <!--end::Nav item-->
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 " href="/saul-html-pro/account/api-keys.html">
+                        API Keys                    </a>
+                </li>
+                <!--end::Nav item-->
+                            <!--begin::Nav item-->
+                <li class="nav-item mt-2">
+                    <a class="nav-link text-active-primary ms-0 me-10 py-5 " href="/saul-html-pro/account/logs.html">
+                        Logs                    </a>
+                </li>
+                <!--end::Nav item-->
+                    </ul>
+        <!--begin::Navs-->
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+
+{% endblock %}

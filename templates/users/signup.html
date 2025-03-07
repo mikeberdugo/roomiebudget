@@ -87,5 +87,28 @@ License: For each use you must have a valid license purchased only from above li
     <!--begin::Global Javascript Bundle-->
     <script src="{% static 'plugins/global/plugins.bundle.js' %}"></script>
     <script src="{% static 'js/scripts.bundle.js' %}"></script>
+
+
+
+
+    <script>
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    text: "{{ message }}",
+                    icon: "{{message.tags}}",
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok",
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    },
+                    willOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer);
+                        toast.addEventListener('mouseleave', Swal.resumeTimer);
+                    }
+                });
+            {% endfor %}
+        {% endif %}
+        </script>
 </body>
 </html>
